@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.sys.dao.SysUserDao">
+	
+	<!-- 查询用户的所有权限 -->
+	<select id="queryAllPerms" resultType="string">
+		select m.perms from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+	
+	<!-- 查询用户的所有菜单ID --> 
+	<select id="queryAllMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+
+
+	<select id="queryById" parameterType="java.lang.String" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where user_id = #{id}
+	</select>
+
+	<select id="queryByOpenId" parameterType="java.lang.String" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where open_id = #{id}
+	</select>
+
+	<select id="queryByAppOpenId" parameterType="java.lang.String" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where app_open_id = #{id}
+	</select>
+
+	<insert id="insertUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
+		INSERT INTO sys_user (
+user_id,
+username,
+password,
+salt,
+email,
+mobile,
+status,
+open_id,
+language,
+nickname,
+headimgurl,
+province,
+subscribetime,
+city,
+sex,
+unionid,
+app_open_id,
+create_time
+)
+VALUES
+(
+#{userId,jdbcType=VARCHAR},
+#{username,jdbcType=VARCHAR},
+#{password,jdbcType=VARCHAR},
+#{salt,jdbcType=VARCHAR},
+#{email,jdbcType=VARCHAR},
+#{mobile,jdbcType=VARCHAR},
+#{status,jdbcType=INTEGER},
+#{openId,jdbcType=VARCHAR},
+#{language,jdbcType=VARCHAR},
+#{nickname,jdbcType=VARCHAR},
+#{headimgurl,jdbcType=VARCHAR},
+#{province,jdbcType=VARCHAR},
+#{subscribetime,jdbcType=VARCHAR},
+#{city,jdbcType=VARCHAR},
+#{sex,jdbcType=VARCHAR},
+#{unionid,jdbcType=VARCHAR},
+#{appOpenId,jdbcType=VARCHAR},
+		SYSDATE()
+		)
+	</insert>
+
+
+	<select id="queryForUsers" resultType="io.renren.modules.sys.entity.SysUserEntity">
+	SELECT
+     *
+	from sys_user
+	WHERE user_id IN
+	<foreach collection="array" item="id" index="index" open="(" close=")" separator=",">
+		#{id}
+	</foreach>
+	</select>
+</mapper>

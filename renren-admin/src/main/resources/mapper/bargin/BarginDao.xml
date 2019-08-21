@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.bargin.dao.BarginDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.bargin.entity.BarginEntity" id="barginMap">
+        <result property="id" column="id"/>
+        <result property="activityName" column="activity_name"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="thumbnail" column="thumbnail"/>
+        <result property="originalPrice" column="original_price"/>
+        <result property="floorPrice" column="floor_price"/>
+        <result property="minReduction" column="min_reduction"/>
+        <result property="maxReduction" column="max_reduction"/>
+        <result property="restrictTime" column="restrict_time"/>
+        <result property="prizeDescription" column="prize_description"/>
+        <result property="activityRule" column="activity_rule"/>
+        <result property="prizeInfo" column="prize_info"/>
+        <result property="companyDescription" column="company_description"/>
+        <result property="discount" column="discount"/>
+        <result property="qrImg" column="qr_img"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="headImage" column="head_image"/>
+        <result property="longitude" column="longitude"/>
+        <result property="phone" column="phone"/>
+        <result property="latitude" column="latitude"/>
+        <result property="footImage" column="foot_image"/>
+        <result property="bgImage" column="bg_image"/>
+        <result property="gift" column="gift"/>
+        <result property="prizeLeft" column="prize_left"/>
+        <result property="prizeNum" column="prize_num"/>
+    </resultMap>
+
+    <insert id="insertBarginLog" parameterType="io.renren.modules.order.model.Order">
+        INSERT INTO tb_bargin_log(id,
+        bargin_price,
+        user_id,
+        create_time)
+        VALUES(
+        #{orderId,jdbcType=VARCHAR},
+        #{total_price,jdbcType=VARCHAR},
+        #{user_id,jdbcType=VARCHAR},
+        SYSDATE()
+        )
+    </insert>
+
+    <select id="queryList" parameterType="java.lang.String" resultType="java.util.Map">
+		select t.*,count(ord.order_id) order_num,ifnull(sum(ord.total_price),0) total_price from tb_bargin t
+		left join tb_order ord on ord.activity_id = t.id and ord.order_status = 3
+		group by t.id
+		order by t.update_time desc
+    </select>
+
+    <select id="queryBarginLog" parameterType="java.lang.String" resultType="java.util.Map">
+        select tb.*,t.total_price,tba.original_price,u.headimgurl,u.username from tb_bargin_log tb
+  left join tb_order   t on tb.id = t.order_id
+  left join tb_bargin tba on tba.id = t.activity_id
+  left join sys_user u on u.user_id=t.user_id
+  where tb.id= #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryMaxTime" parameterType="io.renren.modules.order.model.Order" resultType="java.util.Map">
+        select max(tb.create_time) max_time, tb.* from tb_bargin_log tb
+        where tb.id= #{orderId,jdbcType=VARCHAR} and tb.user_id = #{user_id,jdbcType=VARCHAR}
+    </select>
+</mapper>

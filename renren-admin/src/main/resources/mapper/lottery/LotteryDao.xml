@@ -228,7 +228,7 @@ where tl.id = #{activityId,jdbcType=VARCHAR}
         left join sys_user u on u.user_id=t.user_id
         left join tb_lottery ta on ta.id = t.activity_id
         where u.mobile = #{mobile,jdbcType=VARCHAR}
-    </select>.2
+    </select>
 
     <select id="queryList" parameterType="java.lang.String" resultType="java.util.Map">
         select t.*,count(ord.user_id) user_num from tb_lottery t

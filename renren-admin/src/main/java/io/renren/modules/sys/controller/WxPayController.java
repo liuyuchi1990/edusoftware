@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.renren.common.config.Constants;
 import io.renren.common.utils.*;
+import io.renren.modules.bargin.service.BarginService;
 import io.renren.modules.order.model.Order;
 import io.renren.modules.order.model.OrderEntity;
 import io.renren.modules.order.model.OrderInfo;
@@ -44,6 +45,10 @@ public class WxPayController {
 
     @Autowired
     OrderService orderService;
+
+    @Autowired
+    BarginService barginService;
+
     @Autowired
     SysUserService sysUserService;
 
@@ -80,6 +85,11 @@ public class WxPayController {
         boolean result = true;
         String info = "";
         Map<String, Object> objectMap = orderService.queryByOrderId(orderId);
+        if("3".equals(objectMap.get("order_status").toString())){
+            rs.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            rs.setMsg("您已经成功支付订单，无需重复支付");
+            return rs;
+        }
         OrderEntity od = JSON.parseObject(JSON.toJSONString(objectMap), OrderEntity.class);
         log.error("\n======================================================");
         log.error("code: " + user_id);
@@ -114,6 +124,7 @@ public class WxPayController {
                 result = false;
                 info = "出错了，未获取到prepayId";
             } else {
+                map.put("appId",Constants.PTAPPID);
                 map.put("package", "prepay_id="+prepayId);
                 map.put("nonceStr", randomNonceStr);
                 map.put("timestamp",System.currentTimeMillis()/1000+"");
@@ -178,6 +189,7 @@ public class WxPayController {
                 result = false;
                 info = "出错了，未获取到小程序prepayId";
             } else {
+                map.put("appId",Constants.APPID);
                 map.put("package", "prepay_id="+prepayId);
                 map.put("nonceStr", randomNonceStr);
                 map.put("timestamp",System.currentTimeMillis()/1000+"");
@@ -234,6 +246,9 @@ public class WxPayController {
                 int rs = 1;
                 if("1".equals(order.getOrderStatus())) {
                     rs = orderService.edit(orderInfo);
+                    if(Constants.BARGIN.equals(order.getOrderType())){
+                        barginService.releaseBargin(order.getActivityId());
+                    }
                 }
                 //判断 是否更新成功
                 if ((rs > 0)||("1".equals(order.getOrderStatus()))) {
@@ -326,6 +341,7 @@ public class WxPayController {
                                 //用户性别
                                 user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
                                 user.setSex(Integer.parseInt(userMessageJsonObject.getString("sex")));
+                                user.setStatus(0);
                                 user.setProvince(userMessageJsonObject.getString("province"));
                                 user.setSubscribetime(userMessageJsonObject.getString("subscribetime"));
                                 user.setCity(userMessageJsonObject.getString("city"));
@@ -400,6 +416,7 @@ public class WxPayController {
                                 //用户性别
                                 user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
                                 user.setSex(Integer.parseInt(jsonObject.getString("gender")));
+                                user.setStatus(0);
                                 user.setProvince(user.getProvince());
                                 user.setCity(user.getCity());
                                 user.setHeadimgurl(jsonObject.getString("avatarUrl"));

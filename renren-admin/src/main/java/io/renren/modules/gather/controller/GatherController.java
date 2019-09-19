@@ -30,10 +30,7 @@ import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 
 
-
 /**
- * 
- *
  * @author chenshun
  * @email sunlightcs@gmail.com
  * @date 2019-06-11 10:39:02
@@ -57,11 +54,12 @@ public class GatherController {
     String qrGatherImgUrl;
     @Value("${qr.httpgatherurl}")
     String httpgatherurl;
+
     /**
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = gatherService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -72,7 +70,7 @@ public class GatherController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") String id){
+    public R info(@PathVariable("id") String id) {
         GatherEntity gather = gatherService.selectById(id);
         return R.ok().put("gather", gather);
     }
@@ -86,7 +84,7 @@ public class GatherController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         List<Map<String, Object>> activityLst = gatherService.queryList(params);
         Map<String, Object> map = new HashedMap();
-        map.put("data",activityLst);
+        map.put("data", activityLst);
         result.setResult(map);
         return result;
     }
@@ -96,15 +94,17 @@ public class GatherController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public R save(@RequestBody GatherEntity gather) throws Exception {
-        if ("".equals(gather.getId())||gather.getId()==null) {
+        if ("".equals(gather.getId()) || gather.getId() == null) {
             gather.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             gather.setQrImg(httpgatherurl + gather.getId() + ".jpg");
+            gather.setCreateTime(new Date());
             gather.setPrizeLeft(gather.getPriceNum());
             gatherService.insertAllColumn(gather);
             distributionService.insertActivity(gather);
             String text = qrGatherUrl.replace("id=", "id=" + gather.getId());
             QRCodeUtils.encode(text, null, qrGatherImgUrl, gather.getId(), true);
-        }else{
+        } else {
+            gather.setUpdateTime(new Date());
             gatherService.updateById(gather);//全部更新
             distributionService.updateActivity(gather);
         }
@@ -120,7 +120,8 @@ public class GatherController {
     public R copy(@RequestBody GatherEntity gather) throws Exception {
         GatherEntity ga = gatherService.selectById(gather.getId());
         ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-        ga.setQrImg(httpgatherurl + gather.getId() + ".jpg");
+        ga.setQrImg(httpgatherurl + ga.getId() + ".jpg");
+        ga.setCreateTime(new Date());
         gatherService.insertAllColumn(ga);
         distributionService.insertActivity(ga);
         String text = qrGatherUrl.replace("id=", "id=" + ga.getId());
@@ -132,7 +133,7 @@ public class GatherController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody GatherEntity gather){
+    public R update(@RequestBody GatherEntity gather) {
         ValidatorUtils.validateEntity(gather);
         gatherService.updateById(gather);//全部更新
         return R.ok();
@@ -145,31 +146,31 @@ public class GatherController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         Map<String, Object> pList = gatherService.queryLikeTime(pz);
+        GatherEntity gz = gatherService.selectById(pz.getActivityId());
         long hours = 0;
         Long prize_time = Long.parseLong(pList.get("prize_time").toString());
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime toDate= LocalDateTime.now();
-        String create_time = pList.get("create_time")==null?null: pList.get("create_time").toString().replace(".0","");
-        if(pList.get("create_time")!=null){
-            LocalDateTime ldt = LocalDateTime.parse(create_time,df);
-            hours = ChronoUnit.HOURS.between(ldt,toDate);
+        LocalDateTime toDate = LocalDateTime.now();
+        String create_time = pList.get("create_time") == null ? null : pList.get("create_time").toString().replace(".0", "");
+        if (pList.get("create_time") != null) {
+            LocalDateTime ldt = LocalDateTime.parse(create_time, df);
+            hours = ChronoUnit.HOURS.between(ldt, toDate);
         }
 
-        if(create_time==null||prize_time<hours) {
-            pz.setCompleteTime(new Date());
-            int mp = gatherService.updatePrizeLog(pz);
-            int mp2 = gatherService.insertLikeLog(pz);
+        if (create_time == null || gz.getRestrictTime() < hours) {
+            pz.setUpdateTime(new Date());
+            gatherService.insertLikeLog(pz);
             Map<String, Object> p = gatherService.queryPrizeLog(pz.getId());
-            int arr = p.get("likes")==null?0:p.get("likes").toString().split(",").length;
-            if(create_time!=null&&arr== Integer.parseInt(pz.getPrizeNum())){
+            int arr = p.get("likes") == null ? 0 : p.get("likes").toString().split(",").length;
+            if (arr == (gz.getTargetNum()-1)) {
                 pz.setCompleteTime(new Date());
-                gatherService.updatePrizeLog(pz);
                 gatherService.releasePrize(pz.getActivityId());
             }
+            int mp = gatherService.updatePrizeLog(pz);
             map.put("data", mp);
-        }else{
-           String mp = "请超过"+prize_time+"小时后再投票，谢谢";
-            map.put("data",mp);
+        } else {
+            result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
+            result.setMsg("请超过" + prize_time + "小时后再点赞，谢谢");
         }
         map.put("status", "success");
         map.put("msg", "send ok");
@@ -211,6 +212,19 @@ public class GatherController {
         return result;
     }
 
+    @RequestMapping(value = "/queryLikeLog", method = RequestMethod.POST)
+    //@RequiresPermissions("sys:distribution:delete")
+    public ReturnResult queryLikeLog(@RequestBody PrizeEntity pz) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        List<Map<String, Object>> mp = gatherService.queryLikeLog(pz.getId());
+        map.put("status", "success");
+        map.put("msg", "send ok");
+        map.put("data", mp);
+        result.setResult(map);
+        return result;
+    }
+
     @RequestMapping(value = "/queryPrizeLog", method = RequestMethod.POST)
     //@RequiresPermissions("sys:distribution:delete")
     public ReturnResult queryPrizeLog(@RequestBody PrizeEntity pz) {
@@ -228,7 +242,7 @@ public class GatherController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody String[] ids){
+    public R delete(@RequestBody String[] ids) {
         gatherService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();

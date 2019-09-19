@@ -85,4 +85,11 @@ VALUES
 		#{id}
 	</foreach>
 	</select>
+
+    <select id="queryAllUsers" resultType="io.renren.modules.sys.entity.SysUserEntity">
+        SELECT
+        *
+        from sys_user
+        where app_open_id is not null
+    </select>
 </mapper>

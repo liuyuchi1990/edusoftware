@@ -51,14 +51,14 @@
 		select t.*,count(ord.order_id) order_num,ifnull(sum(ord.total_price),0) total_price from tb_bargin t
 		left join tb_order ord on ord.activity_id = t.id and ord.order_status = 3
 		group by t.id
-		order by t.update_time desc
+		order by t.create_time desc
     </select>
 
     <select id="queryBarginLog" parameterType="java.lang.String" resultType="java.util.Map">
         select tb.*,t.total_price,tba.original_price,u.headimgurl,u.username from tb_bargin_log tb
   left join tb_order   t on tb.id = t.order_id
   left join tb_bargin tba on tba.id = t.activity_id
-  left join sys_user u on u.user_id=t.user_id
+  left join sys_user u on u.user_id=tb.user_id
   where tb.id= #{id,jdbcType=VARCHAR}
     </select>
 
@@ -66,4 +66,12 @@
         select max(tb.create_time) max_time, tb.* from tb_bargin_log tb
         where tb.id= #{orderId,jdbcType=VARCHAR} and tb.user_id = #{user_id,jdbcType=VARCHAR}
     </select>
+
+    <update id="releaseBargin" parameterType="java.lang.String">
+        update tb_bargin
+        <set>
+            prize_left = prize_left - 1
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
 </mapper>

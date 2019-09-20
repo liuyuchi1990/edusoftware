@@ -17,19 +17,20 @@ public class Excelutil {
      * @修改人：
      * @修改时间：
      */
-    public static String readXlsx(String filePath) throws Exception {
+    public static List<String> readXlsx(String filePath) throws Exception {
         InputStream is = new FileInputStream(filePath);
-        //List<List<String>> result;
-        String result;
+        List<String> result = new ArrayList<>();
+        int count = 0;
+        String res="";
         try (XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is)) {
             //result = new ArrayList<>();
-            result = "";
             //循环每一页，并处理当前的循环页
             for (Sheet sheet : xssfWorkbook) {
                 if (sheet == null) {
                     continue;
                 }
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+
                     Row row = sheet.getRow(rowNum);//Row表示每一行的数据
                     int minColIx = row.getFirstCellNum();
                     int maxColIx = row.getLastCellNum();
@@ -49,11 +50,15 @@ public class Excelutil {
                         }
                     }
                     if (!rowList.equals("','")) {
-                        if (rowNum == 1) {
-                            result = result + "('" + rowList + "')";
+                        if (rowNum == 1||rowNum%1000==0) {
+                            res = res + "('" + rowList + "')";
                         } else {
-                            result = result + ",('" + rowList + "')";
+                            res = res + ",('" + rowList + "')";
                         }
+                    }
+                    if(rowNum%1000==999||(rowNum==sheet.getLastRowNum())){
+                        result.add(res);
+                        res = "";
                     }
                 }
             }
@@ -61,10 +66,10 @@ public class Excelutil {
         return result;
     }
 
-    public static void alterStringToCreateNewFile(String path, String oldString,
-                                                  String newString) {
+    public static void alterStringToCreateNewFile(String temppath,String path, String oldString,
+                                                  List<String> newString) {
         try {
-            File file = new File(path);
+            File file = new File(temppath);
             long start = System.currentTimeMillis(); //开始时间
             File newFile;
             int sum;
@@ -73,7 +78,7 @@ public class Excelutil {
             try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(
                             new FileInputStream(file)))) {
-                newFile = new File("path");
+                newFile = new File(path);
                 if (!newFile.exists()) {
                     newFile.createNewFile(); //不存在则创建
                 }
@@ -87,20 +92,26 @@ public class Excelutil {
                         //判断读取的内容是否包含原字符串
                         if (string.contains(oldString)) {
                             //替换读取内容中的原字符串为新字符串
-                            string = new String(
-                                    string.replace(oldString, newString));
-                            sum++;
+                           for(int item = 0;item<newString.size();item++){
+                               bw.write(newString.get(item));
+                               bw.newLine(); //添加换行
+                               if(item!=(newString.size()-1)) {
+                                   bw.write("INSERT INTO @tempTable values");
+                                   bw.newLine();
+                               }
+                           }
+                           string = "";
                         }
                         bw.write(string);
-                        bw.newLine(); //添加换行
+                        bw.newLine();
                     }
                     br.close(); //关闭流，对文件进行删除等操作需先关闭文件流操作
                     bw.close();
                 }
             }
             filePath = file.getPath();
-            file.delete(); //删除源文件
-            newFile.renameTo(new File(filePath)); //将新文件更名为源文件
+//            file.delete(); //删除源文件
+//            newFile.renameTo(new File(filePath)); //将新文件更名为源文件
             time = System.currentTimeMillis() - start;
             System.out.println(sum + "个" + oldString + "替换成" + newString + "耗费时间:" + time);
         } catch (Exception e) {
@@ -167,12 +178,12 @@ public class Excelutil {
     }
 
     public static void main(String[] args) throws Exception {
-        String s = readXlsx("C:\\Users\\rliu9\\Desktop\\test\\C34 Change Outreach 0318.xlsx");
+        List<String> s = readXlsx("C:\\Users\\rliu9\\Desktop\\test\\SMS Audit Table20190712.xlsx");
 
-        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190219]_CHG0030541_OutreachStrategy_BPMO.sql"
+        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190920]_CHG0031881_H&C_temp.sql","C:\\Users\\rliu9\\Desktop\\test\\[20190920]_CHG0031819_H&C_SMS Audit Table20190712.sql"
                 , "$temp$", s);
-        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190219]_CHG0030541_OutreachStrategy_DataTeam.sql"
-                , "$temp$", s);
+////        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190219]_CHG0030541_OutreachStrategy_DataTeam.sql"
+////                , "$temp$", s);
 
     }
 }

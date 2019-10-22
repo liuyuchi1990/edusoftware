@@ -17,8 +17,10 @@
 package io.renren.modules.sys.controller;
 
 
+import com.github.qcloudsms.httpclient.HTTPException;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import io.renren.common.config.MessageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.utils.WxUtil;
 import io.renren.modules.sys.entity.ReturnCodeEnum;
@@ -163,5 +165,15 @@ public class SysLoginController {
             result.setResult(map);
             return result;
         }
+    }
+
+    @RequestMapping(value = "sendMessage", method = RequestMethod.POST)
+    public void sendMessage(@RequestBody SysUserEntity user) throws HTTPException {
+        //生成文字验证码
+        //String text = producer.createText();
+        String text = "1234";
+	    String[] param = {text,"2"};
+        String[] phoneNumbers = {user.getMobile()};
+        MessageUtils.sendMessage(true,param,phoneNumbers);
     }
 }

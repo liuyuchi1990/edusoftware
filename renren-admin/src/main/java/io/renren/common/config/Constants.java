@@ -93,4 +93,16 @@ public class Constants {
 
     public static final String Lottery = "5";
 
+    /**
+     * 短信接口参数
+     */
+    public static final Integer SMSAPPID = 1400275489;
+
+    public static final String SMSKEY = "428f77beecb27cd08abb8d9ea2acdfeb";
+
+    public static final Integer SMSTEMPLATEID= 449518;
+
+    public static final String SMSSIGN= "小象社交新营销";
+
+    public static final String SMSINTERVAL= "2";
 }

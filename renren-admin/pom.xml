@@ -75,6 +75,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<dependency>
 		    <groupId>org.apache.shiro</groupId>
 		    <artifactId>shiro-core</artifactId>
 		    <version>${shiro.version}</version>
@@ -83,6 +88,13 @@
 		    <groupId>org.apache.shiro</groupId>
 		    <artifactId>shiro-spring</artifactId>
 		    <version>${shiro.version}</version>
+		</dependency>
+		<!-- 你的其他依赖。。。 -->
+		<!-- 腾讯短信 -->
+		<dependency>
+			<groupId>com.github.qcloudsms</groupId>
+			<artifactId>qcloudsms</artifactId>
+			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

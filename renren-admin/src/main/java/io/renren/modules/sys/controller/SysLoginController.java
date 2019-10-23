@@ -28,6 +28,7 @@ import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -167,13 +168,20 @@ public class SysLoginController {
         }
     }
 
-    @RequestMapping(value = "sendMessage", method = RequestMethod.POST)
-    public void sendMessage(@RequestBody SysUserEntity user) throws HTTPException {
+    @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
+    @ResponseBody
+    public ReturnResult sendMessage(@RequestBody SysUserEntity user) throws HTTPException {
         //生成文字验证码
         //String text = producer.createText();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
         String text = "1234";
 	    String[] param = {text,"2"};
         String[] phoneNumbers = {user.getMobile()};
         MessageUtils.sendMessage(true,param,phoneNumbers);
+        map.put("status", "success");
+        map.put("msg", "send ok");
+        result.setResult(map);
+        return result;
     }
 }

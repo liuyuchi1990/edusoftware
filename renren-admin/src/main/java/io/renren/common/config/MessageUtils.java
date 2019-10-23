@@ -12,9 +12,8 @@ public class MessageUtils {
     /**
      * 按模板发送短信 支持单发和群发
      * @param isSingle 是否单发 true: 单发，false: 群发
-     * @param form 需要发送的短信内容及收信人手机号
-     * @param config 短信配置
-     * @throws CustomException 发送失败时捕获的异常信息
+     * @param phoneNumbers 需要发送的短信内容及收信人手机号
+     * @param params 短信配置
      */
     public static void sendMessage(Boolean isSingle, String[] params,String[] phoneNumbers  ) throws com.github.qcloudsms.httpclient.HTTPException {
         String regex = ";";

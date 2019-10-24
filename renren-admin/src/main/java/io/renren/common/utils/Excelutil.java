@@ -178,9 +178,9 @@ public class Excelutil {
     }
 
     public static void main(String[] args) throws Exception {
-        List<String> s = readXlsx("C:\\Users\\rliu9\\Desktop\\test\\a.xlsx");
+        List<String> s = readXlsx("C:\\Users\\rliu9\\Desktop\\test\\SMS Audit Table20190823.xlsx");
 
-        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190920]_CHG0031881_H&C_temp.sql","C:\\Users\\rliu9\\Desktop\\test\\test2.sql"
+        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190920]_CHG0031881_H&C_temp.sql","C:\\Users\\rliu9\\Desktop\\test\\test3.sql"
                 , "$temp$", s);
 ////        alterStringToCreateNewFile("C:\\Users\\rliu9\\Desktop\\test\\[20190219]_CHG0030541_OutreachStrategy_DataTeam.sql"
 ////                , "$temp$", s);

@@ -172,10 +172,10 @@ public class SysLoginController {
     @ResponseBody
     public ReturnResult sendMessage(@RequestBody SysUserEntity user) throws HTTPException {
         //生成文字验证码
-        //String text = producer.createText();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
-        String text = "1234";
+        String text = producer.createText();
+        ShiroUtils.setSessionAttribute(Constants.KAPTCHA_SESSION_KEY, text);
 	    String[] param = {text,"2"};
         String[] phoneNumbers = {user.getMobile()};
         MessageUtils.sendMessage(true,param,phoneNumbers);

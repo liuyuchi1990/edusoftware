@@ -106,6 +106,10 @@ public class SysUserEntity implements Serializable {
 	private String subscribetime;// 用户关注时间，为时间戳。如果用户曾多次关注，则取最后关注时间
 	private String unionid;// 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
 	private String appOpenId;// 只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
+	private String companyIndustry;// 所属行业
+	private String companyName;// 机构名称
+	private String companyProvince;// 公司所在省份
+	private String companyCity;// 公司所在城市
 
 	/**
 	 * 部门ID
@@ -341,5 +345,37 @@ public class SysUserEntity implements Serializable {
 
 	public void setAppOpenId(String appOpenId) {
 		this.appOpenId = appOpenId;
+	}
+
+	public String getCompanyIndustry() {
+		return companyIndustry;
+	}
+
+	public void setCompanyIndustry(String companyIndustry) {
+		this.companyIndustry = companyIndustry;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getCompanyProvince() {
+		return companyProvince;
+	}
+
+	public void setCompanyProvince(String companyProvince) {
+		this.companyProvince = companyProvince;
+	}
+
+	public String getCompanyCity() {
+		return companyCity;
+	}
+
+	public void setCompanyCity(String companyCity) {
+		this.companyCity = companyCity;
 	}
 }

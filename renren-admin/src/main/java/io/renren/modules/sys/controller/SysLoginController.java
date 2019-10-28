@@ -168,6 +168,15 @@ public class SysLoginController {
         }
     }
 
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    @Transactional(rollbackFor = {Exception.class}, readOnly = false)
+    public ReturnResult signIn(@ApiParam @RequestBody SysUserEntity user) {
+        Map<String, Object> map = new HashMap<>();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        result.setResult(map);
+        return result;
+    }
+
     @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
     @ResponseBody
     public ReturnResult sendMessage(@RequestBody SysUserEntity user) throws HTTPException {

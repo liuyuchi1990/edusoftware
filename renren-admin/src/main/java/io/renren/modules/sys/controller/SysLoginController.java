@@ -17,15 +17,20 @@
 package io.renren.modules.sys.controller;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.github.qcloudsms.httpclient.HTTPException;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.renren.common.config.MessageUtils;
 import io.renren.common.utils.R;
+import io.renren.common.utils.UserInfoUtil;
 import io.renren.common.utils.WxUtil;
 import io.renren.modules.sys.entity.ReturnCodeEnum;
 import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.collections.map.HashedMap;
@@ -61,7 +66,10 @@ import java.util.UUID;
 public class SysLoginController {
 	@Autowired
 	private Producer producer;
-	
+
+    @Autowired
+    SysUserService sysUserService;
+
 	@RequestMapping("captcha.jpg")
 	public void captcha(HttpServletResponse response)throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
@@ -173,6 +181,73 @@ public class SysLoginController {
     public ReturnResult signIn(@ApiParam @RequestBody SysUserEntity user) {
         Map<String, Object> map = new HashMap<>();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> ret = new HashedMap();
+        System.out.println("-----------------------------收到请求，请求数据为：" + user.getSalt() + "-----------------------" + user.getSalt());
+
+        //通过code换取网页授权web_access_token
+        if (user.getDeptId() != null || !(user.getDeptId().equals(""))) {
+            String CODE = user.getSalt();
+            String WebAccessToken = "";
+            String openId = "";
+            //替换字符串，获得请求URL
+            String token = UserInfoUtil.getWebAccess(io.renren.common.config.Constants.PTAPPID, io.renren.common.config.Constants.PSERCRET, CODE);
+            System.out.println("----------------------------token为：" + token);
+            //通过https方式请求获得web_access_token
+            JSONObject jsonObject = WxUtil.httpRequest(token, "GET", null);
+            System.out.println("jsonObject------" + jsonObject);
+            SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
+            if (userTemp==null && null != jsonObject) {
+                try {
+                    WebAccessToken = jsonObject.getString("access_token");
+                    openId = jsonObject.getString("openid");
+                    System.out.println("获取access_token成功-------------------------" + WebAccessToken + "----------------" + openId);
+                    //-----------------------拉取用户信息...替换字符串，获得请求URL
+                    String userMessage = UserInfoUtil.getUserMessage(WebAccessToken, openId);
+                    System.out.println(" userMessage===" + userMessage);
+                    //通过https方式请求获得用户信息响应
+                    JSONObject userMessageJsonObject = WxUtil.httpRequest(userMessage, "GET", null);
+
+                    System.out.println("userMessagejsonObject------" + userMessageJsonObject);
+
+                    if (userMessageJsonObject != null) {
+                        try {
+                            //用户昵称
+                            SysUserEntity utmp = sysUserService.queryByOpenId(userMessageJsonObject.getString("openid"));
+                            //获取成果，存入数据库
+                            if(utmp==null){
+                                user.setUsername(userMessageJsonObject.getString("nickname"));
+                                user.setNickname(userMessageJsonObject.getString("nickname"));
+                                //用户性别
+                                user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
+                                user.setSex(Integer.parseInt(userMessageJsonObject.getString("sex")));
+                                user.setStatus(0);
+                                user.setProvince(userMessageJsonObject.getString("province"));
+                                user.setSubscribetime(userMessageJsonObject.getString("subscribetime"));
+                                user.setCity(userMessageJsonObject.getString("city"));
+                                user.setHeadimgurl(userMessageJsonObject.getString("headimgurl"));
+                                //用户唯一标识
+                                user.setOpenId(userMessageJsonObject.getString("openid"));
+                                user.setUnionid(userMessageJsonObject.getString("unionid"));
+                                sysUserService.insertUser(user);
+                            }else{
+                                user = utmp;
+                            }
+
+                        } catch (JSONException e) {
+                            System.out.println("获取user失败");
+                        }
+                    }
+
+
+                } catch (JSONException e) {
+                    System.out.println("获取WebAccessToken失败");
+                }
+            }
+        }
+        ret.put("user",user);
+        map.put("data",ret);
+        map.put("status", "success");
+        map.put("msg", "send ok");
         result.setResult(map);
         return result;
     }

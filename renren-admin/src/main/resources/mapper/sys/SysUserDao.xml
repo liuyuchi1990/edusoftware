@@ -31,6 +31,10 @@
 		select * from sys_user where app_open_id = #{id}
 	</select>
 
+	<select id="queryByMobile" parameterType="java.lang.String" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where mobile = #{mobile}
+	</select>
+
 	<insert id="insertUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
 		INSERT INTO sys_user (
 user_id,

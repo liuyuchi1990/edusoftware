@@ -148,6 +148,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return baseMapper.queryByOpenId(userId);
 	}
 
+	public SysUserEntity queryByMobile(String mobile){
+		return baseMapper.queryByMobile(mobile);
+	}
+
 	public SysUserEntity queryByAppOpenId(String userId){
 		return baseMapper.queryByAppOpenId(userId);
 	}

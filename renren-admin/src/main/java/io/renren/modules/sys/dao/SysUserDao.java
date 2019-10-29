@@ -48,6 +48,8 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	SysUserEntity queryByAppOpenId(String id);
 
+	SysUserEntity queryByMobile(String mobile);
+
 	void insertUser (SysUserEntity user);
 
 	List<SysUserEntity>  queryForUsers(String[] ids);

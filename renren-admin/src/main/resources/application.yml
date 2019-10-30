@@ -21,9 +21,9 @@ spring:
       enabled: true
   redis:
     database: 0
-    host: 127.0.0.1
+    host: 49.235.38.247
     port: 6379
-    password:      # 密码（默认为空）
+    password: Liuyuch1990      # 密码（默认为空）
     timeout: 6000ms  # 连接超时时长（毫秒）
     jedis:
       pool:
@@ -82,25 +82,25 @@ logging:
 root:
   img:
     url: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs
-    path: https://wx.sharkmeida.cn/imgs/
+    path: https://wxp.sharkmeida.cn/imgs/
     cert: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/cert
 
 qr:
-  distribution: https://wx.sharkmeida.cn/dist/redirect.html?id=&hash=info
+  distribution: https://wxp.sharkmeida.cn/dist/redirect.html?id=&hash=info
   distributionImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/distribution/qr
-  gather: https://wx.sharkmeida.cn/dist/redirect.html?hash=2pageInfo&id=
+  gather: https://wxp.sharkmeida.cn/dist/redirect.html?hash=2pageInfo&id=
   gatherImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/gather/qr
-  bargin: https://wx.sharkmeida.cn/dist/redirect.html?hash=3pageInfo&id=
+  bargin: https://wxp.sharkmeida.cn/dist/redirect.html?hash=3pageInfo&id=
   barginImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/bargin/qr
-  groupon: https://wx.sharkmeida.cn/dist/redirect.html?hash=4pageInfo&id=
+  groupon: https://wxp.sharkmeida.cn/dist/redirect.html?hash=4pageInfo&id=
   grouponImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/groupon/qr
-  lottery: https://wx.sharkmeida.cn/dist/redirect.html?hash=egg&id=
+  lottery: https://wxp.sharkmeida.cn/dist/redirect.html?hash=egg&id=
   lotteryImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/lottery/qr
-  httpurl: https://wx.sharkmeida.cn/imgs/distribution/qr/
-  httpgatherurl: https://wx.sharkmeida.cn/imgs/gather/qr/
-  httpbarginurl: https://wx.sharkmeida.cn/imgs/bargin/qr/
-  httpgrouponurl: https://wx.sharkmeida.cn/imgs/groupon/qr/
-  httplotteryurl: https://wx.sharkmeida.cn/imgs/lottery/qr/
+  httpurl: https://wxp.sharkmeida.cn/imgs/distribution/qr/
+  httpgatherurl: https://wxp.sharkmeida.cn/imgs/gather/qr/
+  httpbarginurl: https://wxp.sharkmeida.cn/imgs/bargin/qr/
+  httpgrouponurl: https://wxp.sharkmeida.cn/imgs/groupon/qr/
+  httplotteryurl: https://wxp.sharkmeida.cn/imgs/lottery/qr/
 
 course:
   path: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/course/

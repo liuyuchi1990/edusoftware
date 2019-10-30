@@ -237,8 +237,6 @@ public class SysLoginController {
                             System.out.println("获取user失败");
                         }
                     }
-
-
                 } catch (JSONException e) {
                     System.out.println("获取WebAccessToken失败");
                 }

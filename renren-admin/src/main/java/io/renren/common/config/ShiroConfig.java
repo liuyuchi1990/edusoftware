@@ -16,6 +16,7 @@
 
 package io.renren.common.config;
 
+import io.renren.common.annotation.KickoutSessionControlFilter;
 import io.renren.modules.sys.shiro.RedisShiroSessionDAO;
 import io.renren.modules.sys.shiro.UserRealm;
 import org.apache.shiro.mgt.SecurityManager;
@@ -25,13 +26,18 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.servlet.Filter;
 
 /**
  * Shiro的配置文件
@@ -41,11 +47,25 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfig {
+    @Value("${spring.redis.port}")
+    String redisPort;
 
+    @Value("${spring.redis.host}")
+    String redisHost;
+
+    @Value("${spring.redis.password}")
+    String redisPassword;
+
+    @Value("${renren.redis.open}")
+    boolean redisOpen;
+
+    @Value("${renren.shiro.redis}")
+    boolean shiroRedis;
+
+    @Autowired
+    RedisShiroSessionDAO redisShiroSessionDAO;
     @Bean("sessionManager")
-    public SessionManager sessionManager(RedisShiroSessionDAO redisShiroSessionDAO,
-                                         @Value("${renren.redis.open}") boolean redisOpen,
-                                         @Value("${renren.shiro.redis}") boolean shiroRedis){
+    public SessionManager sessionManager(){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         //设置session过期时间为1小时(单位：毫秒)，默认为30分钟
         sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
@@ -75,7 +95,10 @@ public class ShiroConfig {
         shiroFilter.setSecurityManager(securityManager);
         shiroFilter.setLoginUrl("/login.html");
         shiroFilter.setUnauthorizedUrl("/");
-
+        Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
+        //限制同一帐号同时在线的个数。
+        filtersMap.put("kickout", kickoutSessionControlFilter());
+        shiroFilter.setFilters(filtersMap);
         Map<String, String> filterMap = new LinkedHashMap<>();
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/v2/api-docs", "anon");
@@ -89,13 +112,69 @@ public class ShiroConfig {
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/**", "anon");
+        filterMap.put("/**", "authc,kickout");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
     }
 
+    /**
+     * cacheManager 缓存 redis实现
+     * 使用的是shiro-redis开源插件
+     *
+     * @return
+     */
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
+
+    /**
+     * 配置shiro redisManager
+     * 使用的是shiro-redis开源插件
+     *
+     * @return
+     */
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost(redisHost);
+        redisManager.setPort(Integer.parseInt(redisPort));
+        redisManager.setExpire(1800);// 配置缓存过期时间
+        redisManager.setTimeout(0);
+        redisManager.setPassword(redisPassword);
+        return redisManager;
+    }
+
+    /**
+     * 限制同一账号登录同时登录人数控制
+     *
+     * @return
+     */
+    @Bean("kickoutSessionControlFilter")
+    public KickoutSessionControlFilter kickoutSessionControlFilter() {
+        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
+        kickoutSessionControlFilter.setCacheManager(cacheManager());
+        kickoutSessionControlFilter.setSessionManager(sessionManager());
+        kickoutSessionControlFilter.setKickoutAfter(false);
+        kickoutSessionControlFilter.setMaxSession(1);
+        kickoutSessionControlFilter.setKickoutUrl("/login.html");
+        return kickoutSessionControlFilter;
+    }
+
+    /**
+     * RedisSessionDAO shiro sessionDao层的实现 通过redis
+     * 使用的是shiro-redis开源插件
+     */
+    @Bean
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }
+
     @Bean("lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+    public static  LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 

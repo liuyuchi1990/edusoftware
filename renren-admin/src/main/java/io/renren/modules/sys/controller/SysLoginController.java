@@ -176,7 +176,7 @@ public class SysLoginController {
         }
     }
 
-    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    @RequestMapping(value = "/sys/signIn", method = RequestMethod.POST)
     @Transactional(rollbackFor = {Exception.class}, readOnly = false)
     public ReturnResult signIn(@ApiParam @RequestBody SysUserEntity user) {
         Map<String, Object> map = new HashMap<>();
@@ -258,7 +258,7 @@ public class SysLoginController {
         return result;
     }
 
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/sys/changePassword", method = RequestMethod.POST)
     @Transactional(rollbackFor = {Exception.class}, readOnly = false)
     public ReturnResult changePassword(@ApiParam @RequestBody SysUserEntity user) {
         Map<String, Object> map = new HashMap<>();
@@ -289,7 +289,7 @@ public class SysLoginController {
         return result;
     }
 
-    @RequestMapping(value = "/sendMessage", method = RequestMethod.POST)
+    @RequestMapping(value = "/sys/sendMessage", method = RequestMethod.POST)
     @ResponseBody
     public ReturnResult sendMessage(@RequestBody SysUserEntity user) throws HTTPException {
         //生成文字验证码

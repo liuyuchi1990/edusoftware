@@ -54,6 +54,10 @@ city,
 sex,
 unionid,
 app_open_id,
+company_industry,
+company_name,
+company_Province,
+company_city,
 create_time
 )
 VALUES
@@ -75,9 +79,40 @@ VALUES
 #{sex,jdbcType=VARCHAR},
 #{unionid,jdbcType=VARCHAR},
 #{appOpenId,jdbcType=VARCHAR},
+#{companyIndustry,jdbcType=VARCHAR},
+#{companyName,jdbcType=VARCHAR},
+#{companyProvince,jdbcType=VARCHAR},
+#{companyCity,jdbcType=VARCHAR},
 		SYSDATE()
 		)
 	</insert>
+
+	<update id="updateUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
+		update tb_activity
+		<set>
+			<if test="nickname!= null">
+				nickname =  #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="headimgurl!= null">
+				headimgurl =  #{headimgurl,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile!= null">
+				mobile =  #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="status!= null">
+				status =  #{status,jdbcType=INTEGER},
+			</if>
+			<if test="password!= null">
+				password =  #{password,jdbcType=INTEGER},
+			</if>
+			<if test="username!= null">
+				username =  #{username,jdbcType=VARCHAR},
+			</if>
+			update_time =  SYSDATE()
+		</set>
+		where user_id = #{userId,jdbcType=VARCHAR}
+
+	</update>
 
 
 	<select id="queryForUsers" resultType="io.renren.modules.sys.entity.SysUserEntity">

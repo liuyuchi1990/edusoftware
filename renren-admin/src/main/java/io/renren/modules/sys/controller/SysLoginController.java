@@ -182,11 +182,18 @@ public class SysLoginController {
         Map<String, Object> map = new HashMap<>();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> ret = new HashedMap();
-        System.out.println("-----------------------------收到请求，请求数据为：" + user.getSalt() + "-----------------------" + user.getSalt());
+        //验证验证码是否匹配
+        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+        if(!user.getCaptcha().equalsIgnoreCase(kaptcha)){
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("验证码不正确");
+            return result;
+        }
+        System.out.println("-----------------------------收到请求，请求数据为：" + user.getCode() + "-----------------------" + user.getCode());
 
         //通过code换取网页授权web_access_token
-        if (user.getDeptId() != null || !(user.getDeptId().equals(""))) {
-            String CODE = user.getSalt();
+        if (user.getCode() != null || !(user.getCode().equals(""))) {
+            String CODE = user.getCode();
             String WebAccessToken = "";
             String openId = "";
             //替换字符串，获得请求URL
@@ -217,6 +224,7 @@ public class SysLoginController {
                             if(utmp==null){
                                 user.setUsername(userMessageJsonObject.getString("nickname"));
                                 user.setNickname(userMessageJsonObject.getString("nickname"));
+                                user.setPassword(new Md5Hash(user.getPassword(), "2").toString());
                                 //用户性别
                                 user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
                                 user.setSex(Integer.parseInt(userMessageJsonObject.getString("sex")));
@@ -241,6 +249,37 @@ public class SysLoginController {
                     System.out.println("获取WebAccessToken失败");
                 }
             }
+        }
+        ret.put("user",user);
+        map.put("data",ret);
+        map.put("status", "success");
+        map.put("msg", "send ok");
+        result.setResult(map);
+        return result;
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    @Transactional(rollbackFor = {Exception.class}, readOnly = false)
+    public ReturnResult changePassword(@ApiParam @RequestBody SysUserEntity user) {
+        Map<String, Object> map = new HashMap<>();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> ret = new HashedMap();
+        //验证验证码是否匹配
+        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+        if(!user.getCaptcha().equalsIgnoreCase(kaptcha)){
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("验证码不正确");
+            return result;
+        }
+        System.out.println("-----------------------------收到请求，请求数据为：" + user.getCode() + "-----------------------" + user.getCode());
+
+        SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
+        if(userTemp!=null){
+            userTemp.setPassword(new Md5Hash(user.getPassword(), "2").toString());
+            sysUserService.updateUser(userTemp);
+        }else{
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("用户不存在");
         }
         ret.put("user",user);
         map.put("data",ret);

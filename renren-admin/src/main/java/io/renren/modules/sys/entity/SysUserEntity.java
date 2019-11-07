@@ -110,6 +110,8 @@ public class SysUserEntity implements Serializable {
 	private String companyName;// 机构名称
 	private String companyProvince;// 公司所在省份
 	private String companyCity;// 公司所在城市
+	private String captcha;// 验证码
+	private String code;// 微信公众号网页授权code码
 
 	/**
 	 * 部门ID
@@ -377,5 +379,21 @@ public class SysUserEntity implements Serializable {
 
 	public void setCompanyCity(String companyCity) {
 		this.companyCity = companyCity;
+	}
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

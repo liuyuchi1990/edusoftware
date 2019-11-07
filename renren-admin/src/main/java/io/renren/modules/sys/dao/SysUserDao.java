@@ -52,6 +52,8 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	void insertUser (SysUserEntity user);
 
+	void updateUser(SysUserEntity user);
+
 	List<SysUserEntity>  queryForUsers(String[] ids);
 
 	List<SysUserEntity>  queryAllUsers();

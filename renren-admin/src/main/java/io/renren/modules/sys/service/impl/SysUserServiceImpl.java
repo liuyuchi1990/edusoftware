@@ -128,7 +128,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void updateUser(SysUserEntity user) {
-		this.updateById(user);
+		baseMapper.updateUser(user);
 	}
 
 

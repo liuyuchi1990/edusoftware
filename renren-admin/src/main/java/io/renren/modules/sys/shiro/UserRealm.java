@@ -100,7 +100,7 @@ public class UserRealm extends AuthorizingRealm {
 		//查询用户信息
 		SysUserEntity user = new SysUserEntity();
 		user.setUsername(token.getUsername());
-		user = sysUserDao.selectOne(user);
+		user = sysUserDao.queryByMobile(user.getUsername());
 
 		//账号不存在
 		if(user == null) {

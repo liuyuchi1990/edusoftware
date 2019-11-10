@@ -104,14 +104,18 @@ public class ShiroConfig {
         filterMap.put("/v2/api-docs", "anon");
         filterMap.put("/swagger-ui.html", "anon");
         filterMap.put("/webjars/**", "anon");
+        filterMap.put("/api/**", "anon");
+        filterMap.put("/MP_verify_8SZ2gMbHWG8TR8ya.txt", "anon");
         filterMap.put("/swagger-resources/**", "anon");
 
         filterMap.put("/statics/**", "anon");
         filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
+        filterMap.put("/sys/signIn", "anon");
+        filterMap.put("/sys/changePassword", "anon");
+        filterMap.put("/sys/sendMessage", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");
-        filterMap.put("/**", "anon");
         filterMap.put("/**", "authc,kickout");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 

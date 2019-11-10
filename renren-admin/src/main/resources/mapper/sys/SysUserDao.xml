@@ -35,6 +35,10 @@
 		select * from sys_user where mobile = #{mobile}
 	</select>
 
+	<select id="queryByUserName" parameterType="io.renren.modules.sys.entity.SysUserEntity" resultType="io.renren.modules.sys.entity.SysUserEntity">
+		select * from sys_user where username = #{username}
+	</select>
+
 	<insert id="insertUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
 		INSERT INTO sys_user (
 user_id,

@@ -124,6 +124,15 @@ VALUES
 			<if test="prizeLeft!= null">
 				prize_left =  #{prizeLeft,jdbcType=INTEGER},
 			</if>
+			<if test="viewNum!= null">
+				view_num =  view_num + 1,
+			</if>
+			<if test="shareNum!= null">
+				share_num =  share_num + 1,
+			</if>
+			<if test="likeNum!= null">
+				like_num =  like_num + 1,
+			</if>
 			<if test="endTime!= null">
 				end_time =  #{endTime,jdbcType=VARCHAR},
 			</if>

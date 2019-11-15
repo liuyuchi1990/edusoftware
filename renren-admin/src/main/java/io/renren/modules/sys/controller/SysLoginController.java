@@ -57,21 +57,21 @@ import java.util.UUID;
 
 /**
  * 登录相关
- * 
+ *
  * @author chenshun
  * @email sunlightcs@gmail.com
  * @date 2016年11月10日 下午1:15:31
  */
 @Controller
 public class SysLoginController {
-	@Autowired
-	private Producer producer;
+    @Autowired
+    private Producer producer;
 
     @Autowired
     SysUserService sysUserService;
 
-	@RequestMapping("captcha.jpg")
-	public void captcha(HttpServletResponse response)throws IOException {
+    @RequestMapping("captcha.jpg")
+    public void captcha(HttpServletResponse response) throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
 
@@ -81,51 +81,55 @@ public class SysLoginController {
         BufferedImage image = producer.createImage(text);
         //保存到shiro session
         ShiroUtils.setSessionAttribute(Constants.KAPTCHA_SESSION_KEY, text);
-        
+
         ServletOutputStream out = response.getOutputStream();
         ImageIO.write(image, "jpg", out);
-	}
-	
-	/**
-	 * 登录
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public R login(String username, String password, String captcha) {
-		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-//		if(!captcha.equalsIgnoreCase(kaptcha)){
-//			return R.error("验证码不正确");
-//		}
-		
-		try{
-			Subject subject = ShiroUtils.getSubject();
-			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-			subject.login(token);
-		}catch (UnknownAccountException e) {
-			return R.error(e.getMessage());
-		}catch (IncorrectCredentialsException e) {
-			return R.error("账号或密码不正确");
-		}catch (LockedAccountException e) {
-			return R.error("账号已被锁定,请联系管理员");
-		}catch (AuthenticationException e) {
-			return R.error("账户验证失败");
-		}
-	    
-		return R.ok();
-	}
-	
-	/**
-	 * 退出
-	 */
-	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public String logout() {
-		ShiroUtils.logout();
-		return "redirect:login.html";
-	}
+    }
 
-	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-	@Transactional(rollbackFor = {Exception.class}, readOnly = false)
-	public ReturnResult doLogin(@ApiParam @RequestBody SysUserEntity user) {
+    /**
+     * 登录
+     */
+    @ResponseBody
+    @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
+    public ReturnResult login(@ApiParam @RequestBody SysUserEntity user) {
+        Map<String, Object> map = new HashMap<>();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        try {
+            Subject subject = ShiroUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
+            subject.login(token);
+        } catch (UnknownAccountException e) {
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            return result;
+        } catch (IncorrectCredentialsException e) {
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("账号或密码不正确");
+            return result;
+        } catch (LockedAccountException e) {
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("账号已被锁定,请联系管理员");
+            return result;
+        } catch (AuthenticationException e) {
+            result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+            result.setMsg("账户验证失败");
+            return result;
+        }
+
+        return result;
+    }
+
+    /**
+     * 退出
+     */
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public String logout() {
+        ShiroUtils.logout();
+        return "redirect:login.html";
+    }
+
+    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
+    @Transactional(rollbackFor = {Exception.class}, readOnly = false)
+    public ReturnResult doLogin(@ApiParam @RequestBody SysUserEntity user) {
         String passwordmd5 = new Md5Hash("xyj1234567", "2").toString();
         user.setPassword(passwordmd5);
         user.setUsername(user.getUsername());
@@ -184,7 +188,7 @@ public class SysLoginController {
         Map<String, Object> ret = new HashedMap();
         //验证验证码是否匹配
         String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-        if(!user.getCaptcha().equalsIgnoreCase(kaptcha)){
+        if (!user.getCaptcha().equalsIgnoreCase(kaptcha)) {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             result.setMsg("验证码不正确");
             return result;
@@ -203,7 +207,7 @@ public class SysLoginController {
             JSONObject jsonObject = WxUtil.httpRequest(token, "GET", null);
             System.out.println("jsonObject------" + jsonObject);
             SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
-            if (userTemp==null && null != jsonObject) {
+            if (userTemp == null && null != jsonObject) {
                 try {
                     WebAccessToken = jsonObject.getString("access_token");
                     openId = jsonObject.getString("openid");
@@ -221,7 +225,7 @@ public class SysLoginController {
                             //用户昵称
                             SysUserEntity utmp = sysUserService.queryByOpenId(userMessageJsonObject.getString("openid"));
                             //获取成果，存入数据库
-                            if(utmp==null){
+                            if (utmp == null) {
                                 user.setUsername(userMessageJsonObject.getString("nickname"));
                                 user.setNickname(userMessageJsonObject.getString("nickname"));
                                 user.setPassword(new Md5Hash(user.getPassword(), "2").toString());
@@ -237,7 +241,7 @@ public class SysLoginController {
                                 user.setOpenId(userMessageJsonObject.getString("openid"));
                                 user.setUnionid(userMessageJsonObject.getString("unionid"));
                                 sysUserService.insertUser(user);
-                            }else{
+                            } else {
                                 user = utmp;
                             }
 
@@ -254,8 +258,8 @@ public class SysLoginController {
             UsernamePasswordToken loginToken = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(loginToken);
         }
-        ret.put("user",user);
-        map.put("data",ret);
+        ret.put("user", user);
+        map.put("data", ret);
         map.put("status", "success");
         map.put("msg", "send ok");
         result.setResult(map);
@@ -270,7 +274,7 @@ public class SysLoginController {
         Map<String, Object> ret = new HashedMap();
         //验证验证码是否匹配
         String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-        if(!user.getCaptcha().equalsIgnoreCase(kaptcha)){
+        if (!user.getCaptcha().equalsIgnoreCase(kaptcha)) {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             result.setMsg("验证码不正确");
             return result;
@@ -278,15 +282,15 @@ public class SysLoginController {
         System.out.println("-----------------------------收到请求，请求数据为：" + user.getCode() + "-----------------------" + user.getCode());
 
         SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
-        if(userTemp!=null){
+        if (userTemp != null) {
             userTemp.setPassword(new Md5Hash(user.getPassword(), "2").toString());
             sysUserService.updateUser(userTemp);
-        }else{
+        } else {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             result.setMsg("用户不存在");
         }
-        ret.put("user",user);
-        map.put("data",ret);
+        ret.put("user", user);
+        map.put("data", ret);
         map.put("status", "success");
         map.put("msg", "send ok");
         result.setResult(map);
@@ -301,9 +305,9 @@ public class SysLoginController {
         Map<String, Object> map = new HashedMap();
         String text = producer.createText();
         ShiroUtils.setSessionAttribute(Constants.KAPTCHA_SESSION_KEY, text);
-	    String[] param = {text,"2"};
+        String[] param = {text, "2"};
         String[] phoneNumbers = {user.getMobile()};
-        MessageUtils.sendMessage(true,param,phoneNumbers);
+        MessageUtils.sendMessage(true, param, phoneNumbers);
         map.put("status", "success");
         map.put("msg", "send ok");
         result.setResult(map);

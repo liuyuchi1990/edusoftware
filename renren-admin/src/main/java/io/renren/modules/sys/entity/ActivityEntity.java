@@ -24,6 +24,10 @@ public class ActivityEntity {
     private String createUser;
     private Date createTime;
     private Date updateTime;
+
+    private int likeNum;
+    private int shareNum;
+    private int viewNum;
     /**
      *
      */
@@ -127,5 +131,29 @@ public class ActivityEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public int getShareNum() {
+        return shareNum;
+    }
+
+    public void setShareNum(int shareNum) {
+        this.shareNum = shareNum;
+    }
+
+    public int getViewNum() {
+        return viewNum;
+    }
+
+    public void setViewNum(int viewNum) {
+        this.viewNum = viewNum;
     }
 }

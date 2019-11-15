@@ -124,15 +124,6 @@ VALUES
 			<if test="prizeLeft!= null">
 				prize_left =  #{prizeLeft,jdbcType=INTEGER},
 			</if>
-			<if test="viewNum!= null">
-				view_num =  view_num + 1,
-			</if>
-			<if test="shareNum!= null">
-				share_num =  share_num + 1,
-			</if>
-			<if test="likeNum!= null">
-				like_num =  like_num + 1,
-			</if>
 			<if test="endTime!= null">
 				end_time =  #{endTime,jdbcType=VARCHAR},
 			</if>
@@ -164,6 +155,14 @@ VALUES
 		limit #{pageNum},#{pageSize}
 	</select>
 
+	<select id="queryActivity" parameterType="java.util.HashMap"
+			resultType="io.renren.modules.sys.entity.ActivityEntity">
+		select t.activity_name,t.activity_type,t.start_time,t.end_time,t.thumbnail,if(str_to_date(t.end_time, '%Y-%m-%d')>NOW(),'进行中','已结束') activity_state
+		from tb_activity t
+		order by t.update_time desc
+		limit #{pageNum},#{pageSize}
+	</select>
+
     <update id="rollback" parameterType="java.lang.String">
         update tb_distribution
         <set>
@@ -191,4 +190,11 @@ VALUES
 		</set>
 		where id = #{id,jdbcType=VARCHAR}
 	</update>
+
+	<delete id="deleteActivity"  parameterType = "java.util.List">
+	delete from tb_activity  where  id in
+	<foreach collection="list"  item="item" open="(" separator="," close=")"  >
+            #{item}
+	</foreach>
+	</delete>
 </mapper>

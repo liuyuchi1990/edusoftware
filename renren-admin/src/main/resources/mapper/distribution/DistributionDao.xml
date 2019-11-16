@@ -79,7 +79,7 @@ VALUES
 	)
     </insert>
 
-	<insert id="insertActivity" parameterType="io.renren.modules.sys.entity.ActivityEntity">
+	<insert id="insertActivity" parameterType="io.renren.modules.activity.entity.ActivityEntity">
 		INSERT INTO tb_activity(id,
  activity_name,
  activity_type,
@@ -106,7 +106,7 @@ VALUES
 	</insert>
 
 
-	<update id="updateActivity" parameterType="io.renren.modules.sys.entity.ActivityEntity">
+	<update id="updateActivity" parameterType="io.renren.modules.activity.entity.ActivityEntity">
 		update tb_activity
 		<set>
 			<if test="activityName!= null">
@@ -156,7 +156,7 @@ VALUES
 	</select>
 
 	<select id="queryActivity" parameterType="java.util.HashMap"
-			resultType="io.renren.modules.sys.entity.ActivityEntity">
+			resultType="io.renren.modules.activity.entity.ActivityEntity">
 		select t.activity_name,t.activity_type,t.start_time,t.end_time,t.thumbnail,if(str_to_date(t.end_time, '%Y-%m-%d')>NOW(),'进行中','已结束') activity_state
 		from tb_activity t
 		order by t.update_time desc

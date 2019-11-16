@@ -8,7 +8,7 @@ import io.renren.modules.distribution.service.DistributionService;
 import io.renren.modules.gather.entity.GatherEntity;
 import io.renren.modules.groupon.entity.GrouponEntity;
 import io.renren.modules.lottery.entity.LotteryEntity;
-import io.renren.modules.sys.entity.ActivityEntity;
+import io.renren.modules.activity.entity.ActivityEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

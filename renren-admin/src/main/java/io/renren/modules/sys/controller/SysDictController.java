@@ -17,16 +17,19 @@
 package io.renren.modules.sys.controller;
 
 import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.sys.entity.ReturnCodeEnum;
+import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysDictEntity;
 import io.renren.modules.sys.service.SysDictService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据字典
@@ -35,7 +38,7 @@ import java.util.Map;
  * @since 3.1.0 2018-01-27
  */
 @RestController
-@RequestMapping("sys/dict")
+@RequestMapping("api/dict")
 public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
@@ -44,7 +47,6 @@ public class SysDictController {
      * 列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:dict:list")
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = sysDictService.queryPage(params);
 
@@ -53,10 +55,23 @@ public class SysDictController {
 
 
     /**
+     * 获取字典 根据type
+     */
+    @RequestMapping(value = "/queryByType", method = RequestMethod.POST)
+    @ResponseBody
+    public ReturnResult queryByType(@RequestBody SysDictEntity sysDictEntity){
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        List<SysDictEntity> dict = sysDictService.queryByType(sysDictEntity);
+        map.put("data",dict);
+        result.setResult(map);
+        return result;
+    }
+
+    /**
      * 信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("sys:dict:info")
     public R info(@PathVariable("id") Long id){
         SysDictEntity dict = sysDictService.selectById(id);
 
@@ -67,35 +82,24 @@ public class SysDictController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("sys:dict:save")
-    public R save(@RequestBody SysDictEntity dict){
-        //校验类型
-        ValidatorUtils.validateEntity(dict);
+    public ReturnResult save(@RequestBody SysDictEntity dict){
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        if ("".equals(dict.getId())) {
+            dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+            sysDictService.insert(dict);
+        } else {
+            sysDictService.updateById(dict);
+        }
+        map.put("dict", dict);
 
-        sysDictService.insert(dict);
-
-        return R.ok();
-    }
-
-    /**
-     * 修改
-     */
-    @RequestMapping("/update")
-    @RequiresPermissions("sys:dict:update")
-    public R update(@RequestBody SysDictEntity dict){
-        //校验类型
-        ValidatorUtils.validateEntity(dict);
-
-        sysDictService.updateById(dict);
-
-        return R.ok();
+        return result;
     }
 
     /**
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:dict:delete")
     public R delete(@RequestBody Long[] ids){
         sysDictService.deleteBatchIds(Arrays.asList(ids));
 

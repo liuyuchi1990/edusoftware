@@ -10,11 +10,16 @@ import java.util.*;
 
 import io.renren.common.utils.*;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.activity.entity.ActivityEntity;
 import io.renren.modules.distribution.entity.Distribution;
 import io.renren.modules.distribution.service.DistributionService;
 import io.renren.modules.order.model.Order;
 import io.renren.modules.order.service.OrderService;
-import io.renren.modules.sys.entity.*;
+
+import io.renren.modules.sys.entity.GoodActivity;
+import io.renren.modules.sys.entity.ReturnCodeEnum;
+import io.renren.modules.sys.entity.ReturnResult;
+import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -82,7 +87,6 @@ public class DistributionController {
             ga.setName(map.getActivityName());
             ga.setEnd_date(map.getEndTime());
             ga.setHave_pay_num("1");
-            ga.setActivityState(map.getActivityState());
             goodActitiyList.add(ga);
         }
         mp.put("data", goodActitiyList);

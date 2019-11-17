@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.activity.dao.ActivityDao">
+
+    <select id="queryAllTemplate"
+            resultType="io.renren.modules.activity.entity.ActivityEntity">
+        select t.* from tb_activity t
+        left join sys_user u on t.create_user = u.user_id
+        where u.mobile in ('18652043832','17512528181','15252778892')
+        <if test="list!= null">
+        <foreach collection="list"  item="item" open="and t.id in (" separator="," close=")"  >
+        #{item}
+        </foreach>
+        </if>
+        limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+    </select>
+</mapper>

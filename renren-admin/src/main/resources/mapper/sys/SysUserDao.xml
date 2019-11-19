@@ -58,6 +58,7 @@ city,
 sex,
 unionid,
 app_open_id,
+end_time,
 company_industry,
 company_name,
 company_Province,
@@ -83,6 +84,7 @@ VALUES
 #{sex,jdbcType=VARCHAR},
 #{unionid,jdbcType=VARCHAR},
 #{appOpenId,jdbcType=VARCHAR},
+#{endTime,jdbcType=VARCHAR},
 #{companyIndustry,jdbcType=VARCHAR},
 #{companyName,jdbcType=VARCHAR},
 #{companyProvince,jdbcType=VARCHAR},
@@ -92,7 +94,7 @@ VALUES
 	</insert>
 
 	<update id="updateUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
-		update tb_activity
+		update sys_user
 		<set>
 			<if test="nickname!= null">
 				nickname =  #{nickname,jdbcType=VARCHAR},

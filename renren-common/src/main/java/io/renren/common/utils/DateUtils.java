@@ -114,6 +114,21 @@ public class DateUtils {
         return dateTime.plusMinutes(minutes).toDate();
     }
 
+
+
+    /**
+     * 对日期的【小时】进行加/减
+     *
+     * @param date 日期
+     * @param hours 小时数，负数为减
+     * @return 加/减几小时后的日期
+     */
+    public static String nextDay() {
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        DateTime dateTime = new DateTime(date);
+        return df.format(dateTime.plusHours(24));
+    }
     /**
      * 对日期的【小时】进行加/减
      *

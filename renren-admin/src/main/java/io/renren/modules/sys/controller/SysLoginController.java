@@ -24,6 +24,7 @@ import com.github.qcloudsms.httpclient.HTTPException;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.renren.common.config.MessageUtils;
+import io.renren.common.utils.DateUtils;
 import io.renren.common.utils.R;
 import io.renren.common.utils.UserInfoUtil;
 import io.renren.common.utils.WxUtil;
@@ -51,6 +52,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -98,6 +100,9 @@ public class SysLoginController {
             Subject subject = ShiroUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             subject.login(token);
+            SysUserEntity us  = sysUserService.queryByMobile(user.getUsername());
+            map.put("user",us);
+            result.setResult(map);
         } catch (UnknownAccountException e) {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             return result;
@@ -121,10 +126,12 @@ public class SysLoginController {
     /**
      * 退出
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout() {
+    @RequestMapping(value = "sys/logout", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnResult logout() {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         ShiroUtils.logout();
-        return "redirect:login.html";
+        return result;
     }
 
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
@@ -240,6 +247,7 @@ public class SysLoginController {
                                 //用户唯一标识
                                 user.setOpenId(userMessageJsonObject.getString("openid"));
                                 user.setUnionid(userMessageJsonObject.getString("unionid"));
+                                user.setEndTime(DateUtils.nextDay());
                                 sysUserService.insertUser(user);
                             } else {
                                 user = utmp;

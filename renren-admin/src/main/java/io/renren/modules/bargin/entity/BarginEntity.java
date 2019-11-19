@@ -29,55 +29,55 @@ public class BarginEntity implements Serializable {
 
 	private Integer barginNum;
 	/**
-	 * 
+	 * 活动名称 顶部
 	 */
 	private String activityName;
 	/**
-	 * 
+	 * 开始时间
 	 */
 	private String startTime;
 	/**
-	 * 
+	 * 结束时间
 	 */
 	private String endTime;
 	/**
-	 * 
+	 * 机构图片
 	 */
 	private String thumbnail;
 	/**
-	 * 
+	 * 原价
 	 */
 	private BigDecimal originalPrice;
 	/**
-	 * 
+	 * 底价
 	 */
 	private BigDecimal floorPrice;
 	/**
-	 * 
+	 * 最少砍价
 	 */
 	private BigDecimal minReduction;
 	/**
-	 * 
+	 * 最多砍价
 	 */
 	private BigDecimal maxReduction;
 	/**
-	 * 
+	 * 砍价间隔时间
 	 */
 	private Integer restrictTime;
 	/**
-	 * 
+	 * 奖品描述
 	 */
 	private String prizeDescription;
 	/**
-	 * 
+	 * 活动规则
 	 */
 	private String activityRule;
 	/**
-	 * 
+	 * 领奖信息
 	 */
 	private String prizeInfo;
 	/**
-	 * 
+	 * 机构介绍
 	 */
 	private String companyDescription;
 	/**
@@ -85,7 +85,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private String discount;
 	/**
-	 * 
+	 * 二维码
 	 */
 	private String qrImg;
 	/**
@@ -97,7 +97,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private Date updateTime;
 	/**
-	 * 
+	 * 顶部图片
 	 */
 	private String headImage;
 	/**
@@ -105,7 +105,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private String longitude;
 	/**
-	 * 
+	 * 主办方电话
 	 */
 	private String phone;
 	/**
@@ -129,7 +129,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private Integer prizeLeft;
 	/**
-	 * 
+	 * 奖品数量
 	 */
 	private Integer prizeNum;
 

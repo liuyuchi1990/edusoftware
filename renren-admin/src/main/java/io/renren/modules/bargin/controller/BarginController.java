@@ -82,11 +82,16 @@ public class BarginController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") String id) {
-        BarginEntity bargin = barginService.selectById(id);
-        List<Map<String, Object>> orders = orderService.queryByActivtyId(id);
-        return R.ok().put("bargin", bargin).put("order", orders);
+    @RequestMapping(value = "/info", method = RequestMethod.POST)
+    public ReturnResult info(@RequestBody BarginEntity bargin) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        BarginEntity barginEntity = barginService.selectById(bargin.getId());
+        List<Map<String, Object>> orders = orderService.queryByActivtyId(bargin.getId());
+        map.put("bargin",barginEntity);
+        map.put("order",orders);
+        result.setResult(map);
+        return result;
     }
 
     /**
@@ -94,7 +99,9 @@ public class BarginController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @Transactional
-    public R save(@RequestBody BarginEntity bargin) throws Exception {
+    public ReturnResult save(@RequestBody BarginEntity bargin) throws Exception {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
         if ("".equals(bargin.getId()) || bargin.getId() == null) {
             bargin.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             bargin.setQrImg(httpbarginurl + bargin.getId() + ".jpg");
@@ -109,7 +116,9 @@ public class BarginController {
             barginService.updateById(bargin);//全部更新
             distributionService.updateActivity(bargin);
         }
-        return R.ok().put("bargin", bargin);
+        map.put("bargin",bargin);
+        result.setResult(map);
+        return result;
     }
 
     /**
@@ -118,16 +127,20 @@ public class BarginController {
     @RequestMapping(value = "/copy", method = RequestMethod.POST)
     //@RequiresPermissions("sys:distribution:save")
     @ResponseBody
-    public R copy(@RequestBody BarginEntity bargin) throws Exception {
-        BarginEntity ga = barginService.selectById(bargin.getId());
-        ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-        ga.setQrImg(httpbarginurl + ga.getId() + ".jpg");
-        ga.setCreateTime(new Date());
-        barginService.insertAllColumn(ga);
-        distributionService.insertActivity(ga);
-        String text = qrBarginUrl.replace("id=", "id=" + ga.getId());
-        QRCodeUtils.encode(text, null, qrBarginImgUrl, ga.getId(), true);
-        return R.ok();
+    public ReturnResult copy(@RequestBody BarginEntity bargin) throws Exception {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        BarginEntity barginEntity = barginService.selectById(bargin.getId());
+        barginEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        barginEntity.setQrImg(httpbarginurl + barginEntity.getId() + ".jpg");
+        barginEntity.setCreateTime(new Date());
+        barginService.insertAllColumn(barginEntity);
+        distributionService.insertActivity(barginEntity);
+        String text = qrBarginUrl.replace("id=", "id=" + barginEntity.getId());
+        QRCodeUtils.encode(text, null, qrBarginImgUrl, barginEntity.getId(), true);
+        map.put("bargin",barginEntity);
+        result.setResult(map);
+        return result;
     }
 
     @RequestMapping(value = "/bargin", method = RequestMethod.POST)

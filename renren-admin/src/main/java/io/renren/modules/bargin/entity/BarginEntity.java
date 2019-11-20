@@ -27,6 +27,9 @@ public class BarginEntity implements Serializable {
 
 	private String address;
 
+	/**
+	 * 砍价次数
+	 */
 	private Integer barginNum;
 	/**
 	 * 活动名称 顶部
@@ -101,7 +104,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private String headImage;
 	/**
-	 * 
+	 * 经度
 	 */
 	private String longitude;
 	/**
@@ -109,23 +112,49 @@ public class BarginEntity implements Serializable {
 	 */
 	private String phone;
 	/**
-	 * 
+	 * 纬度
 	 */
 	private String latitude;
 	/**
-	 * 
+	 * 底部图片
 	 */
 	private String footImage;
 	/**
-	 * 
+	 * 背景图片
 	 */
 	private String bgImage;
 	/**
-	 * 
+	 * 奖品图片
 	 */
 	private String gift;
+
 	/**
-	 * 
+	 * 数据采集问题1
+	 */
+	private String question1;
+
+	/**
+	 * 数据采集问题2
+	 */
+	private String question2;
+
+	/**
+	 * 数据采集问题5
+	 */
+	private String question5;
+
+	/**
+	 * 数据采集问题3
+	 */
+	private String question3;
+
+	/**
+	 * 数据采集问题4
+	 */
+	private String question4;
+
+	/**
+	 *
 	 */
 	private Integer prizeLeft;
 	/**
@@ -472,5 +501,45 @@ public class BarginEntity implements Serializable {
 
 	public void setBarginNum(Integer barginNum) {
 		this.barginNum = barginNum;
+	}
+
+	public String getQuestion1() {
+		return question1;
+	}
+
+	public void setQuestion1(String question1) {
+		this.question1 = question1;
+	}
+
+	public String getQuestion2() {
+		return question2;
+	}
+
+	public void setQuestion2(String question2) {
+		this.question2 = question2;
+	}
+
+	public String getQuestion5() {
+		return question5;
+	}
+
+	public void setQuestion5(String question5) {
+		this.question5 = question5;
+	}
+
+	public String getQuestion3() {
+		return question3;
+	}
+
+	public void setQuestion3(String question3) {
+		this.question3 = question3;
+	}
+
+	public String getQuestion4() {
+		return question4;
+	}
+
+	public void setQuestion4(String question4) {
+		this.question4 = question4;
 	}
 }

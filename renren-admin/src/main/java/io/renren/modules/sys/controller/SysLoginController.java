@@ -35,6 +35,7 @@ import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -294,7 +295,8 @@ public class SysLoginController {
 
         SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
         if (userTemp != null) {
-            userTemp.setPassword(new Md5Hash(user.getPassword(), "2").toString());
+            userTemp.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+            //userTemp.setPassword(new Md5Hash(user.getPassword(), "2").toString());
             sysUserService.updateUser(userTemp);
         } else {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());

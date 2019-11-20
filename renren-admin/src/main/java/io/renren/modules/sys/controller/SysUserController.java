@@ -24,10 +24,13 @@ import io.renren.common.validator.Assert;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.renren.modules.sys.entity.ReturnCodeEnum;
+import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,12 +140,16 @@ public class SysUserController extends AbstractController {
 	 * 修改用户
 	 */
 	@RequestMapping("/queryAllUsers")
-	public R queryAllUsers(@RequestBody SysUserEntity user){
+	@ResponseBody
+	public ReturnResult queryAllUsers(){
 		//ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+		Map<String, Object> map = new HashedMap();
 
 		List<SysUserEntity> users = sysUserService.queryAllUsers();
-
-		return R.ok().put("users",users);
+		map.put("user",users);
+		result.setResult(map);
+		return result;
 	}
 	
 	/**

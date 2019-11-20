@@ -315,7 +315,7 @@ public class SysLoginController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
-        if(userTemp==null){
+        if(userTemp==null||("pass".equals(user.getSalt()))){
             String text = producer.createText();
             ShiroUtils.setSessionAttribute(Constants.KAPTCHA_SESSION_KEY, text);
             String[] param = {text, "2"};

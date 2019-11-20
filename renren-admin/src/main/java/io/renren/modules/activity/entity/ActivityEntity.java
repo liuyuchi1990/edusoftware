@@ -27,6 +27,7 @@ public class ActivityEntity {
 
 	private int likeNum;
 	private int shareNum;
+	private int useNum;
 	private int viewNum;
 	/**
 	 *
@@ -155,5 +156,13 @@ public class ActivityEntity {
 
 	public void setViewNum(int viewNum) {
 		this.viewNum = viewNum;
+	}
+
+	public int getUseNum() {
+		return useNum;
+	}
+
+	public void setUseNum(int useNum) {
+		this.useNum = useNum;
 	}
 }

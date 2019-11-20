@@ -127,7 +127,7 @@ public class DateUtils {
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         DateTime dateTime = new DateTime(date);
-        return df.format(dateTime.plusHours(24));
+        return df.format(dateTime.plusHours(24).toDate());
     }
     /**
      * 对日期的【小时】进行加/减

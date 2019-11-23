@@ -20,15 +20,16 @@ public class ActivityEntity {
 	private String thumbnail;
 
 	private String activityState;
+	private String templateId;
 	private String activityType;
 	private String createUser;
 	private Date createTime;
 	private Date updateTime;
 
-	private int likeNum;
-	private int shareNum;
-	private int useNum;
-	private int viewNum;
+	private int likeNum;//点赞
+	private int shareNum;//分享
+	private int useNum;//使用
+	private int viewNum;//查看
 	/**
 	 *
 	 */
@@ -164,5 +165,13 @@ public class ActivityEntity {
 
 	public void setUseNum(int useNum) {
 		this.useNum = useNum;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 }

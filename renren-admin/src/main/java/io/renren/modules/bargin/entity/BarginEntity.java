@@ -27,6 +27,9 @@ public class BarginEntity implements Serializable {
 
 	private String address;
 
+	private String type;
+
+	private String templateId;
 	/**
 	 * 砍价次数
 	 */
@@ -84,7 +87,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private String companyDescription;
 	/**
-	 * 
+	 * 店内优惠
 	 */
 	private String discount;
 	/**
@@ -161,6 +164,11 @@ public class BarginEntity implements Serializable {
 	 * 奖品数量
 	 */
 	private Integer prizeNum;
+
+	private int likeNum;//点赞
+	private int shareNum;//分享
+	private int useNum;//使用
+	private int viewNum;//查看
 
 	/**
 	 * 设置：
@@ -541,5 +549,53 @@ public class BarginEntity implements Serializable {
 
 	public void setQuestion4(String question4) {
 		this.question4 = question4;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	public int getLikeNum() {
+		return likeNum;
+	}
+
+	public void setLikeNum(int likeNum) {
+		this.likeNum = likeNum;
+	}
+
+	public int getShareNum() {
+		return shareNum;
+	}
+
+	public void setShareNum(int shareNum) {
+		this.shareNum = shareNum;
+	}
+
+	public int getUseNum() {
+		return useNum;
+	}
+
+	public void setUseNum(int useNum) {
+		this.useNum = useNum;
+	}
+
+	public int getViewNum() {
+		return viewNum;
+	}
+
+	public void setViewNum(int viewNum) {
+		this.viewNum = viewNum;
 	}
 }

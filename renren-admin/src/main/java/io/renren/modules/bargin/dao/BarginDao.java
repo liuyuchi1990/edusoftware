@@ -18,6 +18,12 @@ public interface BarginDao extends BaseMapper<BarginEntity> {
 
     int insertBarginLog(Order order);
 
+    int insertBarginEntity(BarginEntity barginEntity);
+
+    int updateBarginEntity(BarginEntity barginEntity);
+
+    BarginEntity queryById(String id);
+
     int releaseBargin(String id);
 
     List<Map<String, Object>> queryBarginLog (String id);

@@ -19,6 +19,12 @@ public interface BarginService extends IService<BarginEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    BarginEntity queryById(String id);
+
+    int insertBarginEntity(BarginEntity barginEntity);
+
+    int updateBarginEntity(BarginEntity barginEntity);
+
     int insertBarginLog(Order order);
 
     int releaseBargin(String id);

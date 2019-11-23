@@ -37,6 +37,18 @@ public class BarginServiceImpl extends ServiceImpl<BarginDao, BarginEntity> impl
         return barginDao.insertBarginLog(order);
     }
 
+    public BarginEntity queryById(String id) {
+        return barginDao.queryById(id);
+    }
+
+    public int updateBarginEntity(BarginEntity barginEntity) {
+        return barginDao.updateBarginEntity(barginEntity);
+    }
+
+    public int insertBarginEntity(BarginEntity barginEntity) {
+        return barginDao.insertBarginEntity(barginEntity);
+    }
+
     public int releaseBargin(String id) {
         return barginDao.releaseBargin(id);
     }

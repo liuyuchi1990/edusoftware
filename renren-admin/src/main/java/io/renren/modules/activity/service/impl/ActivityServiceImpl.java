@@ -37,10 +37,26 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityDao, ActivityEntity
         return activityDao.queryList(id);
     }
 
-    public List<ActivityEntity> queryAllTemplate(Map<String, Object> params,List<String> list) {
+    public int updateActivityState(ActivityEntity activityEntity) {
+        return activityDao.updateActivityState(activityEntity);
+    }
+
+    public int updateLikeState(ActivityEntity activityEntity) {
+        return activityDao.updateLikeState(activityEntity);
+    }
+
+    public int insertLikeState(ActivityEntity activityEntity) {
+        return activityDao.insertLikeState(activityEntity);
+    }
+
+    public Map<String, Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity) {
+        return activityDao.queryLikeByUserIdAndActivityId(activityEntity);
+    }
+
+    public List<ActivityEntity> queryAllTemplate(Map<String, Object> params, List<String> list) {
         int pageNum = Integer.parseInt(params.get("pageNum").toString());
-        int  pageSize = Integer.parseInt(params.get("pageSize").toString());
-        return activityDao.queryAllTemplate(pageNum,pageSize,list);
+        int pageSize = Integer.parseInt(params.get("pageSize").toString());
+        return activityDao.queryAllTemplate(pageNum, pageSize, list);
     }
 
 }

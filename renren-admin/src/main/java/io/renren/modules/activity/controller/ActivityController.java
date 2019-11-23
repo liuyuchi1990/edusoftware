@@ -6,15 +6,9 @@ import io.renren.modules.sys.entity.ReturnCodeEnum;
 import io.renren.modules.sys.entity.ReturnResult;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -44,4 +38,27 @@ public class ActivityController {
         result.setResult(map);
         return result;
     }
+
+    /**
+     * 列表
+     */
+    @RequestMapping(value = "/updateActivityState", method = RequestMethod.POST)
+    public ReturnResult updateActivityState(@RequestBody ActivityEntity activityEntity) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        if(activityEntity.getLikeNum()!=0){
+          Map<String,Object> mp = activityService.queryLikeByUserIdAndActivityId(activityEntity);
+          if(mp!=null){
+              activityService.updateLikeState(activityEntity);
+          }else{
+              activityEntity.setTemplateId(UUID.randomUUID().toString().replaceAll("-", ""));
+              activityService.insertLikeState(activityEntity);
+          }
+        }
+        activityService.updateActivityState(activityEntity);
+        result.setResult(map);
+        return result;
+    }
+
+
 }

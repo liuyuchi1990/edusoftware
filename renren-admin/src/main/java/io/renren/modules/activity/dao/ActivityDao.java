@@ -18,5 +18,13 @@ public interface ActivityDao extends BaseMapper<ActivityEntity> {
 
     List<Map<String, Object>> queryList(String id);
 
+    int updateActivityState(ActivityEntity activityEntity);
+
+    int updateLikeState(ActivityEntity activityEntity);
+
+    int insertLikeState(ActivityEntity activityEntity);
+
+    Map<String,Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity);
+
     List<ActivityEntity> queryAllTemplate(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("list") List<String> list);
 }

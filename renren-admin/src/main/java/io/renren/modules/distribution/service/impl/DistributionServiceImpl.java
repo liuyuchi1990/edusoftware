@@ -121,6 +121,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setStartTime(barginEntity.getStartTime());
         activityEntity.setActivityType(Constants.BARGIN);
         activityEntity.setPrizeNum(barginEntity.getPrizeNum());
+        activityEntity.setTemplateId(barginEntity.getTemplateId());
         activityEntity.setPrizeLeft(barginEntity.getPrizeNum());
         return distributionDao.insertActivity(activityEntity);
     }

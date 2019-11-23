@@ -10,6 +10,8 @@ import java.util.*;
 
 import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.service.ActivityService;
 import io.renren.modules.bargin.entity.BarginEntity;
 
 import io.renren.modules.distribution.entity.Distribution;
@@ -46,6 +48,9 @@ public class BarginController {
 
     @Autowired
     private DistributionService distributionService;
+
+    @Autowired
+    private ActivityService  activityService;
 
     @Value("${qr.bargin}")
     String qrBarginUrl;
@@ -86,8 +91,14 @@ public class BarginController {
     public ReturnResult info(@RequestBody BarginEntity bargin) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
-        BarginEntity barginEntity = barginService.selectById(bargin.getId());
+        ActivityEntity act = new ActivityEntity();
+        BarginEntity barginEntity = barginService.queryById(bargin.getId());
         List<Map<String, Object>> orders = orderService.queryByActivtyId(bargin.getId());
+        if("info".equals(bargin.getType())){
+            act.setId(bargin.getId());
+            act.setViewNum(1);
+            activityService.updateActivityState(act);
+        }
         map.put("bargin",barginEntity);
         map.put("order",orders);
         result.setResult(map);
@@ -107,13 +118,14 @@ public class BarginController {
             bargin.setQrImg(httpbarginurl + bargin.getId() + ".jpg");
             bargin.setPrizeLeft(bargin.getPrizeNum());
             bargin.setCreateTime(new Date());
-            barginService.insertAllColumn(bargin);
+            bargin.setTemplateId(bargin.getId());
+            barginService.insertBarginEntity(bargin);
             distributionService.insertActivity(bargin);
             String text = qrBarginUrl.replace("id=", "id=" + bargin.getId());
             QRCodeUtils.encode(text, null, qrBarginImgUrl, bargin.getId(), true);
         } else {
             bargin.setUpdateTime(new Date());
-            barginService.updateById(bargin);//全部更新
+            barginService.updateBarginEntity(bargin);//全部更新
             distributionService.updateActivity(bargin);
         }
         map.put("bargin",bargin);
@@ -126,16 +138,23 @@ public class BarginController {
      */
     @RequestMapping(value = "/copy", method = RequestMethod.POST)
     //@RequiresPermissions("sys:distribution:save")
+    @Transactional
     @ResponseBody
     public ReturnResult copy(@RequestBody BarginEntity bargin) throws Exception {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
-        BarginEntity barginEntity = barginService.selectById(bargin.getId());
+        ActivityEntity act = new ActivityEntity();
+        BarginEntity barginEntity = barginService.queryById(bargin.getId());
         barginEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         barginEntity.setQrImg(httpbarginurl + barginEntity.getId() + ".jpg");
         barginEntity.setCreateTime(new Date());
         barginService.insertAllColumn(barginEntity);
         distributionService.insertActivity(barginEntity);
+        if(bargin.getId().equals(bargin.getTemplateId())){
+            act.setId(bargin.getTemplateId());
+            act.setUseNum(1);
+            activityService.updateActivityState(act);
+        }
         String text = qrBarginUrl.replace("id=", "id=" + barginEntity.getId());
         QRCodeUtils.encode(text, null, qrBarginImgUrl, barginEntity.getId(), true);
         map.put("bargin",barginEntity);
@@ -152,15 +171,15 @@ public class BarginController {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DecimalFormat dfn = new DecimalFormat("0.00");
         LocalDateTime toDate = LocalDateTime.now();
-        BarginEntity ba = barginService.selectById(order.getActivityId());
+        BarginEntity ba = barginService.queryById(order.getActivityId());
         List<Map<String, Object>> mp = barginService.queryBarginLog(order.getOrderId());
         if (mp == null || (mp.size() < ba.getBarginNum())) {//是否超过砍价人数
             Map<String, Object> resMap = barginService.queryMaxTime(order);
-            long hours = 0;
+            long minutes = 0;
             Long restrictTime = Long.parseLong(ba.getRestrictTime().toString());
             LocalDateTime create_time = resMap == null ? toDate : LocalDateTime.parse(resMap.get("create_time").toString().replace(".0", ""), df);
-            hours = ChronoUnit.HOURS.between(create_time, toDate);
-            if (restrictTime < hours || mp.size() == 0||resMap==null) {//是否超过投票间隔时间
+            minutes = ChronoUnit.MINUTES.between(create_time, toDate);
+            if (restrictTime < (minutes/60) || mp.size() == 0||resMap==null) {//是否超过投票间隔时间
                 Double reduct = Math.random() * (ba.getMaxReduction().subtract(ba.getMinReduction()).doubleValue()) + ba.getMinReduction().doubleValue();
                 Double price_left = Double.valueOf(order.getTotal_price()) - reduct;
                 if (Double.valueOf(order.getTotal_price()) == (ba.getFloorPrice().doubleValue())) {
@@ -184,7 +203,7 @@ public class BarginController {
                 }
             } else {
                 result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-                result.setMsg("请您休息" + (restrictTime - hours) + "小时后再次砍价");
+                result.setMsg("请您休息" + (restrictTime - minutes/60) + "小时"+ (restrictTime*60-minutes)%60 +"分钟后再次砍价");
                 result.setResult(map);
             }
         } else {
@@ -223,12 +242,13 @@ public class BarginController {
     /**
      * 删除
      */
-    @RequestMapping("/delete")
+    @RequestMapping(value ="/delete", method = RequestMethod.POST)
     @Transactional
-    public R delete(@RequestBody String[] ids) {
+    public ReturnResult delete(@RequestBody String[] ids) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         barginService.deleteBatchIds(Arrays.asList(ids));
         distributionService.deleteActivity(Arrays.asList(ids));
-        return R.ok();
+        return result;
     }
 
 }

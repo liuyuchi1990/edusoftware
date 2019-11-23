@@ -15,4 +15,52 @@
         </if>
         limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     </select>
+
+    <update id="updateActivityState" parameterType="io.renren.modules.activity.entity.ActivityEntity">
+        update tb_activity
+        <set>
+            <if test="shareNum!= null and shareNum!=0">
+                share_num =  share_num + 1,
+            </if>
+            <if test="viewNum!= null and viewNum!=0">
+                view_num =  view_num + 1,
+            </if>
+            <if test="useNum!= null and useNum!=0">
+                use_num =  view_num + 1,
+            </if>
+            <if test="likeNum!= null and likeNum!=0">
+                like_num =  like_num + #{likeNum},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateLikeState" parameterType="io.renren.modules.activity.entity.ActivityEntity">
+        update tb_like
+        <set>
+            <if test="likeNum!= null">
+                likeflag =  likeflag + #{likeNum},
+            </if>
+            update_time = SYSDATE()
+        </set>
+        where id = #{id,jdbcType=VARCHAR} and user_id = #{createUser}
+    </update>
+
+    <insert id="insertLikeState" parameterType="io.renren.modules.activity.entity.ActivityEntity">
+        INSERT INTO tb_like(likeflag, user_id, create_time, activity_id, id)
+	VALUES (
+		#{likeNum,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},
+		SYSDATE(),
+		#{id,jdbcType=VARCHAR},
+		#{templateId,jdbcType=VARCHAR}
+	)
+    </insert>
+
+    <select id="queryLikeByUserIdAndActivityId" parameterType="io.renren.modules.activity.entity.ActivityEntity"
+            resultType="java.util.HashMap">
+
+        select * from tb_like where user_id = #{createUser,jdbcType=VARCHAR}and activity_id = #{id,jdbcType=VARCHAR}
+
+    </select>
 </mapper>

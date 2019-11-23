@@ -20,6 +20,14 @@ public interface ActivityService extends IService<ActivityEntity> {
 
     List<Map<String, Object>> queryList (String id);
 
+    int updateActivityState(ActivityEntity activityEntity);
+
+    int updateLikeState(ActivityEntity activityEntity);
+
+    int insertLikeState(ActivityEntity activityEntity);
+
+    Map<String,Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity);
+
     List<ActivityEntity> queryAllTemplate (Map<String, Object> params,List<String> list);
 
 }

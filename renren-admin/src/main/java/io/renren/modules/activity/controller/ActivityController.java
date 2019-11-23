@@ -40,7 +40,7 @@ public class ActivityController {
     }
 
     /**
-     * 列表
+     * 更新活动数据
      */
     @RequestMapping(value = "/updateActivityState", method = RequestMethod.POST)
     public ReturnResult updateActivityState(@RequestBody ActivityEntity activityEntity) {

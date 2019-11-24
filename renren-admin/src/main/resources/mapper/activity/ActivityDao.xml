@@ -38,12 +38,15 @@
     <update id="updateLikeState" parameterType="io.renren.modules.activity.entity.ActivityEntity">
         update tb_like
         <set>
-            <if test="likeNum!= null">
-                likeflag =  likeflag + #{likeNum},
+            <if test="likeNum==1">
+                likeflag =  likeflag + 1,
+            </if>
+            <if test="likeNum==-1">
+                likeflag =  likeflag - 1,
             </if>
             update_time = SYSDATE()
         </set>
-        where id = #{id,jdbcType=VARCHAR} and user_id = #{createUser}
+        where activity_id = #{id,jdbcType=VARCHAR} and user_id = #{createUser}
     </update>
 
     <insert id="insertLikeState" parameterType="io.renren.modules.activity.entity.ActivityEntity">

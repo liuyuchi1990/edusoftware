@@ -111,6 +111,10 @@ public class BarginEntity implements Serializable {
 	 */
 	private String longitude;
 	/**
+	 * 机构名称
+	 */
+	private String companyName;
+	/**
 	 * 主办方电话
 	 */
 	private String phone;
@@ -610,5 +614,13 @@ public class BarginEntity implements Serializable {
 
 	public void setGiftName(String giftName) {
 		this.giftName = giftName;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 }

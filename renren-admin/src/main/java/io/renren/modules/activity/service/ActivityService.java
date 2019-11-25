@@ -27,6 +27,8 @@ public interface ActivityService extends IService<ActivityEntity> {
 
     int insertComment(CommentEntity commentEntity);
 
+    int deleteComment(CommentEntity commentEntity);
+
     int insertLikeState(ActivityEntity activityEntity);
 
     Map<String,Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity);

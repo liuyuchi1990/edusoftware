@@ -70,12 +70,13 @@ public class ActivityController {
         Map<String, Object> map = new HashedMap();
         commentEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         activityService.insertComment(commentEntity);
+        map.put("comment",commentEntity);
         result.setResult(map);
         return result;
     }
 
     /**
-     * 增加评论
+     * 查询活动评论
      */
     @RequestMapping(value = "/queryCommentByActivityId", method = RequestMethod.POST)
     public ReturnResult queryCommentByActivityIdAndUserId(@RequestBody CommentEntity commentEntity) {
@@ -89,7 +90,7 @@ public class ActivityController {
 
 
     /**
-     * 增加评论
+     * 查询单个评论
      */
     @RequestMapping(value = "/queryCommentById", method = RequestMethod.POST)
     public ReturnResult queryCommentById(@RequestBody CommentEntity commentEntity) {
@@ -97,6 +98,18 @@ public class ActivityController {
         Map<String, Object> map = new HashedMap();
         CommentEntity comment = activityService.queryCommentById(commentEntity);
         map.put("comment",comment);
+        result.setResult(map);
+        return result;
+    }
+
+    /**
+     * 删除单个评论
+     */
+    @RequestMapping(value = "/deleteCommentById", method = RequestMethod.POST)
+    public ReturnResult deleteCommentById(@RequestBody CommentEntity commentEntity) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        activityService.deleteComment(commentEntity);
         result.setResult(map);
         return result;
     }

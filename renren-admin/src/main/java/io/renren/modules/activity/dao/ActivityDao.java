@@ -27,6 +27,8 @@ public interface ActivityDao extends BaseMapper<ActivityEntity> {
 
     int insertLikeState(ActivityEntity activityEntity);
 
+    int deleteComment(CommentEntity commentEntity);
+
     List<CommentEntity> queryCommentByActivityId (CommentEntity commentEntity);
 
     CommentEntity queryCommentById (CommentEntity commentEntity);

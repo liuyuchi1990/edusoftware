@@ -15,6 +15,10 @@ public class CommentEntity {
 
     private String activityId;
 
+    private String myComment;
+
+    private String feedbackTime;
+
     public String getId() {
         return id;
     }

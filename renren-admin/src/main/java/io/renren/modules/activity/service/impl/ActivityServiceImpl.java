@@ -50,8 +50,13 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityDao, ActivityEntity
         return activityDao.insertLikeState(activityEntity);
     }
 
+
     public int insertComment(CommentEntity commentEntity){
         return activityDao.insertComment(commentEntity);
+    }
+
+    public int deleteComment(CommentEntity commentEntity){
+        return activityDao.deleteComment(commentEntity);
     }
 
     public Map<String, Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity) {

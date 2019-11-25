@@ -76,7 +76,7 @@ public class BarginController {
     //@RequiresPermissions("sys:distribution:list")
     public ReturnResult queryAll(@RequestBody BarginEntity params) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
-        List<Map<String, Object>> activityLst = barginService.queryList(params.getId());
+        List<Map<String, Object>> activityLst = barginService.queryList(params.getCreate_user());
         Map<String, Object> map = new HashedMap();
         map.put("data", activityLst);
         result.setResult(map);

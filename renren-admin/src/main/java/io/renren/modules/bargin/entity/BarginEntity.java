@@ -98,6 +98,8 @@ public class BarginEntity implements Serializable {
 	 * 
 	 */
 	private Date createTime;
+
+	private String  create_user;
 	/**
 	 * 
 	 */
@@ -622,5 +624,13 @@ public class BarginEntity implements Serializable {
 
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
+	}
+
+	public String getCreate_user() {
+		return create_user;
+	}
+
+	public void setCreate_user(String create_user) {
+		this.create_user = create_user;
 	}
 }

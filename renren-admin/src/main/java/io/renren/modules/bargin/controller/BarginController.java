@@ -113,6 +113,7 @@ public class BarginController {
     public ReturnResult save(@RequestBody BarginEntity bargin) throws Exception {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
         if ("".equals(bargin.getId()) || bargin.getId() == null) {
             bargin.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             bargin.setQrImg(httpbarginurl + bargin.getId() + ".jpg");
@@ -121,6 +122,11 @@ public class BarginController {
             bargin.setTemplateId(bargin.getId());
             barginService.insertBarginEntity(bargin);
             distributionService.insertActivity(bargin);
+            if((!"".equals(bargin.getTemplateId())) && bargin.getTemplateId() != null){
+                act.setId(bargin.getTemplateId());
+                act.setUseNum(1);
+                activityService.updateActivityState(act);
+            }
             String text = qrBarginUrl.replace("id=", "id=" + bargin.getId());
             QRCodeUtils.encode(text, null, qrBarginImgUrl, bargin.getId(), true);
         } else {

@@ -78,6 +78,11 @@ INSERT INTO tb_bargin(id,
 	prize_left,
 	prize_num,
 	address,
+	question1,
+	question2,
+	question3,
+	question4,
+	question5,
 	bargin_num)
 VALUES
 	(
@@ -110,6 +115,11 @@ SYSDATE(),
 #{prizeLeft,jdbcType=INTEGER},
 #{prizeNum,jdbcType=INTEGER},
 #{address,jdbcType=VARCHAR},
+#{question1,jdbcType=VARCHAR},
+#{question2,jdbcType=VARCHAR},
+#{question3,jdbcType=VARCHAR},
+#{question4,jdbcType=VARCHAR},
+#{question5,jdbcType=VARCHAR},
 #{barginNum,jdbcType=INTEGER}
 	)
     </insert>
@@ -199,6 +209,21 @@ SYSDATE(),
             </if>
             <if test="address!= null">
                 address=#{address,jdbcType=VARCHAR},
+            </if>
+            <if test="question1!= null">
+                question1=#{question1,jdbcType=VARCHAR},
+            </if>
+            <if test="question2!= null">
+                question2=#{question2,jdbcType=VARCHAR},
+            </if>
+            <if test="question3!= null">
+                question3=#{question3,jdbcType=VARCHAR},
+            </if>
+            <if test="question4!= null">
+                question4=#{question4,jdbcType=VARCHAR},
+            </if>
+            <if test="question5!= null">
+                question5=#{question5,jdbcType=VARCHAR},
             </if>
             <if test="barginNum!= null">
                 bargin_num=#{barginNum,jdbcType=INTEGER},

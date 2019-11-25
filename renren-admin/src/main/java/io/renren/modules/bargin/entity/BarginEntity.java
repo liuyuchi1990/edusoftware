@@ -132,6 +132,11 @@ public class BarginEntity implements Serializable {
 	private String gift;
 
 	/**
+	 * 奖品图片
+	 */
+	private String giftName;
+
+	/**
 	 * 数据采集问题1
 	 */
 	private String question1;
@@ -597,5 +602,13 @@ public class BarginEntity implements Serializable {
 
 	public void setViewNum(int viewNum) {
 		this.viewNum = viewNum;
+	}
+
+	public String getGiftName() {
+		return giftName;
+	}
+
+	public void setGiftName(String giftName) {
+		this.giftName = giftName;
 	}
 }

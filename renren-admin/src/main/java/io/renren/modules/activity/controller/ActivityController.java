@@ -1,6 +1,7 @@
 package io.renren.modules.activity.controller;
 
 import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.entity.CommentEntity;
 import io.renren.modules.activity.service.ActivityService;
 import io.renren.modules.sys.entity.ReturnCodeEnum;
 import io.renren.modules.sys.entity.ReturnResult;
@@ -56,6 +57,46 @@ public class ActivityController {
           }
         }
         activityService.updateActivityState(activityEntity);
+        result.setResult(map);
+        return result;
+    }
+
+    /**
+     * 增加评论
+     */
+    @RequestMapping(value = "/saveComment", method = RequestMethod.POST)
+    public ReturnResult saveComment(@RequestBody CommentEntity commentEntity) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        commentEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        activityService.insertComment(commentEntity);
+        result.setResult(map);
+        return result;
+    }
+
+    /**
+     * 增加评论
+     */
+    @RequestMapping(value = "/queryCommentByActivityId", method = RequestMethod.POST)
+    public ReturnResult queryCommentByActivityIdAndUserId(@RequestBody CommentEntity commentEntity) {
+        Map<String, Object> map = new HashedMap();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        List<CommentEntity> list = activityService.queryCommentByActivityId(commentEntity);
+        map.put("data",list);
+        result.setResult(map);
+        return result;
+    }
+
+
+    /**
+     * 增加评论
+     */
+    @RequestMapping(value = "/queryCommentById", method = RequestMethod.POST)
+    public ReturnResult queryCommentById(@RequestBody CommentEntity commentEntity) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        CommentEntity comment = activityService.queryCommentById(commentEntity);
+        map.put("comment",comment);
         result.setResult(map);
         return result;
     }

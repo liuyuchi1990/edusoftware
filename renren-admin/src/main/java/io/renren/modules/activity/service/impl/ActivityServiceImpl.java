@@ -1,6 +1,7 @@
 package io.renren.modules.activity.service.impl;
 
 import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.entity.CommentEntity;
 import io.renren.modules.activity.service.ActivityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,20 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityDao, ActivityEntity
         return activityDao.insertLikeState(activityEntity);
     }
 
+    public int insertComment(CommentEntity commentEntity){
+        return activityDao.insertComment(commentEntity);
+    }
+
     public Map<String, Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity) {
         return activityDao.queryLikeByUserIdAndActivityId(activityEntity);
+    }
+
+    public CommentEntity queryCommentById (CommentEntity commentEntity) {
+        return activityDao.queryCommentById(commentEntity);
+    }
+
+    public List<CommentEntity> queryCommentByActivityId (CommentEntity commentEntity){
+        return activityDao.queryCommentByActivityId(commentEntity);
     }
 
     public List<ActivityEntity> queryAllTemplate(Map<String, Object> params, List<String> list) {

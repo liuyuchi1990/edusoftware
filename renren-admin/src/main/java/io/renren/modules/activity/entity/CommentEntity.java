@@ -11,11 +11,17 @@ public class CommentEntity {
 
     private String userId;
 
+    private String username;
+
     private String toUser;
 
     private String activityId;
 
-    private String myComment;
+    private String feedbackId;
+
+    private String feedbackusername;
+
+    private String feedbackComment;
 
     private String feedbackTime;
 
@@ -65,5 +71,45 @@ public class CommentEntity {
 
     public void setActivityId(String activityId) {
         this.activityId = activityId;
+    }
+
+    public String getFeedbackId() {
+        return feedbackId;
+    }
+
+    public void setFeedbackId(String feedbackId) {
+        this.feedbackId = feedbackId;
+    }
+
+    public String getFeedbackComment() {
+        return feedbackComment;
+    }
+
+    public void setFeedbackComment(String feedbackComment) {
+        this.feedbackComment = feedbackComment;
+    }
+
+    public String getFeedbackTime() {
+        return feedbackTime;
+    }
+
+    public void setFeedbackTime(String feedbackTime) {
+        this.feedbackTime = feedbackTime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFeedbackusername() {
+        return feedbackusername;
+    }
+
+    public void setFeedbackusername(String feedbackusername) {
+        this.feedbackusername = feedbackusername;
     }
 }

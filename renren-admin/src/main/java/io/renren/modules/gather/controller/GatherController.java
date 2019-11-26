@@ -93,7 +93,9 @@ public class GatherController {
      * 保存
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public R save(@RequestBody GatherEntity gather) throws Exception {
+    public ReturnResult save(@RequestBody GatherEntity gather) throws Exception {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
         if ("".equals(gather.getId()) || gather.getId() == null) {
             gather.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             gather.setQrImg(httpgatherurl + gather.getId() + ".jpg");
@@ -108,7 +110,9 @@ public class GatherController {
             gatherService.updateById(gather);//全部更新
             distributionService.updateActivity(gather);
         }
-        return R.ok().put("gather", gather);
+        map.put("gather",gather);
+        result.setResult(map);
+        return result;
     }
 
     /**

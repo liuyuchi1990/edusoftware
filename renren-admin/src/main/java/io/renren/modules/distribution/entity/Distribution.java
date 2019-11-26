@@ -167,6 +167,45 @@ public class Distribution implements Serializable {
     private String orderNum;
 
     private String totalPrice;
+
+    private String  createUser;
+
+    private int likeNum;//点赞
+    private int shareNum;//分享
+    private int useNum;//使用
+    private int viewNum;//查看
+
+    private String type;
+
+    /**
+     * 奖品图片
+     */
+    private String giftName;
+
+    /**
+     * 数据采集问题1
+     */
+    private String question1;
+
+    /**
+     * 数据采集问题2
+     */
+    private String question2;
+
+    /**
+     * 数据采集问题5
+     */
+    private String question5;
+
+    /**
+     * 数据采集问题3
+     */
+    private String question3;
+
+    /**
+     * 数据采集问题4
+     */
+    private String question4;
     /**
      * 设置：
      */
@@ -610,5 +649,101 @@ public class Distribution implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public int getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public int getShareNum() {
+        return shareNum;
+    }
+
+    public void setShareNum(int shareNum) {
+        this.shareNum = shareNum;
+    }
+
+    public int getUseNum() {
+        return useNum;
+    }
+
+    public void setUseNum(int useNum) {
+        this.useNum = useNum;
+    }
+
+    public int getViewNum() {
+        return viewNum;
+    }
+
+    public void setViewNum(int viewNum) {
+        this.viewNum = viewNum;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getGiftName() {
+        return giftName;
+    }
+
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
+    }
+
+    public String getQuestion1() {
+        return question1;
+    }
+
+    public void setQuestion1(String question1) {
+        this.question1 = question1;
+    }
+
+    public String getQuestion2() {
+        return question2;
+    }
+
+    public void setQuestion2(String question2) {
+        this.question2 = question2;
+    }
+
+    public String getQuestion5() {
+        return question5;
+    }
+
+    public void setQuestion5(String question5) {
+        this.question5 = question5;
+    }
+
+    public String getQuestion3() {
+        return question3;
+    }
+
+    public void setQuestion3(String question3) {
+        this.question3 = question3;
+    }
+
+    public String getQuestion4() {
+        return question4;
+    }
+
+    public void setQuestion4(String question4) {
+        this.question4 = question4;
     }
 }

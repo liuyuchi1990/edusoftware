@@ -99,7 +99,7 @@ public class BarginEntity implements Serializable {
 	 */
 	private Date createTime;
 
-	private String  create_user;
+	private String  createUser;
 	/**
 	 * 
 	 */
@@ -626,11 +626,11 @@ public class BarginEntity implements Serializable {
 		this.companyName = companyName;
 	}
 
-	public String getCreate_user() {
-		return create_user;
+	public String getCreateUser() {
+		return createUser;
 	}
 
-	public void setCreate_user(String create_user) {
-		this.create_user = create_user;
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
 	}
 }

@@ -68,6 +68,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setEndTime(distribution.getEndTime());
         activityEntity.setStartTime(distribution.getStartTime());
         activityEntity.setActivityType(Constants.DISTRIBUTION);
+        activityEntity.setCreateUser(distribution.getCreateUser());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -96,6 +97,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setActivityType(Constants.GATHER);
         activityEntity.setPrizeNum(gatherEntity.getPriceNum());
         activityEntity.setPrizeLeft(gatherEntity.getPriceNum());
+        activityEntity.setCreateUser(gatherEntity.getCreateUser());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -123,6 +125,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setPrizeNum(barginEntity.getPrizeNum());
         activityEntity.setTemplateId(barginEntity.getTemplateId());
         activityEntity.setPrizeLeft(barginEntity.getPrizeNum());
+        activityEntity.setCreateUser(barginEntity.getCreateUser());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -146,6 +149,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setEndTime(grouponEntity.getEndTime());
         activityEntity.setStartTime(grouponEntity.getStartTime());
         activityEntity.setActivityType(Constants.GROUPON);
+        activityEntity.setCreateUser(grouponEntity.getCreateUser());
         return distributionDao.insertActivity(activityEntity);
     }
 

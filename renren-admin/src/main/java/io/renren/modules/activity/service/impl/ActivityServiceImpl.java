@@ -1,22 +1,19 @@
 package io.renren.modules.activity.service.impl;
 
-import io.renren.modules.activity.entity.ActivityEntity;
-import io.renren.modules.activity.entity.CommentEntity;
-import io.renren.modules.activity.service.ActivityService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
-
 import io.renren.modules.activity.dao.ActivityDao;
+import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.entity.CommentEntity;
+import io.renren.modules.activity.service.ActivityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 
 @Service("activityService")
@@ -69,6 +66,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityDao, ActivityEntity
 
     public List<CommentEntity> queryCommentByActivityId (CommentEntity commentEntity){
         return activityDao.queryCommentByActivityId(commentEntity);
+    }
+
+    public List<ActivityEntity> queryActivityByUserId(ActivityEntity activityEntity){
+        return activityDao.queryActivityByUserId(activityEntity);
     }
 
     public List<ActivityEntity> queryAllTemplate(Map<String, Object> params, List<String> list) {

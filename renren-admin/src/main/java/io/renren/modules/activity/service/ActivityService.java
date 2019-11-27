@@ -35,6 +35,8 @@ public interface ActivityService extends IService<ActivityEntity> {
 
     List<CommentEntity> queryCommentByActivityId (CommentEntity commentEntity);
 
+    List<ActivityEntity> queryActivityByUserId (ActivityEntity activityEntity);
+
     CommentEntity queryCommentById (CommentEntity commentEntity);
 
     List<ActivityEntity> queryAllTemplate (Map<String, Object> params,List<String> list);

@@ -114,5 +114,16 @@ public class ActivityController {
         return result;
     }
 
-
+    /**
+     * 删除单个评论
+     */
+    @RequestMapping(value = "/queryActivityByUserId", method = RequestMethod.POST)
+    public ReturnResult queryActivityByUserId(@RequestBody ActivityEntity activityEntity) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        List<ActivityEntity> activityEntityList = activityService.queryActivityByUserId(activityEntity);
+        map.put("activityEntityList",activityEntityList);
+        result.setResult(map);
+        return result;
+    }
 }

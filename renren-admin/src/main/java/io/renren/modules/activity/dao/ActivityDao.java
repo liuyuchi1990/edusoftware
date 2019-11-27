@@ -31,6 +31,8 @@ public interface ActivityDao extends BaseMapper<ActivityEntity> {
 
     List<CommentEntity> queryCommentByActivityId (CommentEntity commentEntity);
 
+    List<ActivityEntity> queryActivityByUserId (ActivityEntity activityEntity);
+
     CommentEntity queryCommentById (CommentEntity commentEntity);
 
     Map<String,Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity);

@@ -24,10 +24,7 @@ import com.github.qcloudsms.httpclient.HTTPException;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.renren.common.config.MessageUtils;
-import io.renren.common.utils.DateUtils;
-import io.renren.common.utils.R;
-import io.renren.common.utils.UserInfoUtil;
-import io.renren.common.utils.WxUtil;
+import io.renren.common.utils.*;
 import io.renren.modules.sys.entity.ReturnCodeEnum;
 import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -100,8 +97,13 @@ public class SysLoginController {
         try {
             Subject subject = ShiroUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-            subject.login(token);
             SysUserEntity us = sysUserService.queryByMobile(user.getUsername());
+            if(us.getEndTime().compareTo(CommonUtil.today())>0) {
+                subject.login(token);
+            }else{
+                result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
+                result.setMsg("用户账户已经到期，请及时续费");
+            }
             map.put("user", us);
             result.setResult(map);
         } catch (UnknownAccountException e) {

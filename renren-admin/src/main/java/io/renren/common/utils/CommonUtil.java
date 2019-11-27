@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.joda.time.DateTime;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +19,8 @@ import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class CommonUtil {
 
@@ -39,6 +38,13 @@ public class CommonUtil {
             resultSb.append(byteToHexString(aB));
         }
         return resultSb.toString();
+    }
+
+    public static String today() {
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        DateTime dateTime = new DateTime(date);
+        return df.format(dateTime.toDate());
     }
 
     /**

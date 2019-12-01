@@ -115,7 +115,8 @@ public class ActivityController {
     }
 
     /**
-     * 删除单个评论
+     * 查询个人创建的所有活动
+     * activityState 1.未开始 2进行中 3.已经结束 4.已下架
      */
     @RequestMapping(value = "/queryActivityByUserId", method = RequestMethod.POST)
     public ReturnResult queryActivityByUserId(@RequestBody ActivityEntity activityEntity) {

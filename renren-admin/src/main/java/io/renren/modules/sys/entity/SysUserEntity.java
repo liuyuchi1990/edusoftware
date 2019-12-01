@@ -118,6 +118,7 @@ public class SysUserEntity implements Serializable {
 	private String companyCity;// 公司所在城市
 	private String captcha;// 验证码
 	private String code;// 微信公众号网页授权code码
+	private String userFlag;// 微信公众号网页授权code码
 
 	/**
 	 * 部门ID
@@ -409,5 +410,13 @@ public class SysUserEntity implements Serializable {
 
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
+	}
+
+	public String getUserFlag() {
+		return userFlag;
+	}
+
+	public void setUserFlag(String userFlag) {
+		this.userFlag = userFlag;
 	}
 }

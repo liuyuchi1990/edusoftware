@@ -106,6 +106,7 @@ public class SysLoginController {
             }
             map.put("user", us);
             result.setResult(map);
+            return result;
         } catch (UnknownAccountException e) {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             return result;
@@ -122,8 +123,6 @@ public class SysLoginController {
             result.setMsg("账户验证失败");
             return result;
         }
-
-        return result;
     }
 
     /**

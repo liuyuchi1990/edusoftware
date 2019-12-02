@@ -71,6 +71,19 @@
 		where t.from_user = #{from_user,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}
 	</select>
 
+	<select id="getOrderByUserIdAndActivityIdAndSendFlag" parameterType="io.renren.modules.order.model.Order" resultType="java.util.HashMap">
+		select
+		t.order_id orderId, t.create_time createTime, t.update_time, t.user_name userName,t.mobile, sd.value orderStatus, t.activity_id activityId,  t.total_price, t.from_user, t.red_packets, t.user_type, t.group_id, t.order_type
+		,u.headimgurl,t.send_flag send_Flag
+		from tb_order t
+		left join sys_user u on u.user_id=t.from_user
+		left join sys_dict sd on sd.code = t.order_status and sd.type='wxpay'
+		where t.user_id = #{user_id,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}
+		<if test="sendFlag != null">
+		 and send_flag = #{sendFlag}
+		</if>
+	</select>
+
 	<select id="getOrderByUserIdAndActivityType" parameterType="io.renren.modules.order.model.Order" resultType="java.util.HashMap">
 		select
 		t.*,u.headimgurl,u.username,ta.*
@@ -99,5 +112,17 @@
 			group_id = #{group_id,jdbcType=VARCHAR}
 		</if>
 
+	</update>
+
+	<update id="sendFlag" parameterType="io.renren.modules.order.model.Order">
+		update tb_order
+		<set>
+			<if test="sendFlag != null">
+				send_flag = #{sendFlag,jdbcType=INTEGER},
+			</if>
+			update_time = SYSDATE()
+		</set>
+		where
+			order_id = #{orderId,jdbcType=VARCHAR}
 	</update>
 </mapper>

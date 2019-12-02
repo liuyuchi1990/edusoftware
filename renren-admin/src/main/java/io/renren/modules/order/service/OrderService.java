@@ -25,6 +25,10 @@ public class OrderService {
         return orderDao.edit(order);
     }
 
+    public int sendFlag(Order order) {
+        return orderDao.sendFlag(order);
+    }
+
     public int updateUserIntegral(Order order) {
         return orderDao.updateUserIntegral(order);
     }
@@ -59,6 +63,10 @@ public class OrderService {
 
     public List<Map<String, Object>> getOrderByFromUserId(Order order) {
         return orderDao.getOrderByFromUserId(order);
+    }
+
+    public List<Map<String, Object>> getOrderByUserIdAndActivityIdAndSendFlag(Order order) {
+        return orderDao.getOrderByUserIdAndActivityIdAndSendFlag(order);
     }
 
     public List<Map<String, Object>> getOrderByUserIdAndActivityType(Order order) {

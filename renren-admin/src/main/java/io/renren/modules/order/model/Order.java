@@ -23,6 +23,8 @@ public class Order {
 
     private String mobile;
 
+    private Integer sendFlag;
+
     private String red_packets;
 
     private String user_type;
@@ -58,7 +60,7 @@ public class Order {
      */
     private String question4;
 
-    // null 未处理， 1 成功 2失败
+    // null 未处理， 1 成功 2失败,7已兑奖
     private String orderStatus;
 
     public String getOrderId() {
@@ -211,5 +213,13 @@ public class Order {
 
     public void setQuestion4(String question4) {
         this.question4 = question4;
+    }
+
+    public Integer getSendFlag() {
+        return sendFlag;
+    }
+
+    public void setSendFlag(Integer sendFlag) {
+        this.sendFlag = sendFlag;
     }
 }

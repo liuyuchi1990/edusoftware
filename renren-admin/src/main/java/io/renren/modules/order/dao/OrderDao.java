@@ -16,6 +16,8 @@ public interface OrderDao {
 
     int edit(OrderInfo order);
 
+    int sendFlag(Order order);
+
     int delete(String[] ids);
 
     Order queryById(@Param("order_id") String order_id);
@@ -33,6 +35,8 @@ public interface OrderDao {
     List<Map<String, Object>> queryByActivtyId(String activityId);
 
     List<Map<String, Object>> getOrderByUserIdAndActivityType(Order order);
+
+    List<Map<String, Object>> getOrderByUserIdAndActivityIdAndSendFlag(Order order);
 
     List<Map<String, Object>> queryByGroupId(String groupId);
 

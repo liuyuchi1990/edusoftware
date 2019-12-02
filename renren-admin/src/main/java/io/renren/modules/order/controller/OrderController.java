@@ -219,7 +219,7 @@ public class OrderController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashMap<>();
         try {
-            List<Map<String, Object>> res = orderService.queryByActivtyId(order.getActivityId());
+            List<Map<String, Object>> res = orderService.getOrderByUserIdAndActivityIdAndSendFlag(order);
             map.put("data", res);
             result.setResult(map);
         } catch (Exception e) {
@@ -356,6 +356,31 @@ public class OrderController {
      * @param @param   request
      * @param @param   response
      * @param @return  设定文件
+     * @param
+     * @return
+     * @throws @param                       request
+     * @throws UnsupportedEncodingException
+     * @Title: downloadFailDetail
+     * @Description:
+     */
+    @RequestMapping(value = "/sendFlag", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnResult sendFlag(@RequestParam Map<String, Object> params) {
+        Map<String, Object> map = new HashMap<>();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Order order = new Order();
+        order.setOrderId(params.get("orderId").toString());
+        order.setSendFlag(Integer.parseInt(params.get("sendFlag").toString()));
+        orderService.sendFlag(order);
+        result.setResult(map);
+        return result;
+    }
+
+
+    /**
+     * @param @param   request
+     * @param @param   response
+     * @param @return  设定文件
      * @param response
      * @return
      * @throws @param                       request
@@ -367,7 +392,7 @@ public class OrderController {
     @RequestMapping(value = "/deleteExcel", method = RequestMethod.GET)
     @ResponseBody
     public ReturnResult deleteExcel(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(Constants.FILE_NAME) String fileName) throws IOException {
+                                    @RequestParam(Constants.FILE_NAME) String fileName) throws IOException {
         // 入参校验
         Preconditions.checkArgument(fileName.length() > 0, "%s 不能为空！", Constants.FILE_NAME);
         Map<String, Object> map = new HashMap<>();

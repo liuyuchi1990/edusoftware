@@ -33,7 +33,7 @@
 
 	<select id="queryByActivtyId" parameterType="java.lang.String" resultType="java.util.HashMap">
 		select tb.order_id, tb.create_time, tb.update_time, tb.user_id, tb.order_status, tb.activity_id,  if(cast(tb.total_price as DECIMAL)=tba.floor_price,'已砍至底价',tb.total_price) total_price, tb.from_user, tb.red_packets, tb.user_type, tb.group_id, tb.order_type
-	,u.username,u.headimgurl,u.mobile,td.activity_name,sd.value from tb_order tb
+	,tb.user_name username,u.headimgurl,tb.mobile,td.activity_name,sd.value,if(tb.send_flag=0,'未兑换','已兑换') send_flag from tb_order tb
   left join sys_user u on u.user_id=tb.user_id
   left join tb_activity td on tb.activity_id = td.id
   left join tb_bargin tba on tba.id = tb.activity_id
@@ -76,7 +76,6 @@
 		t.order_id orderId, t.create_time createTime, t.update_time, t.user_name userName,t.mobile, sd.value orderStatus, t.activity_id activityId,  t.total_price, t.from_user, t.red_packets, t.user_type, t.group_id, t.order_type
 		,u.headimgurl,t.send_flag send_Flag
 		from tb_order t
-		left join sys_user u on u.user_id=t.from_user
 		left join sys_dict sd on sd.code = t.order_status and sd.type='wxpay'
 		where t.user_id = #{user_id,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}
 		<if test="sendFlag != null">

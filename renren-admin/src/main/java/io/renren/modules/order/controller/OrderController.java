@@ -304,7 +304,7 @@ public class OrderController {
         Map<String, Object> map = new HashMap<>();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         List<Map<String, Object>> res = new ArrayList<>();
-        String[] title = {"订单号", "活动名", "姓名", "金额", "电话","时间","订单状态"};
+        String[] title = {"订单号", "活动名", "姓名", "金额", "电话","时间","订单状态","兑换状态"};
         if(Constants.GATHER.equals(order.getOrderType())){
             title[3]="赞数";
             res = gatherService.queryLike(order.getActivityId());
@@ -331,6 +331,7 @@ public class OrderController {
                 content[i][4] = obj.get("mobile").toString();
                 content[i][5] = obj.get("create_time").toString();
                 content[i][6] = Constants.GATHER.equals(order.getOrderType())?obj.get("update_time").toString():obj.get("value").toString();
+                content[i][5] = obj.get("send_flag").toString();
             }
 
             //创建HSSFWorkbook

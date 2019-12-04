@@ -69,6 +69,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setStartTime(distribution.getStartTime());
         activityEntity.setActivityType(Constants.DISTRIBUTION);
         activityEntity.setCreateUser(distribution.getCreateUser());
+        //activityEntity.setTemplateId(distribution.getT);
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -126,6 +127,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setTemplateId(barginEntity.getTemplateId());
         activityEntity.setPrizeLeft(barginEntity.getPrizeNum());
         activityEntity.setCreateUser(barginEntity.getCreateUser());
+        activityEntity.setTemplateId(barginEntity.getTemplateId());
         return distributionDao.insertActivity(activityEntity);
     }
 

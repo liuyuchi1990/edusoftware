@@ -74,7 +74,7 @@
 	<select id="getOrderByUserIdAndActivityIdAndSendFlag" parameterType="io.renren.modules.order.model.Order" resultType="java.util.HashMap">
 		select
 		t.order_id orderId, t.create_time createTime, t.update_time, t.user_name userName,t.mobile, sd.value orderStatus, t.activity_id activityId,  t.total_price, t.from_user, t.red_packets, t.user_type, t.group_id, t.order_type
-		,u.headimgurl,t.send_flag send_Flag
+		,t.send_flag send_Flag
 		from tb_order t
 		left join sys_dict sd on sd.code = t.order_status and sd.type='wxpay'
 		where t.user_id = #{user_id,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}

@@ -154,7 +154,7 @@ public class BarginController {
         barginEntity.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         barginEntity.setQrImg(httpbarginurl + barginEntity.getId() + ".jpg");
         barginEntity.setCreateTime(new Date());
-        barginService.insertAllColumn(barginEntity);
+        barginService.insertBarginEntity(barginEntity);
         distributionService.insertActivity(barginEntity);
         if(bargin.getId().equals(bargin.getTemplateId())){
             act.setId(bargin.getTemplateId());

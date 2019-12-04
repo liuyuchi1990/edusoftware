@@ -346,7 +346,7 @@ public class OrderController {
             result.setResult(map);
         } else {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
-            result.setMsg(ReturnCodeEnum.SYSTEM_ERROR.getMessage());
+            result.setMsg("该活动尚未存在报名");
             map.put("status", "失败");
             result.setResult(map);
         }

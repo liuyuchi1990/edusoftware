@@ -206,6 +206,12 @@ public class Distribution implements Serializable {
      * 数据采集问题4
      */
     private String question4;
+
+    /**
+     * 数据采集问题4
+     */
+    private String templateId;
+
     /**
      * 设置：
      */
@@ -745,5 +751,13 @@ public class Distribution implements Serializable {
 
     public void setQuestion4(String question4) {
         this.question4 = question4;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 }

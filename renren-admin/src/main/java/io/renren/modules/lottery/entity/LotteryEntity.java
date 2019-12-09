@@ -31,6 +31,8 @@ public class LotteryEntity implements Serializable {
 	 * 机构介绍
 	 */
 	private String companyDescription;
+
+	private String  createUser;
 	/**
 	 * 电话
 	 */
@@ -122,6 +124,11 @@ public class LotteryEntity implements Serializable {
 	private Integer friend;
 
 	private Integer prizeLeft;
+
+	/**
+	 * 数据采集问题4
+	 */
+	private String templateId;
 
 	/**
 	 * 设置：
@@ -430,5 +437,21 @@ public class LotteryEntity implements Serializable {
 
 	public void setPrizeLeft(Integer prizeLeft) {
 		this.prizeLeft = prizeLeft;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
+	}
+
+	public String getCreateUser() {
+		return createUser;
+	}
+
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
 	}
 }

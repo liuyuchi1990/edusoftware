@@ -120,6 +120,11 @@ public class GatherEntity implements Serializable {
 	private String type;
 
 	/**
+	 * 数据采集问题4
+	 */
+	private String templateId;
+
+	/**
 	 * 奖品图片
 	 */
 	private String giftName;
@@ -529,5 +534,13 @@ public class GatherEntity implements Serializable {
 
 	public void setQuestion4(String question4) {
 		this.question4 = question4;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 }

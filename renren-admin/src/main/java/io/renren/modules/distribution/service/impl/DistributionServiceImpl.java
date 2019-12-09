@@ -69,7 +69,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setStartTime(distribution.getStartTime());
         activityEntity.setActivityType(Constants.DISTRIBUTION);
         activityEntity.setCreateUser(distribution.getCreateUser());
-        //activityEntity.setTemplateId(distribution.getT);
+        activityEntity.setTemplateId(distribution.getTemplateId());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -91,7 +91,6 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         ActivityEntity activityEntity = new ActivityEntity();
         activityEntity.setId(gatherEntity.getId());
         activityEntity.setActivityName(gatherEntity.getActivityName());
-
         activityEntity.setThumbnail(gatherEntity.getThumbnail());
         activityEntity.setEndTime(gatherEntity.getEndTime());
         activityEntity.setStartTime(gatherEntity.getStartTime());
@@ -99,6 +98,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setPrizeNum(gatherEntity.getPriceNum());
         activityEntity.setPrizeLeft(gatherEntity.getPriceNum());
         activityEntity.setCreateUser(gatherEntity.getCreateUser());
+        activityEntity.setTemplateId(gatherEntity.getTemplateId());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -152,6 +152,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setStartTime(grouponEntity.getStartTime());
         activityEntity.setActivityType(Constants.GROUPON);
         activityEntity.setCreateUser(grouponEntity.getCreateUser());
+        activityEntity.setTemplateId(grouponEntity.getTemplateId());
         return distributionDao.insertActivity(activityEntity);
     }
 
@@ -172,6 +173,8 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setActivityName(lotteryEntity.getActivityName());
         activityEntity.setThumbnail(lotteryEntity.getThumbnail());
         activityEntity.setActivityType(Constants.Lottery);
+        activityEntity.setCreateUser(lotteryEntity.getCreateUser());
+        activityEntity.setTemplateId(lotteryEntity.getTemplateId());
         return distributionDao.insertActivity(activityEntity);
     }
 

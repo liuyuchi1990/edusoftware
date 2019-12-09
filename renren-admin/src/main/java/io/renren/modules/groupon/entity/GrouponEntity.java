@@ -143,6 +143,11 @@ public class GrouponEntity implements Serializable {
 	private String question4;
 
 	/**
+	 * 数据采集问题4
+	 */
+	private String templateId;
+
+	/**
 	 * 设置：
 	 */
 	public void setId(String id) {
@@ -489,5 +494,13 @@ public class GrouponEntity implements Serializable {
 
 	public void setQuestion4(String question4) {
 		this.question4 = question4;
+	}
+
+	public String getTemplateId() {
+		return templateId;
+	}
+
+	public void setTemplateId(String templateId) {
+		this.templateId = templateId;
 	}
 }

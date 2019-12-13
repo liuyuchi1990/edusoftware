@@ -271,6 +271,7 @@ SELECT
 	t.foot_image,
 	t.bg_image,
 	t.gift,
+	t.gift_name,
 	t.prize_left,
 	t.prize_num,
 	t.address,

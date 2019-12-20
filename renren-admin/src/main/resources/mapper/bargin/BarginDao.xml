@@ -286,7 +286,7 @@ SELECT
 	ta.use_num,
 	ta.view_num,
 	ta.share_num,
-	tl.likeflag
+	ifnull(tl.likeflag,0) likeflag
 FROM
 	tb_bargin t
 	LEFT JOIN tb_activity ta ON ta.id = t.id

@@ -180,6 +180,7 @@ public class BarginEntity implements Serializable {
 	private int shareNum;//分享
 	private int useNum;//使用
 	private int viewNum;//查看
+	private int likeflag;//查看
 
 	/**
 	 * 设置：
@@ -632,5 +633,13 @@ public class BarginEntity implements Serializable {
 
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
+	}
+
+	public int getLikeflag() {
+		return likeflag;
+	}
+
+	public void setLikeflag(int likeflag) {
+		this.likeflag = likeflag;
 	}
 }

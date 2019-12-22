@@ -61,6 +61,11 @@ public class GatherEntity implements Serializable {
 	 * 
 	 */
 	private String priceInfo;
+
+	/**
+	 *
+	 */
+	private String companyInfo;
 	/**
 	 * 
 	 */
@@ -542,5 +547,13 @@ public class GatherEntity implements Serializable {
 
 	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
+	}
+
+	public String getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(String companyInfo) {
+		this.companyInfo = companyInfo;
 	}
 }

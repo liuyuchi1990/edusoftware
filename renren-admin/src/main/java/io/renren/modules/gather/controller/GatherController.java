@@ -10,6 +10,9 @@ import java.util.*;
 
 import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.validator.ValidatorUtils;
+import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.service.ActivityService;
+import io.renren.modules.bargin.entity.BarginEntity;
 import io.renren.modules.distribution.entity.Distribution;
 import io.renren.modules.distribution.service.DistributionService;
 import io.renren.modules.gather.entity.GatherEntity;
@@ -47,6 +50,9 @@ public class GatherController {
     @Autowired
     DistributionService distributionService;
 
+    @Autowired
+    private ActivityService activityService;
+
 
     @Value("${qr.gather}")
     String qrGatherUrl;
@@ -69,10 +75,20 @@ public class GatherController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") String id) {
-        GatherEntity gather = gatherService.selectById(id);
-        return R.ok().put("gather", gather);
+    @RequestMapping(value = "/info", method = RequestMethod.POST)
+    public ReturnResult info(@RequestBody GatherEntity gather) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
+        GatherEntity gatherEntity = gatherService.selectById(gather.getId());
+        if("info".equals(gather.getType())){
+            act.setId(gather.getId());
+            act.setViewNum(1);
+            activityService.updateActivityState(act);
+        }
+        map.put("gather",gatherEntity);
+        result.setResult(map);
+        return result;
     }
 
     /**

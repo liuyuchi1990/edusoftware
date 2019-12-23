@@ -34,6 +34,10 @@ public class GatherServiceImpl extends ServiceImpl<GatherDao, GatherEntity> impl
         return new PageUtils(page);
     }
 
+    public GatherEntity queryById(GatherEntity gatherEntity) {
+        return gatherDao.queryById(gatherEntity);
+    }
+
     public int insertPrizeLog(PrizeEntity pz) {
         return gatherDao.insertPrizeLog(pz);
     }
@@ -54,7 +58,7 @@ public class GatherServiceImpl extends ServiceImpl<GatherDao, GatherEntity> impl
         return gatherDao.queryLikeLog(id);
     }
 
-    public List<Map<String, Object>> queryGatherByMobileAndActivityId( Order order) {
+    public List<Map<String, Object>> queryGatherByMobileAndActivityId(Order order) {
         return gatherDao.queryGatherByMobileAndActivityId(order);
     }
 
@@ -70,7 +74,7 @@ public class GatherServiceImpl extends ServiceImpl<GatherDao, GatherEntity> impl
         return gatherDao.releasePrize(id);
     }
 
-    public List<Map<String, Object>> queryList (Map<String, Object> param){
+    public List<Map<String, Object>> queryList(Map<String, Object> param) {
         return gatherDao.queryList(param);
     }
 }

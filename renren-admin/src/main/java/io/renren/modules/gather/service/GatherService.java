@@ -20,6 +20,8 @@ public interface GatherService extends IService<GatherEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    GatherEntity queryById(GatherEntity gatherEntity);
+
     int insertPrizeLog(PrizeEntity pz);
 
     int insertLikeLog(PrizeEntity pz);

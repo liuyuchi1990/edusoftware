@@ -19,6 +19,8 @@ public interface GatherDao extends BaseMapper<GatherEntity> {
 
     int insertPrizeLog(PrizeEntity pz);
 
+    GatherEntity queryById(GatherEntity gatherEntity);
+
     int updatePrizeLog(PrizeEntity pz);
 
     int insertLikeLog(PrizeEntity pz);

@@ -22,7 +22,11 @@ public interface GatherService extends IService<GatherEntity> {
 
     GatherEntity queryById(GatherEntity gatherEntity);
 
+    int insertGatherEntity(GatherEntity gatherEntity);
+
     int insertPrizeLog(PrizeEntity pz);
+
+    int updateGatherEntity(GatherEntity gatherEntity);
 
     int insertLikeLog(PrizeEntity pz);
 

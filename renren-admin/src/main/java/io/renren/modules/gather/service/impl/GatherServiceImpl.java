@@ -46,6 +46,14 @@ public class GatherServiceImpl extends ServiceImpl<GatherDao, GatherEntity> impl
         return gatherDao.updatePrizeLog(pz);
     }
 
+    public int insertGatherEntity(GatherEntity gatherEntity) {
+        return gatherDao.insertGatherEntity(gatherEntity);
+    }
+
+    public int updateGatherEntity(GatherEntity gatherEntity) {
+        return gatherDao.updateGatherEntity(gatherEntity);
+    }
+
     public int insertLikeLog(PrizeEntity pz) {
         return gatherDao.insertLikeLog(pz);
     }

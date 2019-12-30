@@ -29,6 +29,108 @@
         <result property="latitude" column="latitude"/>
     </resultMap>
 
+    <select id="queryById" parameterType="io.renren.modules.gather.entity.GatherEntity"
+            resultType="io.renren.modules.gather.entity.GatherEntity">
+SELECT
+t.id,
+t.activity_name,
+t.start_time,
+t.end_time,
+t.price_num,
+t.target_num,
+t.restrict_time,
+t.price_description,
+t.activity_rule,
+t.price_info,
+t.company_description,
+t.thumbnail,
+t.discount,
+t.update_user,
+t.create_time,
+t.update_time,
+t.qr_img,
+t.head_image,
+t.phone,
+t.gift,
+t.longitude,
+t.latitude,
+t.prize_left,
+t.foot_image,
+t.bg_image,
+t.address,
+ta.create_user,
+ta.template_id,
+ta.like_num,
+ta.use_num,
+ta.view_num,
+ta.share_num,
+ifnull( tl.likeflag, 0 ) likeflag
+FROM
+	tb_gather t
+	LEFT JOIN tb_activity ta ON ta.id = t.id
+	LEFT JOIN tb_like tl ON tl.activity_id = t.id
+WHERE
+	t.id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertPrizeLog" parameterType="io.renren.modules.gather.entity.GatherEntity">
+INSERT INTO tb_prize_log (
+id,
+activity_name,
+start_time,
+end_time,
+price_num,
+target_num,
+restrict_time,
+price_description,
+activity_rule,
+price_info,
+company_description,
+thumbnail,
+discount,
+update_user,
+qr_img,
+head_image,
+phone,
+gift,
+longitude,
+latitude,
+prize_left,
+foot_image,
+bg_image,
+address,
+create_time
+)
+VALUES
+	(
+#{id,jdbcType=VARCHAR},
+#{activityName,jdbcType=VARCHAR},
+#{startTime,jdbcType=VARCHAR},
+#{endTime,jdbcType=VARCHAR},
+#{priceNum,jdbcType=INTEGER},
+#{targetNum,jdbcType=INTEGER},
+#{restrictTime,jdbcType=INTEGER},
+#{priceDescription,jdbcType=VARCHAR},
+#{activityRule,jdbcType=VARCHAR},
+#{priceInfo,jdbcType=VARCHAR},
+#{companyDescription,jdbcType=VARCHAR},
+#{thumbnail,jdbcType=VARCHAR},
+#{discount,jdbcType=VARCHAR},
+#{updateUser,jdbcType=VARCHAR},
+#{qrImg,jdbcType=VARCHAR},
+#{headImage,jdbcType=VARCHAR},
+#{phone,jdbcType=VARCHAR},
+#{gift,jdbcType=VARCHAR},
+#{longitude,jdbcType=VARCHAR},
+#{latitude,jdbcType=VARCHAR},
+#{prizeLeft,jdbcType=INTEGER},
+#{footImage,jdbcType=VARCHAR},
+#{bgImage,jdbcType=VARCHAR},
+#{address,jdbcType=VARCHAR},
+SYSDATE())
+    </insert>
+
+
     <insert id="insertPrizeLog" parameterType="io.renren.modules.gather.entity.PrizeEntity">
     INSERT INTO tb_prize_log(id,
     activity_id,
@@ -112,7 +214,8 @@ order by create_time
         where   tl.id = #{id,jdbcType=VARCHAR}
     </select>
 
-    <select id="queryGatherByMobileAndActivityId" parameterType="io.renren.modules.order.model.Order" resultType="java.util.Map">
+    <select id="queryGatherByMobileAndActivityId" parameterType="io.renren.modules.order.model.Order"
+            resultType="java.util.Map">
 		select
 		t.*,u.headimgurl,u.username,ta.activity_name,ta.thumbnail,ta.target_num,count(tp.id) like_num
 		from tb_prize_log t

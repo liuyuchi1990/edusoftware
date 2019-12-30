@@ -94,6 +94,7 @@ order by create_time
     <select id="queryList" parameterType="java.util.Map" resultType="java.util.Map">
         select tg.*,count(tp.activity_id) people_num from tb_gather tg
         left join tb_prize_log tp on tg.id=tp.activity_id
+		where tg.create_user = #{id,jdbcType=VARCHAR}
         group by tg.id
         order by tg.create_time desc
     </select>

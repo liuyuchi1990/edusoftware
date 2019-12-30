@@ -37,6 +37,6 @@ public interface GatherDao extends BaseMapper<GatherEntity> {
 
     int releasePrize(String id);
 
-    List<Map<String, Object>> queryList (Map<String, Object> param);
+    List<Map<String, Object>> queryList (String id);
 	
 }

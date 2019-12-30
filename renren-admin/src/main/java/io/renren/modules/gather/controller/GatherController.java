@@ -12,8 +12,6 @@ import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.activity.entity.ActivityEntity;
 import io.renren.modules.activity.service.ActivityService;
-import io.renren.modules.bargin.entity.BarginEntity;
-import io.renren.modules.distribution.entity.Distribution;
 import io.renren.modules.distribution.service.DistributionService;
 import io.renren.modules.gather.entity.GatherEntity;
 import io.renren.modules.gather.entity.PrizeEntity;
@@ -23,7 +21,6 @@ import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysUserService;
 import org.apache.commons.collections.map.HashedMap;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,9 +93,9 @@ public class GatherController {
      */
     @RequestMapping("/queryAll")
     //@RequiresPermissions("sys:distribution:list")
-    public ReturnResult queryAll(@RequestBody Map<String, Object> params) {
+    public ReturnResult queryAll(@RequestBody GatherEntity params) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
-        List<Map<String, Object>> activityLst = gatherService.queryList(params);
+        List<Map<String, Object>> activityLst = gatherService.queryList(params.getCreateUser());
         Map<String, Object> map = new HashedMap();
         map.put("data", activityLst);
         result.setResult(map);
@@ -112,13 +109,20 @@ public class GatherController {
     public ReturnResult save(@RequestBody GatherEntity gather) throws Exception {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
         if ("".equals(gather.getId()) || gather.getId() == null) {
             gather.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             gather.setQrImg(httpgatherurl + gather.getId() + ".jpg");
             gather.setCreateTime(new Date());
             gather.setPrizeLeft(gather.getPriceNum());
+            gather.setTemplateId(gather.getId());
             gatherService.insertAllColumn(gather);
             distributionService.insertActivity(gather);
+            if((!"".equals(gather.getTemplateId())) && gather.getTemplateId() != null){
+                act.setId(gather.getTemplateId());
+                act.setUseNum(1);
+                activityService.updateActivityState(act);
+            }
             String text = qrGatherUrl.replace("id=", "id=" + gather.getId());
             QRCodeUtils.encode(text, null, qrGatherImgUrl, gather.getId(), true);
         } else {
@@ -137,16 +141,26 @@ public class GatherController {
     @RequestMapping(value = "/copy", method = RequestMethod.POST)
     //@RequiresPermissions("sys:distribution:save")
     @ResponseBody
-    public R copy(@RequestBody GatherEntity gather) throws Exception {
+    public ReturnResult copy(@RequestBody GatherEntity gather) throws Exception {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         GatherEntity ga = gatherService.selectById(gather.getId());
-        ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
         ga.setQrImg(httpgatherurl + ga.getId() + ".jpg");
         ga.setCreateTime(new Date());
+        ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         gatherService.insertAllColumn(ga);
         distributionService.insertActivity(ga);
+        if((!"".equals(gather.getTemplateId())) && gather.getTemplateId() != null){
+            act.setId(gather.getTemplateId());
+            act.setUseNum(1);
+            activityService.updateActivityState(act);
+        }
         String text = qrGatherUrl.replace("id=", "id=" + ga.getId());
         QRCodeUtils.encode(text, null, qrGatherImgUrl, ga.getId(), true);
-        return R.ok();
+        map.put("gather",ga);
+        result.setResult(map);
+        return result;
     }
 
     /**
@@ -167,17 +181,17 @@ public class GatherController {
         Map<String, Object> map = new HashedMap();
         Map<String, Object> pList = gatherService.queryLikeTime(pz);
         GatherEntity gz = gatherService.selectById(pz.getActivityId());
-        long hours = 0;
+        long minutes = 0;
         Long prize_time = Long.parseLong(pList.get("prize_time").toString());
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime toDate = LocalDateTime.now();
         String create_time = pList.get("create_time") == null ? null : pList.get("create_time").toString().replace(".0", "");
         if (pList.get("create_time") != null) {
             LocalDateTime ldt = LocalDateTime.parse(create_time, df);
-            hours = ChronoUnit.HOURS.between(ldt, toDate);
+            minutes = ChronoUnit.MINUTES.between(ldt, toDate);
         }
 
-        if (create_time == null || gz.getRestrictTime() < hours) {
+        if (create_time == null || gz.getRestrictTime() < (minutes/60)) {
             pz.setUpdateTime(new Date());
             gatherService.insertLikeLog(pz);
             Map<String, Object> p = gatherService.queryPrizeLog(pz.getId());
@@ -190,7 +204,7 @@ public class GatherController {
             map.put("data", mp);
         } else {
             result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-            result.setMsg("请超过" + prize_time + "小时后再点赞，谢谢");
+            result.setMsg("请您休息" + (gz.getRestrictTime() - minutes/60) + "小时"+ (gz.getRestrictTime()*60-minutes)%60 +"分钟后再次砍价");
         }
         map.put("status", "success");
         map.put("msg", "send ok");
@@ -263,10 +277,11 @@ public class GatherController {
      */
     @RequestMapping("/delete")
     @Transactional
-    public R delete(@RequestBody String[] ids) {
+    public ReturnResult delete(@RequestBody String[] ids) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         gatherService.deleteBatchIds(Arrays.asList(ids));
         distributionService.deleteActivity(Arrays.asList(ids));
-        return R.ok();
+        return result;
     }
 
 }

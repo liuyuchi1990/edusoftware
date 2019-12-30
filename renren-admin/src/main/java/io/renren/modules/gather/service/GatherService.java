@@ -38,7 +38,7 @@ public interface GatherService extends IService<GatherEntity> {
 
     Map<String, Object> queryLikeTime(PrizeEntity pz);
 
-    List<Map<String, Object>> queryList (Map<String, Object> param);
+    List<Map<String, Object>> queryList (String id);
 
     int releasePrize(String id);
 }

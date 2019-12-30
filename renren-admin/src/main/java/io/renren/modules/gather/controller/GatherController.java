@@ -77,7 +77,7 @@ public class GatherController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         ActivityEntity act = new ActivityEntity();
-        GatherEntity gatherEntity = gatherService.selectById(gather.getId());
+        GatherEntity gatherEntity = gatherService.queryById(gather);
         if("info".equals(gather.getType())){
             act.setId(gather.getId());
             act.setViewNum(1);
@@ -116,7 +116,7 @@ public class GatherController {
             gather.setCreateTime(new Date());
             gather.setPrizeLeft(gather.getPriceNum());
             gather.setTemplateId(gather.getId());
-            gatherService.insertAllColumn(gather);
+            gatherService.insertGatherEntity(gather);
             distributionService.insertActivity(gather);
             if((!"".equals(gather.getTemplateId())) && gather.getTemplateId() != null){
                 act.setId(gather.getTemplateId());
@@ -127,7 +127,7 @@ public class GatherController {
             QRCodeUtils.encode(text, null, qrGatherImgUrl, gather.getId(), true);
         } else {
             gather.setUpdateTime(new Date());
-            gatherService.updateById(gather);//全部更新
+            gatherService.updateGatherEntity(gather);//全部更新
             distributionService.updateActivity(gather);
         }
         map.put("gather",gather);
@@ -143,13 +143,13 @@ public class GatherController {
     @ResponseBody
     public ReturnResult copy(@RequestBody GatherEntity gather) throws Exception {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
-        GatherEntity ga = gatherService.selectById(gather.getId());
+        GatherEntity ga = gatherService.queryById(gather);
         Map<String, Object> map = new HashedMap();
         ActivityEntity act = new ActivityEntity();
         ga.setQrImg(httpgatherurl + ga.getId() + ".jpg");
         ga.setCreateTime(new Date());
         ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-        gatherService.insertAllColumn(ga);
+        gatherService.insertGatherEntity(ga);
         distributionService.insertActivity(ga);
         if((!"".equals(gather.getTemplateId())) && gather.getTemplateId() != null){
             act.setId(gather.getTemplateId());
@@ -180,7 +180,9 @@ public class GatherController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         Map<String, Object> pList = gatherService.queryLikeTime(pz);
-        GatherEntity gz = gatherService.selectById(pz.getActivityId());
+        GatherEntity temp = new GatherEntity();
+        temp.setId(pz.getActivityId());
+        GatherEntity gz = gatherService.queryById(temp);
         long minutes = 0;
         Long prize_time = Long.parseLong(pList.get("prize_time").toString());
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

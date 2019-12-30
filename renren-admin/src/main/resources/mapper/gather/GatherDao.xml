@@ -49,6 +49,7 @@ t.update_user,
 t.create_time,
 t.update_time,
 t.qr_img,
+t.company_info,
 t.head_image,
 t.phone,
 t.gift,
@@ -86,6 +87,7 @@ price_description,
 activity_rule,
 price_info,
 company_description,
+company_info,
 thumbnail,
 discount,
 update_user,
@@ -99,6 +101,7 @@ prize_left,
 foot_image,
 bg_image,
 address,
+create_user,
 create_time
 )
 VALUES
@@ -114,6 +117,7 @@ VALUES
 #{activityRule,jdbcType=VARCHAR},
 #{priceInfo,jdbcType=VARCHAR},
 #{companyDescription,jdbcType=VARCHAR},
+#{companyInfo,jdbcType=VARCHAR},
 #{thumbnail,jdbcType=VARCHAR},
 #{discount,jdbcType=VARCHAR},
 #{updateUser,jdbcType=VARCHAR},
@@ -127,6 +131,7 @@ VALUES
 #{footImage,jdbcType=VARCHAR},
 #{bgImage,jdbcType=VARCHAR},
 #{address,jdbcType=VARCHAR},
+#{createUser,jdbcType=VARCHAR},
 SYSDATE())
     </insert>
 
@@ -163,6 +168,9 @@ SYSDATE())
             </if>
             <if test="companyDescription!= null">
                 company_description=#{companyDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="companyInfo!= null">
+                company_info=#{companyInfo,jdbcType=VARCHAR},
             </if>
             <if test="thumbnail!= null">
                 thumbnail=#{thumbnail,jdbcType=VARCHAR},

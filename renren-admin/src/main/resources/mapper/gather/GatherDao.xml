@@ -73,8 +73,8 @@ WHERE
 	t.id = #{id,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertPrizeLog" parameterType="io.renren.modules.gather.entity.GatherEntity">
-INSERT INTO tb_prize_log (
+    <insert id="insertGatherEntity" parameterType="io.renren.modules.gather.entity.GatherEntity">
+INSERT INTO tb_gather (
 id,
 activity_name,
 start_time,
@@ -129,6 +129,86 @@ VALUES
 #{address,jdbcType=VARCHAR},
 SYSDATE())
     </insert>
+
+    <update id="updateGatherEntity" parameterType="io.renren.modules.gather.entity.GatherEntity">
+        UPDATE
+        tb_gather
+        <set>
+            <if test="activityName!= null">
+                activity_name=#{activityName,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime!= null">
+                start_time=#{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime!= null">
+                end_time=#{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="priceNum!= null">
+                price_num=#{priceNum,jdbcType=INTEGER},
+            </if>
+            <if test="targetNum!= null">
+                target_num=#{targetNum,jdbcType=INTEGER},
+            </if>
+            <if test="restrictTime!= null">
+                restrict_time=#{restrictTime,jdbcType=INTEGER},
+            </if>
+            <if test="priceDescription!= null">
+                price_description=#{priceDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="activityRule!= null">
+                activity_rule=#{activityRule,jdbcType=VARCHAR},
+            </if>
+            <if test="priceInfo!= null">
+                price_info=#{priceInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyDescription!= null">
+                company_description=#{companyDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="thumbnail!= null">
+                thumbnail=#{thumbnail,jdbcType=VARCHAR},
+            </if>
+            <if test="discount!= null">
+                discount=#{discount,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser!= null">
+                update_user=#{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="qrImg!= null">
+                qr_img=#{qrImg,jdbcType=VARCHAR},
+            </if>
+            <if test="headImage!= null">
+                head_image=#{headImage,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!= null">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="gift!= null">
+                gift=#{gift,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude!= null">
+                longitude=#{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude!= null">
+                latitude=#{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeLeft!= null">
+                prize_left=#{prizeLeft,jdbcType=INTEGER},
+            </if>
+            <if test="footImage!= null">
+                foot_image=#{footImage,jdbcType=VARCHAR},
+            </if>
+            <if test="bgImage!= null">
+                bg_image=#{bgImage,jdbcType=VARCHAR},
+            </if>
+            <if test="address!= null">
+                address=#{address,jdbcType=VARCHAR},
+            </if>
+            update_time=SYSDATE()
+        </set>
+        WHERE
+        id=#{id,jdbcType=VARCHAR}
+    </update>
+
 
 
     <insert id="insertPrizeLog" parameterType="io.renren.modules.gather.entity.PrizeEntity">

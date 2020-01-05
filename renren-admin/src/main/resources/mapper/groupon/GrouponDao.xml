@@ -32,4 +32,199 @@
         group by t.id
         order by t.create_time desc
     </select>
+
+    <select id="queryById" parameterType="io.renren.modules.groupon.entity.GrouponEntity"
+            resultType="io.renren.modules.groupon.entity.GrouponEntity">
+SELECT
+t.id,
+t.start_time,
+t.end_time,
+t.commodity_description,
+t.original_price,
+t.company_description,
+t.phone,
+t.discount,
+t.latitude,
+t.longitude,
+t.activity_name,
+t.foot_image,
+t.bg_image,
+t.update_user,
+t.update_time,
+t.head_image,
+t.create_time,
+t.qr_img,
+t.thumbnail,
+t.address,
+t.prize_info,
+t.activity_rule,
+t.company_info,
+t.create_user,
+t.question1,
+t.question2,
+t.question3,
+t.question4,
+t.question5,
+t.company_name,
+ta.view_num,
+ta.share_num,
+ifnull( tl.likeflag, 0 ) likeflag
+FROM
+tb_groupon t
+	LEFT JOIN tb_activity ta ON ta.id = t.id
+	LEFT JOIN tb_like tl ON tl.activity_id = t.id
+WHERE
+	t.id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertGatherEntity" parameterType="io.renren.modules.groupon.entity.GrouponEntity">
+INSERT INTO tb_gather (
+id,
+activity_name,
+start_time,
+end_time,
+commodity_description,
+original_price,
+activity_rule,
+prize_info,
+company_description,
+company_info,
+thumbnail,
+discount,
+update_user,
+qr_img,
+head_image,
+phone,
+longitude,
+latitude,
+foot_image,
+bg_image,
+address,
+	question1,
+	question2,
+	question3,
+	question4,
+	question5,
+create_user,
+create_time
+)
+VALUES
+	(
+#{id,jdbcType=VARCHAR},
+#{activityName,jdbcType=VARCHAR},
+#{startTime,jdbcType=VARCHAR},
+#{endTime,jdbcType=VARCHAR},
+#{commodityDescription,jdbcType=VARCHAR},
+#{originalPrice,jdbcType=DECIMAL},
+#{activityRule,jdbcType=VARCHAR},
+#{prizeInfo,jdbcType=VARCHAR},
+#{companyDescription,jdbcType=VARCHAR},
+#{companyInfo,jdbcType=VARCHAR},
+#{thumbnail,jdbcType=VARCHAR},
+#{discount,jdbcType=VARCHAR},
+#{updateUser,jdbcType=VARCHAR},
+#{qrImg,jdbcType=VARCHAR},
+#{headImage,jdbcType=VARCHAR},
+#{phone,jdbcType=VARCHAR},
+#{longitude,jdbcType=VARCHAR},
+#{latitude,jdbcType=VARCHAR},
+#{footImage,jdbcType=VARCHAR},
+#{bgImage,jdbcType=VARCHAR},
+#{address,jdbcType=VARCHAR},
+#{question1,jdbcType=VARCHAR},
+#{question2,jdbcType=VARCHAR},
+#{question3,jdbcType=VARCHAR},
+#{question4,jdbcType=VARCHAR},
+#{question5,jdbcType=VARCHAR},
+#{createUser,jdbcType=VARCHAR},
+SYSDATE())
+    </insert>
+
+    <update id="updateGatherEntity" parameterType="io.renren.modules.gather.entity.GatherEntity">
+        UPDATE
+        tb_gather
+        <set>
+            <if test="activityName!= null">
+                activity_name=#{activityName,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime!= null">
+                start_time=#{startTime,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime!= null">
+                end_time=#{endTime,jdbcType=VARCHAR},
+            </if>
+            <if test="commodityDescription!= null">
+                commodity_description=#{commodityDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="originalPrice!= null">
+                original_price=#{originalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="activityRule!= null">
+                activity_rule=#{activityRule,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeInfo!= null">
+                prize_info=#{prizeInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="companyDescription!= null">
+                company_description=#{companyDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="companyInfo!= null">
+                company_info=#{companyInfo,jdbcType=VARCHAR},
+            </if>
+            <if test="thumbnail!= null">
+                thumbnail=#{thumbnail,jdbcType=VARCHAR},
+            </if>
+            <if test="discount!= null">
+                discount=#{discount,jdbcType=VARCHAR},
+            </if>
+            <if test="updateUser!= null">
+                update_user=#{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="qrImg!= null">
+                qr_img=#{qrImg,jdbcType=VARCHAR},
+            </if>
+            <if test="headImage!= null">
+                head_image=#{headImage,jdbcType=VARCHAR},
+            </if>
+            <if test="phone!= null">
+                phone=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="longitude!= null">
+                longitude=#{longitude,jdbcType=VARCHAR},
+            </if>
+            <if test="latitude!= null">
+                latitude=#{latitude,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeLeft!= null">
+                prize_left=#{prizeLeft,jdbcType=INTEGER},
+            </if>
+            <if test="footImage!= null">
+                foot_image=#{footImage,jdbcType=VARCHAR},
+            </if>
+            <if test="bgImage!= null">
+                bg_image=#{bgImage,jdbcType=VARCHAR},
+            </if>
+            <if test="address!= null">
+                address=#{address,jdbcType=VARCHAR},
+            </if>
+            <if test="question1!= null">
+                question1=#{question1,jdbcType=VARCHAR},
+            </if>
+            <if test="question2!= null">
+                question2=#{question2,jdbcType=VARCHAR},
+            </if>
+            <if test="question3!= null">
+                question3=#{question3,jdbcType=VARCHAR},
+            </if>
+            <if test="question4!= null">
+                question4=#{question4,jdbcType=VARCHAR},
+            </if>
+            <if test="question5!= null">
+                question5=#{question5,jdbcType=VARCHAR},
+            </if>
+            update_time=SYSDATE()
+        </set>
+        WHERE
+        id=#{id,jdbcType=VARCHAR}
+    </update>
 </mapper>

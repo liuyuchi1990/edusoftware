@@ -15,5 +15,11 @@ import java.util.Map;
  */
 public interface GrouponDao extends BaseMapper<GrouponEntity> {
     List<Map<String, Object>> queryList (String id);
+
+    GrouponEntity queryById(GrouponEntity grouponEntity);
+
+    int insertGatherEntity(GrouponEntity gatherEntity);
+
+    public int updateGatherEntity(GrouponEntity gatherEntity);
 	
 }

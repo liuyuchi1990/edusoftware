@@ -33,4 +33,16 @@ public class GrouponServiceImpl extends ServiceImpl<GrouponDao, GrouponEntity> i
     public List<Map<String, Object>> queryList (String id){
         return grouponDao.queryList(id);
     };
+
+    public GrouponEntity queryById(GrouponEntity grouponEntity) {
+        return grouponDao.queryById(grouponEntity);
+    }
+
+    public int insertGatherEntity(GrouponEntity gatherEntity) {
+        return grouponDao.insertGatherEntity(gatherEntity);
+    }
+
+    public int updateGatherEntity(GrouponEntity gatherEntity) {
+        return grouponDao.updateGatherEntity(gatherEntity);
+    }
 }

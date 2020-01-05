@@ -19,5 +19,11 @@ public interface GrouponService extends IService<GrouponEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<Map<String, Object>> queryList (String id);
+
+    GrouponEntity queryById(GrouponEntity grouponEntity);
+
+    int insertGatherEntity(GrouponEntity gatherEntity);
+
+    public int updateGatherEntity(GrouponEntity gatherEntity);
 }
 

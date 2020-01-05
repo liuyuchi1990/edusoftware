@@ -8,7 +8,8 @@ import com.alibaba.fastjson.JSONArray;
 import io.renren.common.config.Constants;
 import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.validator.ValidatorUtils;
-import io.renren.modules.bargin.entity.BarginEntity;
+import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.activity.service.ActivityService;
 import io.renren.modules.distribution.service.DistributionService;
 import io.renren.modules.groupon.entity.GrouponEntity;
 import io.renren.modules.order.model.Order;
@@ -25,7 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import io.renren.modules.groupon.entity.GrouponEntity;
 import io.renren.modules.groupon.service.GrouponService;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
@@ -52,6 +52,9 @@ public class GrouponController {
     SysUserService sysUserService;
 
     @Autowired
+    private ActivityService activityService;
+
+    @Autowired
     private OrderService orderService;
     @Value("${qr.groupon}")
     String qrGrouponUrl;
@@ -75,11 +78,17 @@ public class GrouponController {
     /**
      * 信息
      */
-    @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") String id){
-        GrouponEntity groupon = grouponService.selectById(id);
-        List<Map<String, Object>> orders = orderService.queryByActivtyId(id);
-        return R.ok().put("groupon", groupon).put("order", orders);
+    @RequestMapping(value = "/info", method = RequestMethod.POST)
+    public ReturnResult info(@RequestBody GrouponEntity groupon) {
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
+        GrouponEntity grouponEntity = grouponService.queryById(groupon);
+        List<Map<String, Object>> orders = orderService.queryByActivtyId(groupon.getId());
+        map.put("groupon",grouponEntity);
+        map.put("order", orders);
+        result.setResult(map);
+        return result;
     }
 
     /**
@@ -87,13 +96,21 @@ public class GrouponController {
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @Transactional
-    public R save(@RequestBody GrouponEntity groupon) throws Exception {
+    public ReturnResult save(@RequestBody GrouponEntity groupon) throws Exception {
+        ActivityEntity act = new ActivityEntity();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
         if ("".equals(groupon.getId())||groupon.getId()==null) {
             groupon.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             groupon.setQrImg(httpgrouponurl + groupon.getId() + ".jpg");
             groupon.setCreateTime(new Date());
             grouponService.insertAllColumn(groupon);
             distributionService.insertActivity(groupon);
+            if((!"".equals(groupon.getTemplateId())) && groupon.getTemplateId() != null){
+                act.setId(groupon.getTemplateId());
+                act.setUseNum(1);
+                activityService.updateActivityState(act);
+            }
             String text = qrGrouponUrl.replace("id=", "id=" + groupon.getId());
             QRCodeUtils.encode(text, null, qrGrouponImgUrl, groupon.getId(), true);
         }else{
@@ -102,7 +119,9 @@ public class GrouponController {
             distributionService.updateActivity(groupon);
 
         }
-        return R.ok().put("groupon", groupon);
+        map.put("groupon",groupon);
+        result.setResult(map);
+        return result;
     }
 
     /**
@@ -112,16 +131,26 @@ public class GrouponController {
     @Transactional
     //@RequiresPermissions("sys:distribution:save")
     @ResponseBody
-    public R copy(@RequestBody GrouponEntity groupon) throws Exception {
-        GrouponEntity ga = grouponService.selectById(groupon.getId());
-        ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-        ga.setQrImg(httpgrouponurl + ga.getId() + ".jpg");
-        ga.setCreateTime(new Date());
-        grouponService.insertAllColumn(ga);
-        distributionService.insertActivity(ga);
-        String text = qrGrouponUrl.replace("id=", "id=" + ga.getId());
-        QRCodeUtils.encode(text, null, qrGrouponImgUrl, ga.getId(), true);
-        return R.ok();
+    public ReturnResult copy(@RequestBody GrouponEntity groupon) throws Exception {
+        Map<String, Object> map = new HashedMap();
+        ActivityEntity act = new ActivityEntity();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        GrouponEntity ge = grouponService.queryById(groupon);
+        ge.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        ge.setQrImg(httpgrouponurl + ge.getId() + ".jpg");
+        ge.setCreateTime(new Date());
+        grouponService.insertAllColumn(ge);
+        distributionService.insertActivity(ge);
+        if((!"".equals(ge.getTemplateId())) && ge.getTemplateId() != null){
+            act.setId(ge.getTemplateId());
+            act.setUseNum(1);
+            activityService.updateActivityState(act);
+        }
+        String text = qrGrouponUrl.replace("id=", "id=" + ge.getId());
+        QRCodeUtils.encode(text, null, qrGrouponImgUrl, ge.getId(), true);
+        map.put("groupon",ge);
+        result.setResult(map);
+        return result;
     }
 
 
@@ -132,7 +161,9 @@ public class GrouponController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> mp = new HashedMap();
         SysUserEntity user = new SysUserEntity();
-        GrouponEntity ge = grouponService.selectById(order.getActivityId());
+        GrouponEntity grouponEntity = new GrouponEntity();
+        grouponEntity.setId(order.getActivityId());
+        GrouponEntity ge = grouponService.queryById(grouponEntity);
         List<Map<String,Object>> groupList = orderService.queryByGroupId(order.getGroupId());
         List<Map<String,String>> disList = JSONArray.parseObject(ge.getDiscount(),List.class);
         OrderInfo orderInfo = new OrderInfo();
@@ -190,10 +221,11 @@ public class GrouponController {
     @RequestMapping("/delete")
     @Transactional
     //@RequiresPermissions("groupon:groupon:delete")
-    public R delete(@RequestBody String[] ids){
+    public ReturnResult delete(@RequestBody String[] ids){
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         grouponService.deleteBatchIds(Arrays.asList(ids));
         distributionService.deleteActivity(Arrays.asList(ids));
-        return R.ok();
+        return result;
     }
 
     @RequestMapping("/queryAll")

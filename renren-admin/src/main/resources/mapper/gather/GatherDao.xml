@@ -63,6 +63,11 @@ ta.create_user,
 ta.template_id,
 ta.like_num,
 ta.use_num,
+	t.question1,
+	t.question2,
+	t.question3,
+	t.question4,
+	t.question5,
 ta.view_num,
 ta.share_num,
 ifnull( tl.likeflag, 0 ) likeflag
@@ -101,6 +106,11 @@ prize_left,
 foot_image,
 bg_image,
 address,
+	question1,
+	question2,
+	question3,
+	question4,
+	question5,
 create_user,
 create_time
 )
@@ -131,6 +141,11 @@ VALUES
 #{footImage,jdbcType=VARCHAR},
 #{bgImage,jdbcType=VARCHAR},
 #{address,jdbcType=VARCHAR},
+#{question1,jdbcType=VARCHAR},
+#{question2,jdbcType=VARCHAR},
+#{question3,jdbcType=VARCHAR},
+#{question4,jdbcType=VARCHAR},
+#{question5,jdbcType=VARCHAR},
 #{createUser,jdbcType=VARCHAR},
 SYSDATE())
     </insert>
@@ -210,6 +225,21 @@ SYSDATE())
             </if>
             <if test="address!= null">
                 address=#{address,jdbcType=VARCHAR},
+            </if>
+            <if test="question1!= null">
+                question1=#{question1,jdbcType=VARCHAR},
+            </if>
+            <if test="question2!= null">
+                question2=#{question2,jdbcType=VARCHAR},
+            </if>
+            <if test="question3!= null">
+                question3=#{question3,jdbcType=VARCHAR},
+            </if>
+            <if test="question4!= null">
+                question4=#{question4,jdbcType=VARCHAR},
+            </if>
+            <if test="question5!= null">
+                question5=#{question5,jdbcType=VARCHAR},
             </if>
             update_time=SYSDATE()
         </set>

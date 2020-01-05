@@ -280,6 +280,7 @@ SELECT
 	t.question2,
 	t.question3,
 	t.question4,
+	t.question5,
 	ta.create_user,
 	ta.template_id,
 	ta.like_num,

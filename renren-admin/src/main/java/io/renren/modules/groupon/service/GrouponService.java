@@ -22,8 +22,8 @@ public interface GrouponService extends IService<GrouponEntity> {
 
     GrouponEntity queryById(GrouponEntity grouponEntity);
 
-    int insertGatherEntity(GrouponEntity gatherEntity);
+    int insertGrouponEntity(GrouponEntity grouponEntity);
 
-    public int updateGatherEntity(GrouponEntity gatherEntity);
+    int updateGrouponEntity(GrouponEntity grouponEntity);
 }
 

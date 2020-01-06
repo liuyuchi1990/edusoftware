@@ -77,8 +77,8 @@ WHERE
 	t.id = #{id,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertGatherEntity" parameterType="io.renren.modules.groupon.entity.GrouponEntity">
-INSERT INTO tb_gather (
+    <insert id="insertGrouponEntity" parameterType="io.renren.modules.groupon.entity.GrouponEntity">
+INSERT INTO tb_groupon (
 id,
 activity_name,
 start_time,
@@ -140,9 +140,9 @@ VALUES
 SYSDATE())
     </insert>
 
-    <update id="updateGatherEntity" parameterType="io.renren.modules.gather.entity.GatherEntity">
+    <update id="updateGrouponEntity" parameterType="io.renren.modules.groupon.entity.GrouponEntity">
         UPDATE
-        tb_gather
+        tb_groupon
         <set>
             <if test="activityName!= null">
                 activity_name=#{activityName,jdbcType=VARCHAR},

@@ -38,11 +38,11 @@ public class GrouponServiceImpl extends ServiceImpl<GrouponDao, GrouponEntity> i
         return grouponDao.queryById(grouponEntity);
     }
 
-    public int insertGatherEntity(GrouponEntity gatherEntity) {
-        return grouponDao.insertGatherEntity(gatherEntity);
+    public int insertGrouponEntity(GrouponEntity grouponEntity) {
+        return grouponDao.insertGrouponEntity(grouponEntity);
     }
 
-    public int updateGatherEntity(GrouponEntity gatherEntity) {
-        return grouponDao.updateGatherEntity(gatherEntity);
+    public int updateGrouponEntity(GrouponEntity grouponEntity) {
+        return grouponDao.updateGrouponEntity(grouponEntity);
     }
 }

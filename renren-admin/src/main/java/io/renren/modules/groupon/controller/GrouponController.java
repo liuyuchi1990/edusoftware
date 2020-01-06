@@ -104,7 +104,7 @@ public class GrouponController {
             groupon.setId(UUID.randomUUID().toString().replaceAll("-", ""));
             groupon.setQrImg(httpgrouponurl + groupon.getId() + ".jpg");
             groupon.setCreateTime(new Date());
-            grouponService.insertAllColumn(groupon);
+            grouponService.insertGrouponEntity(groupon);
             distributionService.insertActivity(groupon);
             if((!"".equals(groupon.getTemplateId())) && groupon.getTemplateId() != null){
                 act.setId(groupon.getTemplateId());
@@ -115,7 +115,7 @@ public class GrouponController {
             QRCodeUtils.encode(text, null, qrGrouponImgUrl, groupon.getId(), true);
         }else{
             groupon.setUpdateTime(new Date());
-            grouponService.updateById(groupon);//全部更新
+            grouponService.updateGrouponEntity(groupon);//全部更新
             distributionService.updateActivity(groupon);
 
         }
@@ -139,7 +139,7 @@ public class GrouponController {
         ge.setId(UUID.randomUUID().toString().replaceAll("-", ""));
         ge.setQrImg(httpgrouponurl + ge.getId() + ".jpg");
         ge.setCreateTime(new Date());
-        grouponService.insertAllColumn(ge);
+        grouponService.insertGrouponEntity(ge);
         distributionService.insertActivity(ge);
         if((!"".equals(ge.getTemplateId())) && ge.getTemplateId() != null){
             act.setId(ge.getTemplateId());

@@ -147,6 +147,8 @@ public class GrouponEntity implements Serializable {
 	 */
 	private String templateId;
 
+	private String companyInfo;
+
 	/**
 	 * 设置：
 	 */
@@ -502,5 +504,13 @@ public class GrouponEntity implements Serializable {
 
 	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
+	}
+
+	public String getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(String companyInfo) {
+		this.companyInfo = companyInfo;
 	}
 }

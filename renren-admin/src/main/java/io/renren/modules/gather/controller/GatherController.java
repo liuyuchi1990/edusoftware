@@ -80,10 +80,18 @@ public class GatherController {
         ActivityEntity act = new ActivityEntity();
         GatherEntity gatherEntity = gatherService.queryById(gather);
         if("info".equals(gather.getType())){
+            List<Map<String, Object>> mp = new ArrayList<>();
             act.setId(gather.getId());
             act.setViewNum(1);
             activityService.updateActivityState(act);
+            if(gatherEntity.getTargetNum()==null){
+                mp = gatherService.queryHelp(gather.getId());
+            }else{
+                mp = gatherService.queryHelp(gather.getId());
+            }
+            map.put("order",mp);
         }
+
         map.put("gather",gatherEntity);
         result.setResult(map);
         return result;

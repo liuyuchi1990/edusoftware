@@ -34,6 +34,8 @@ public interface GatherService extends IService<GatherEntity> {
 
     List<Map<String, Object>> queryLike(String id);
 
+    List<Map<String, Object>> queryHelp(String id);
+
     List<Map<String, Object>> queryLikeLog(String id);
 
     List<Map<String, Object>> queryGatherByMobileAndActivityId(Order order);

@@ -62,6 +62,10 @@ public class GatherServiceImpl extends ServiceImpl<GatherDao, GatherEntity> impl
         return gatherDao.queryLike(id);
     }
 
+    public List<Map<String, Object>> queryHelp(String id) {
+        return gatherDao.queryHelp(id);
+    }
+
     public List<Map<String, Object>> queryLikeLog(String id) {
         return gatherDao.queryLikeLog(id);
     }

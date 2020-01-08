@@ -32,6 +32,8 @@ public interface GatherDao extends BaseMapper<GatherEntity> {
 
     List<Map<String, Object>> queryLike(String id);
 
+    List<Map<String, Object>> queryHelp(String id);
+
     List<Map<String, Object>> queryLikeLog(String id);
 
     Map<String, Object> queryPrizeLog(String id);

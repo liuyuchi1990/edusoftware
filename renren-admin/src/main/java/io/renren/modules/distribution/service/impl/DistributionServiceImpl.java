@@ -94,7 +94,11 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setThumbnail(gatherEntity.getThumbnail());
         activityEntity.setEndTime(gatherEntity.getEndTime());
         activityEntity.setStartTime(gatherEntity.getStartTime());
-        activityEntity.setActivityType(Constants.GATHER);
+        if(Constants.HELP.equals(gatherEntity.getType())){
+            activityEntity.setActivityType(Constants.HELP);
+        }else{
+            activityEntity.setActivityType(Constants.GATHER);
+        }
         activityEntity.setPrizeNum(gatherEntity.getPriceNum());
         activityEntity.setPrizeLeft(gatherEntity.getPriceNum());
         activityEntity.setCreateUser(gatherEntity.getCreateUser());

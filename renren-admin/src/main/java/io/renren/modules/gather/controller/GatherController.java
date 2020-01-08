@@ -150,6 +150,9 @@ public class GatherController {
         ga.setQrImg(httpgatherurl + ga.getId() + ".jpg");
         ga.setCreateTime(new Date());
         ga.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        if(ga.getTargetNum()==null){
+            ga.setType(Constants.HELP);
+        }
         gatherService.insertGatherEntity(ga);
         distributionService.insertActivity(ga);
         if((!"".equals(gather.getTemplateId())) && gather.getTemplateId() != null){
@@ -242,6 +245,19 @@ public class GatherController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         List<Map<String, Object>> mp = gatherService.queryLike(pz.getActivityId());
+        map.put("status", "success");
+        map.put("msg", "send ok");
+        map.put("data", mp);
+        result.setResult(map);
+        return result;
+    }
+
+    @RequestMapping(value = "/queryHelp", method = RequestMethod.POST)
+    //@RequiresPermissions("sys:distribution:delete")
+    public ReturnResult queryHelp(@RequestBody PrizeEntity pz) {
+        Map<String, Object> map = new HashedMap();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        List<Map<String, Object>> mp = gatherService.queryHelp(pz.getActivityId());
         map.put("status", "success");
         map.put("msg", "send ok");
         map.put("data", mp);

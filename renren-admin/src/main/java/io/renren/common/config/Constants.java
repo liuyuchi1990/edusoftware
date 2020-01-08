@@ -93,6 +93,8 @@ public class Constants {
 
     public static final String Lottery = "5";
 
+    public static final String HELP = "6";
+
     /**
      * 短信接口参数
      */
@@ -106,5 +108,4 @@ public class Constants {
 
     public static final String SMSINTERVAL= "2";
 
-    public static final String HELP= "HELP";
 }

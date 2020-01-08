@@ -329,7 +329,7 @@ order by create_time
     </select>
 
     <select id="queryPrizeLog" parameterType="java.lang.String" resultType="java.util.Map">
-        select t.*,round(length(t.likes)/33,0) likeNum,u.headimgurl,u.username from tb_prize_log t
+        select t.*,round(length(t.likes)/33,0) likeNum,u.headimgurl,t.user_name username from tb_prize_log t
         left join sys_user u on u.user_id=t.user_id
         where id = #{id,jdbcType=VARCHAR}
     </select>

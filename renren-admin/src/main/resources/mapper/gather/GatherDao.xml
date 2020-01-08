@@ -248,26 +248,35 @@ SYSDATE())
     </update>
 
 
-
     <insert id="insertPrizeLog" parameterType="io.renren.modules.gather.entity.PrizeEntity">
     INSERT INTO tb_prize_log(id,
     activity_id,
     likes,
     user_id,
+    user_name,
+    mobile,
     complete_time,
     state,
     prize_num,
     prize_time,
+	question3,
+	question4,
+	question5,
     create_time)
     VALUES(
     #{id,jdbcType=VARCHAR},
     #{activityId,jdbcType=VARCHAR},
     #{likes,jdbcType=VARCHAR},
     #{userId,jdbcType=VARCHAR},
+    #{userName,jdbcType=VARCHAR},
+    #{mobile,jdbcType=VARCHAR},
     #{completeTime,jdbcType=VARCHAR},
     #{state,jdbcType=VARCHAR},
     #{prizeNum,jdbcType=VARCHAR},
     #{prizeTime,jdbcType=VARCHAR},
+    #{question3,jdbcType=VARCHAR},
+    #{question4,jdbcType=VARCHAR},
+    #{question5,jdbcType=VARCHAR},
     SYSDATE()
     )
 </insert>

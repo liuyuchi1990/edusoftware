@@ -105,4 +105,6 @@ public class Constants {
     public static final String SMSSIGN= "小象社交新营销";
 
     public static final String SMSINTERVAL= "2";
+
+    public static final String HELP= "HELP";
 }

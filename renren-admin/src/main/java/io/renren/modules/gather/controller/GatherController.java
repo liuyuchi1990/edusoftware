@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import io.renren.common.config.Constants;
 import io.renren.common.utils.QRCodeUtils;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.modules.activity.entity.ActivityEntity;
@@ -94,9 +95,9 @@ public class GatherController {
     @RequestMapping("/queryAll")
     //@RequiresPermissions("sys:distribution:list")
     public ReturnResult queryAll(@RequestBody GatherEntity params) {
+        Map<String, Object> map = new HashedMap();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         List<Map<String, Object>> activityLst = gatherService.queryList(params.getCreateUser());
-        Map<String, Object> map = new HashedMap();
         map.put("data", activityLst);
         result.setResult(map);
         return result;
@@ -198,7 +199,7 @@ public class GatherController {
             gatherService.insertLikeLog(pz);
             Map<String, Object> p = gatherService.queryPrizeLog(pz.getId());
             int arr = p.get("likes") == null ? 0 : p.get("likes").toString().split(",").length;
-            if (arr == (gz.getTargetNum()-1)) {
+            if (arr == (gz.getTargetNum()-1)&& (!Constants.HELP.equals(pz.getType()))) {
                 pz.setCompleteTime(new Date());
                 gatherService.releasePrize(pz.getActivityId());
             }
@@ -206,7 +207,7 @@ public class GatherController {
             map.put("data", mp);
         } else {
             result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-            result.setMsg("请您休息" + (gz.getRestrictTime() - minutes/60) + "小时"+ (gz.getRestrictTime()*60-minutes)%60 +"分钟后再次砍价");
+            result.setMsg("请您休息" + (gz.getRestrictTime() - minutes/60) + "小时"+ (gz.getRestrictTime()*60-minutes)%60 +"分钟后再次参加");
         }
         map.put("status", "success");
         map.put("msg", "send ok");

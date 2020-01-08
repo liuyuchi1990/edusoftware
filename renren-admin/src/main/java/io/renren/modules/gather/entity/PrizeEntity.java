@@ -16,6 +16,21 @@ public class PrizeEntity implements Serializable {
     private String prizeTime;
     private String userName;
     private String mobile;
+    private String type;
+    /**
+     * 数据采集问题5
+     */
+    private String question5;
+
+    /**
+     * 数据采集问题3
+     */
+    private String question3;
+
+    /**
+     * 数据采集问题4
+     */
+    private String question4;
 
     public String getId() {
         return id;
@@ -111,5 +126,37 @@ public class PrizeEntity implements Serializable {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getQuestion5() {
+        return question5;
+    }
+
+    public void setQuestion5(String question5) {
+        this.question5 = question5;
+    }
+
+    public String getQuestion3() {
+        return question3;
+    }
+
+    public void setQuestion3(String question3) {
+        this.question3 = question3;
+    }
+
+    public String getQuestion4() {
+        return question4;
+    }
+
+    public void setQuestion4(String question4) {
+        this.question4 = question4;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

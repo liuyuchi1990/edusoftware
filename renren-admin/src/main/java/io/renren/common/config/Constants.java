@@ -11,12 +11,12 @@ public class Constants {
      */
     public static final String PAPPID = "wxd8ea2d8f88363b1f";
 
-    public static final String PTAPPID = "wx2517d7a8920ab213";
+    public static final String PTAPPID = "wxd8ea2d8f88363b1f";
 
 
     public static final String SIGN = "HJJI8970OKMNHY726YTGHJI908YHNBGT";
 
-    public static final String PSIGN = "fc1b9700e07c9e385cc0a0d101185980";
+    public static final String PSIGN = "HJJI8970OKMNHY726YTGHJI908YHNBGT";
 
     /**
      * 微信小程序SERCRET
@@ -26,7 +26,7 @@ public class Constants {
     /**
      * 微信公众号SERCRET
      */
-    public static final String PSERCRET = "03d04cb32236f9a95d4656863310b317";
+    public static final String PSERCRET = "c049f186e20b77de3a03dfa9b7cde6b4";
 
     /**
      * 微信单次货物购买积分
@@ -48,11 +48,11 @@ public class Constants {
 
     public static final String MCH_ID = "1513253941";  //商户号
 
-    public static final String PMCH_ID = "1511521411";  //商户号
+    public static final String PMCH_ID = "1513253941";  //商户号
 
     public static final String URL_UNIFIED_ORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
-    public static final String DOMAIN = "https://wx.sharkmeida.cn";
+    public static final String DOMAIN = "https://wxp.sharkmeida.cn";
 
     public static final String URL_NOTIFY = Constants.DOMAIN + "/api/wxpay/payCallback";
 
@@ -102,10 +102,10 @@ public class Constants {
 
     public static final String SMSKEY = "428f77beecb27cd08abb8d9ea2acdfeb";
 
-    public static final Integer SMSTEMPLATEID= 449518;
+    public static final Integer SMSTEMPLATEID = 449518;
 
-    public static final String SMSSIGN= "小象社交新营销";
+    public static final String SMSSIGN = "小象社交新营销";
 
-    public static final String SMSINTERVAL= "2";
+    public static final String SMSINTERVAL = "2";
 
 }

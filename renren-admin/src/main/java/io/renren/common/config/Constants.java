@@ -9,14 +9,14 @@ public class Constants {
     /**
      * 微信公众号APPID
      */
-    public static final String PAPPID = "wxd8ea2d8f88363b1f";
+    public static final String PAPPID = "wxe1a18acc280136bb";
 
-    public static final String PTAPPID = "wxd8ea2d8f88363b1f";
+    public static final String PTAPPID = "wxe1a18acc280136bb";
 
 
     public static final String SIGN = "HJJI8970OKMNHY726YTGHJI908YHNBGT";
 
-    public static final String PSIGN = "HJJI8970OKMNHY726YTGHJI908YHNBGT";
+    public static final String PSIGN = "shandianyingxiaoshandianyingxiao";
 
     /**
      * 微信小程序SERCRET
@@ -26,7 +26,7 @@ public class Constants {
     /**
      * 微信公众号SERCRET
      */
-    public static final String PSERCRET = "c049f186e20b77de3a03dfa9b7cde6b4";
+    public static final String PSERCRET = "b6b41a77057d43b4cfa116782e97941b";
 
     /**
      * 微信单次货物购买积分
@@ -46,9 +46,9 @@ public class Constants {
 
     public static final String APP_KEY = "xyj185568014781qaz2wsx3edc4rfv5t";
 
-    public static final String MCH_ID = "1513253941";  //商户号
+    public static final String MCH_ID = "1587213511";  //商户号
 
-    public static final String PMCH_ID = "1513253941";  //商户号
+    public static final String PMCH_ID = "1587213511";  //商户号
 
     public static final String URL_UNIFIED_ORDER = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 

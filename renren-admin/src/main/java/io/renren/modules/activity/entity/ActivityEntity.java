@@ -23,6 +23,7 @@ public class ActivityEntity {
 	private String templateId;
 	private String activityType;
 	private String createUser;
+	private String qr;
 	private Date createTime;
 	private Date updateTime;
 
@@ -173,5 +174,13 @@ public class ActivityEntity {
 
 	public void setTemplateId(String templateId) {
 		this.templateId = templateId;
+	}
+
+	public String getQr() {
+		return qr;
+	}
+
+	public void setQr(String qr) {
+		this.qr = qr;
 	}
 }

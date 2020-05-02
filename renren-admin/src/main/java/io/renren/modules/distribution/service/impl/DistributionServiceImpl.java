@@ -64,6 +64,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setId(distribution.getId());
         activityEntity.setActivityName(distribution.getActivityName());
         activityEntity.setActivityState("1");
+        activityEntity.setQr(distribution.getQrImg());
         activityEntity.setThumbnail(distribution.getThumbnail());
         activityEntity.setEndTime(distribution.getEndTime());
         activityEntity.setStartTime(distribution.getStartTime());
@@ -93,6 +94,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setActivityName(gatherEntity.getActivityName());
         activityEntity.setThumbnail(gatherEntity.getThumbnail());
         activityEntity.setEndTime(gatherEntity.getEndTime());
+        activityEntity.setQr(gatherEntity.getQrImg());
         activityEntity.setStartTime(gatherEntity.getStartTime());
         if(Constants.HELP.equals(gatherEntity.getType())){
             activityEntity.setActivityType(Constants.HELP);
@@ -126,6 +128,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setThumbnail(barginEntity.getThumbnail());
         activityEntity.setEndTime(barginEntity.getEndTime());
         activityEntity.setStartTime(barginEntity.getStartTime());
+        activityEntity.setQr(barginEntity.getQrImg());
         activityEntity.setActivityType(Constants.BARGIN);
         activityEntity.setPrizeNum(barginEntity.getPrizeNum());
         activityEntity.setTemplateId(barginEntity.getTemplateId());
@@ -154,6 +157,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setThumbnail(grouponEntity.getThumbnail());
         activityEntity.setEndTime(grouponEntity.getEndTime());
         activityEntity.setStartTime(grouponEntity.getStartTime());
+        activityEntity.setQr(grouponEntity.getQrImg());
         activityEntity.setActivityType(Constants.GROUPON);
         activityEntity.setCreateUser(grouponEntity.getCreateUser());
         activityEntity.setTemplateId(grouponEntity.getTemplateId());
@@ -177,6 +181,7 @@ public class DistributionServiceImpl extends ServiceImpl<DistributionDao, Distri
         activityEntity.setActivityName(lotteryEntity.getActivityName());
         activityEntity.setThumbnail(lotteryEntity.getThumbnail());
         activityEntity.setActivityType(Constants.Lottery);
+        activityEntity.setQr(lotteryEntity.getQrImg());
         activityEntity.setCreateUser(lotteryEntity.getCreateUser());
         activityEntity.setTemplateId(lotteryEntity.getTemplateId());
         return distributionDao.insertActivity(activityEntity);

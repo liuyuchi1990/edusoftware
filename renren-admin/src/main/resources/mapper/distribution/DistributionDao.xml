@@ -91,6 +91,7 @@ VALUES
  prize_left,
  create_user,
  create_time,
+ qr,
  activity_state)
 	VALUES(
 		#{id,jdbcType=VARCHAR},
@@ -104,6 +105,7 @@ VALUES
 		#{prizeLeft,jdbcType=INTEGER},
 		#{createUser,jdbcType=VARCHAR},
 		SYSDATE(),
+		#{qr,jdbcType=VARCHAR},
 		#{activityState,jdbcType=VARCHAR})
 	</insert>
 

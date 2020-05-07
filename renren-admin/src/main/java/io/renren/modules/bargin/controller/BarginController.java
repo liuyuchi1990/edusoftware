@@ -50,7 +50,7 @@ public class BarginController {
     private DistributionService distributionService;
 
     @Autowired
-    private ActivityService  activityService;
+    private ActivityService activityService;
 
     @Value("${qr.bargin}")
     String qrBarginUrl;
@@ -94,13 +94,13 @@ public class BarginController {
         ActivityEntity act = new ActivityEntity();
         BarginEntity barginEntity = barginService.queryById(bargin.getId());
         List<Map<String, Object>> orders = orderService.queryByActivtyId(bargin.getId());
-        if("info".equals(bargin.getType())){
+        if ("info".equals(bargin.getType())) {
             act.setId(bargin.getId());
             act.setViewNum(1);
             activityService.updateActivityState(act);
         }
-        map.put("bargin",barginEntity);
-        map.put("order",orders);
+        map.put("bargin", barginEntity);
+        map.put("order", orders);
         result.setResult(map);
         return result;
     }
@@ -122,7 +122,7 @@ public class BarginController {
             bargin.setTemplateId(bargin.getId());
             barginService.insertBarginEntity(bargin);
             distributionService.insertActivity(bargin);
-            if((!"".equals(bargin.getTemplateId())) && bargin.getTemplateId() != null){
+            if ((!"".equals(bargin.getTemplateId())) && bargin.getTemplateId() != null) {
                 act.setId(bargin.getTemplateId());
                 act.setUseNum(1);
                 activityService.updateActivityState(act);
@@ -134,7 +134,7 @@ public class BarginController {
             barginService.updateBarginEntity(bargin);//全部更新
             distributionService.updateActivity(bargin);
         }
-        map.put("bargin",bargin);
+        map.put("bargin", bargin);
         result.setResult(map);
         return result;
     }
@@ -156,14 +156,14 @@ public class BarginController {
         barginEntity.setCreateTime(new Date());
         barginService.insertBarginEntity(barginEntity);
         distributionService.insertActivity(barginEntity);
-        if(bargin.getId().equals(bargin.getTemplateId())){
+        if (bargin.getId().equals(bargin.getTemplateId())) {
             act.setId(bargin.getTemplateId());
             act.setUseNum(1);
             activityService.updateActivityState(act);
         }
         String text = qrBarginUrl.replace("id=", "id=" + barginEntity.getId());
         QRCodeUtils.encode(text, null, qrBarginImgUrl, barginEntity.getId(), true);
-        map.put("bargin",barginEntity);
+        map.put("bargin", barginEntity);
         result.setResult(map);
         return result;
     }
@@ -179,45 +179,38 @@ public class BarginController {
         LocalDateTime toDate = LocalDateTime.now();
         BarginEntity ba = barginService.queryById(order.getActivityId());
         List<Map<String, Object>> mp = barginService.queryBarginLog(order.getOrderId());
-        if (mp == null || (mp.size() < ba.getBarginNum())) {//是否超过砍价人数
-            Map<String, Object> resMap = barginService.queryMaxTime(order);
-            long minutes = 0;
-            Long restrictTime = Long.parseLong(ba.getRestrictTime().toString());
-            LocalDateTime create_time = resMap == null ? toDate : LocalDateTime.parse(resMap.get("create_time").toString().replace(".0", ""), df);
-            minutes = ChronoUnit.MINUTES.between(create_time, toDate);
-            if (restrictTime < (minutes/60) || mp.size() == 0||resMap==null) {//是否超过投票间隔时间
-                Double reduct = Math.random() * (ba.getMaxReduction().subtract(ba.getMinReduction()).doubleValue()) + ba.getMinReduction().doubleValue();
-                Double price_left = Double.valueOf(order.getTotal_price()) - reduct;
-                if (Double.valueOf(order.getTotal_price()) == (ba.getFloorPrice().doubleValue())) {
-                    result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-                    result.setMsg("您已砍至低价！");
-                    result.setResult(map);
-                } else {
-                    OrderInfo orderInfo = new OrderInfo();
-                    orderInfo.setOrder_id(order.getOrderId());
-                    if (price_left <= ba.getFloorPrice().doubleValue()) {
-                        orderInfo.setTotal_price(dfn.format(ba.getFloorPrice().doubleValue()));
-                    } else {
-                        orderInfo.setTotal_price(dfn.format(price_left));
-                    }
-                    orderService.edit(orderInfo);//modify price
-                    orderInfo.setUser_id(order.getUser_id());
-                    order.setTotal_price(dfn.format(reduct));
-                    barginService.insertBarginLog(order);
-                    map.put("data", order);
-                    result.setResult(map);
-                }
-            } else {
+        Map<String, Object> resMap = barginService.queryMaxTime(order);
+        long minutes = 0;
+        Long restrictTime = Long.parseLong(ba.getRestrictTime().toString());
+        LocalDateTime create_time = resMap == null ? toDate : LocalDateTime.parse(resMap.get("create_time").toString().replace(".0", ""), df);
+        minutes = ChronoUnit.MINUTES.between(create_time, toDate);
+        if (restrictTime < (minutes / 60) || mp.size() == 0 || resMap == null) {//是否超过投票间隔时间
+            Double reduct = Math.random() * (ba.getMaxReduction().subtract(ba.getMinReduction()).doubleValue()) + ba.getMinReduction().doubleValue();
+            Double price_left = Double.valueOf(order.getTotal_price()) - reduct;
+            if (Double.valueOf(order.getTotal_price()) == (ba.getFloorPrice().doubleValue())) {
                 result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-                result.setMsg("请您休息" + (restrictTime - minutes/60) + "小时"+ (restrictTime*60-minutes)%60 +"分钟后再次砍价");
+                result.setMsg("您已砍至低价！");
+                result.setResult(map);
+            } else {
+                OrderInfo orderInfo = new OrderInfo();
+                orderInfo.setOrder_id(order.getOrderId());
+                if (price_left <= ba.getFloorPrice().doubleValue()) {
+                    orderInfo.setTotal_price(dfn.format(ba.getFloorPrice().doubleValue()));
+                } else {
+                    orderInfo.setTotal_price(dfn.format(price_left));
+                }
+                orderService.edit(orderInfo);//modify price
+                orderInfo.setUser_id(order.getUser_id());
+                order.setTotal_price(dfn.format(reduct));
+                barginService.insertBarginLog(order);
+                map.put("data", order);
                 result.setResult(map);
             }
         } else {
             result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-            result.setMsg("超出砍价人数");
+            result.setMsg("请您休息" + (restrictTime - minutes / 60) + "小时" + (restrictTime * 60 - minutes) % 60 + "分钟后再次砍价");
             result.setResult(map);
         }
-
         return result;
     }
 
@@ -248,7 +241,7 @@ public class BarginController {
     /**
      * 删除
      */
-    @RequestMapping(value ="/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @Transactional
     public ReturnResult delete(@RequestBody String[] ids) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());

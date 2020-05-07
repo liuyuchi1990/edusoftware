@@ -4,7 +4,7 @@
 <mapper namespace="io.renren.modules.order.dao.OrderDao">
 
     <insert id="insert" parameterType="io.renren.modules.order.model.Order">
-        insert into tb_order (order_id,order_type,activity_id,user_id,from_user,red_packets,question1,question2,question3,question4,question5, create_time,total_price,group_id,order_status)
+        insert into tb_order (order_id,order_type,activity_id,user_id,from_user,red_packets,question1,question2,question3,question4,question5,user_name,create_time,total_price,group_id,order_status)
         value(
           #{orderId,jdbcType=VARCHAR},
           #{orderType,jdbcType=VARCHAR},
@@ -17,6 +17,7 @@
           #{question3,jdbcType=VARCHAR},
           #{question4,jdbcType=VARCHAR},
           #{question5,jdbcType=VARCHAR},
+          #{user_name,jdbcType=VARCHAR},
            SYSDATE(),
           #{total_price,jdbcType=VARCHAR},
           #{groupId,jdbcType=VARCHAR},

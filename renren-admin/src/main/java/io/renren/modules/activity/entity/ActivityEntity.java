@@ -40,6 +40,8 @@ public class ActivityEntity {
 	 */
 	private Integer prizeNum;
 
+	private Boolean active;
+
 	public String getId() {
 		return id;
 	}
@@ -182,5 +184,13 @@ public class ActivityEntity {
 
 	public void setQr(String qr) {
 		this.qr = qr;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 }

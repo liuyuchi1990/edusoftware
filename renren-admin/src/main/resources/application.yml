@@ -76,26 +76,26 @@ mybatis-plus:
 logging:
   level: debug
   level.io.renren: debug
-  path: /home/ubuntu/tomcat/logs/
+  path: /usr/local/tomcat/logs/
   file: admin.log
 
 root:
   img:
-    url: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs
+    url: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs
     path: https://wxp.sharkmeida.cn/imgs/
-    cert: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/cert
+    cert: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/cert
 
 qr:
   distribution: https://wxp.sharkmeida.cn/statics/dist/redirect.html?id=&hash=qianggouPro
-  distributionImgPath: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/distribution/qr
+  distributionImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/distribution/qr
   gather: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=2pageInfo&id=
-  gatherImgPath: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/gather/qr
+  gatherImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/gather/qr
   bargin: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=bargainPro&id=
-  barginImgPath: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/bargin/qr
+  barginImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/bargin/qr
   groupon: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=4pageInfo&id=
-  grouponImgPath: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/groupon/qr
+  grouponImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/groupon/qr
   lottery: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=egg&id=
-  lotteryImgPath: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/lottery/qr
+  lotteryImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/lottery/qr
   httpurl: https://wxp.sharkmeida.cn/imgs/distribution/qr/
   httpgatherurl: https://wxp.sharkmeida.cn/imgs/gather/qr/
   httpbarginurl: https://wxp.sharkmeida.cn/imgs/bargin/qr/
@@ -103,7 +103,7 @@ qr:
   httplotteryurl: https://wxp.sharkmeida.cn/imgs/lottery/qr/
 
 course:
-  path: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/imgs/course/
+  path: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/course/
 
 export:
-  path: /home/ubuntu/tomcat/apache-tomcat-8.0.53/webapps/excel/
+  path: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/excel/

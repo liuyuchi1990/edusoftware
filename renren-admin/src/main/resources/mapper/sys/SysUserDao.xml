@@ -135,5 +135,6 @@ VALUES
         SELECT
         *
         from sys_user
+        limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     </select>
 </mapper>

@@ -140,13 +140,12 @@ public class SysUserController extends AbstractController {
 	 * 修改用户
 	 */
 	@RequestMapping("/queryAllUsers")
-	@ResponseBody
-	public ReturnResult queryAllUsers(){
+	public ReturnResult queryAllUsers(@RequestParam Map<String, Object> params){
 		//ValidatorUtils.validateEntity(user, UpdateGroup.class);
 		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
 		Map<String, Object> map = new HashedMap();
 
-		List<SysUserEntity> users = sysUserService.queryAllUsers();
+		List<SysUserEntity> users = sysUserService.queryAllUsers(params);
 		map.put("user",users);
 		result.setResult(map);
 		return result;

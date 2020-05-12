@@ -73,5 +73,5 @@ public interface SysUserService extends IService<SysUserEntity> {
 
 	List<SysUserEntity>  queryForUsers(String[] ids);
 
-	List<SysUserEntity>  queryAllUsers();
+	List<SysUserEntity>  queryAllUsers(Map<String, Object> params);
 }

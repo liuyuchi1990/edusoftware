@@ -35,5 +35,7 @@ public interface SysDictService extends IService<SysDictEntity> {
 
 
     List<SysDictEntity> queryByType(SysDictEntity sysDictEntity);
+
+    List<SysDictEntity> queryByDictName(SysDictEntity sysDictEntity);
 }
 

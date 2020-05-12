@@ -160,7 +160,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		return sysUserDao.queryForUsers(ids);
 	}
 
-	public List<SysUserEntity>  queryAllUsers(){
-		return sysUserDao.queryAllUsers();
+	public List<SysUserEntity>  queryAllUsers(Map<String, Object> params){
+		int pageNum = Integer.parseInt(params.get("pageNum").toString());
+		int pageSize = Integer.parseInt(params.get("pageSize").toString());
+		return sysUserDao.queryAllUsers(pageNum, pageSize);
 	}
 }

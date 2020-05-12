@@ -52,5 +52,8 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictDao, SysDictEntity> i
     public List<SysDictEntity> queryByType(SysDictEntity sysDictEntity){
         return sysDictDao.queryByType(sysDictEntity);
     }
+    public List<SysDictEntity> queryByDictName(SysDictEntity sysDictEntity){
+        return sysDictDao.queryByDictName(sysDictEntity);
+    }
 
 }

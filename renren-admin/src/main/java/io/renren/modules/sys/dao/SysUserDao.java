@@ -18,6 +18,7 @@ package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import io.renren.modules.sys.entity.SysUserEntity;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -58,5 +59,5 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	List<SysUserEntity>  queryForUsers(String[] ids);
 
-	List<SysUserEntity>  queryAllUsers();
+	List<SysUserEntity>  queryAllUsers(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 }

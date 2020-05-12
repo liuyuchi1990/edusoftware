@@ -47,7 +47,7 @@ public class SysDictController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = sysDictService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -59,11 +59,11 @@ public class SysDictController {
      */
     @RequestMapping(value = "/queryByType", method = RequestMethod.POST)
     @ResponseBody
-    public ReturnResult queryByType(@RequestBody SysDictEntity sysDictEntity){
+    public ReturnResult queryByType(@RequestBody SysDictEntity sysDictEntity) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         List<SysDictEntity> dict = sysDictService.queryByType(sysDictEntity);
-        map.put("data",dict);
+        map.put("data", dict);
         result.setResult(map);
         return result;
     }
@@ -72,7 +72,7 @@ public class SysDictController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
+    public R info(@PathVariable("id") Long id) {
         SysDictEntity dict = sysDictService.selectById(id);
 
         return R.ok().put("dict", dict);
@@ -82,16 +82,23 @@ public class SysDictController {
      * 保存
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ReturnResult save(@RequestBody SysDictEntity dict){
+    public ReturnResult save(@RequestBody SysDictEntity dict) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
-        if ("".equals(dict.getId())) {
-            dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-            sysDictService.insert(dict);
+        List<SysDictEntity> dictlst = sysDictService.queryByDictName(dict);
+        if (dictlst.size() == 0) {
+            if ("".equals(dict.getId())) {
+                dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+                sysDictService.insert(dict);
+            } else {
+                sysDictService.updateById(dict);
+            }
+            map.put("dict", dict);
         } else {
-            sysDictService.updateById(dict);
+            result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
+            result.setMsg("标签已存在");
+            result.setResult(map);
         }
-        map.put("dict", dict);
 
         return result;
     }
@@ -100,7 +107,7 @@ public class SysDictController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
+    public R delete(@RequestBody Long[] ids) {
         sysDictService.deleteBatchIds(Arrays.asList(ids));
 
         return R.ok();

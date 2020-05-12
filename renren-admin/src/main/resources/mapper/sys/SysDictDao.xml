@@ -9,7 +9,7 @@
 
     <select id="queryByDictName" parameterType="io.renren.modules.sys.entity.SysDictEntity"
             resultType="io.renren.modules.sys.entity.SysDictEntity">
-        select * from sys_dict where name = #{name}
+        select * from sys_dict where name = #{name} and remark = #{remark}
     </select>
 
 </mapper>

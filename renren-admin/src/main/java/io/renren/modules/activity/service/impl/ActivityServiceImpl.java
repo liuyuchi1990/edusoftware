@@ -78,4 +78,10 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityDao, ActivityEntity
         return activityDao.queryAllTemplate(pageNum, pageSize, list);
     }
 
+    public List<ActivityEntity> queryAllTemplateById(Map<String, Object> params, List<String> list) {
+        int pageNum = Integer.parseInt(params.get("pageNum").toString());
+        int pageSize = Integer.parseInt(params.get("pageSize").toString());
+        return activityDao.queryAllTemplateById(pageNum, pageSize, list);
+    }
+
 }

@@ -38,4 +38,6 @@ public interface ActivityDao extends BaseMapper<ActivityEntity> {
     Map<String,Object> queryLikeByUserIdAndActivityId(ActivityEntity activityEntity);
 
     List<ActivityEntity> queryAllTemplate(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("list") List<String> list);
+
+    List<ActivityEntity> queryAllTemplateById(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("list") List<String> list);
 }

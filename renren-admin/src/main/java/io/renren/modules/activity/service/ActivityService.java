@@ -41,5 +41,8 @@ public interface ActivityService extends IService<ActivityEntity> {
 
     List<ActivityEntity> queryAllTemplate (Map<String, Object> params,List<String> list);
 
+    List<ActivityEntity> queryAllTemplateById (Map<String, Object> params,List<String> list);
+
+
 }
 

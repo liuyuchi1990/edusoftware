@@ -41,6 +41,23 @@ public class ActivityController {
     }
 
     /**
+     * 列表
+     */
+    @RequestMapping(value = "/queryAllTemplateById", method = RequestMethod.GET)
+    public ReturnResult queryAllTemplateById(@RequestParam Map<String, Object> params) {
+        List<String> lst = new ArrayList();
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        if(params.get("activityId")!=null){
+            lst = Arrays.asList(params.get("activityId").toString().split(","));
+        }
+        Map<String, Object> map = new HashedMap();
+        List<ActivityEntity> activityEntityList = activityService.queryAllTemplateById(params,lst);
+        map.put("data", activityEntityList);
+        result.setResult(map);
+        return result;
+    }
+
+    /**
      * 更新活动数据
      */
     @RequestMapping(value = "/updateActivityState", method = RequestMethod.POST)

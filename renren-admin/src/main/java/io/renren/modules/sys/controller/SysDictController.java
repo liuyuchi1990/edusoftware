@@ -86,19 +86,20 @@ public class SysDictController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         List<SysDictEntity> dictlst = sysDictService.queryByDictName(dict);
-        if (dictlst.size() == 0) {
-            if ("".equals(dict.getId())) {
+        if ("".equals(dict.getId())) {
+            if (dictlst.size() == 0) {
                 dict.setId(UUID.randomUUID().toString().replaceAll("-", ""));
                 sysDictService.insert(dict);
             } else {
-                sysDictService.updateById(dict);
+                result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
+                result.setMsg("标签已存在");
+                result.setResult(map);
             }
-            map.put("dict", dict);
         } else {
-            result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-            result.setMsg("标签已存在");
-            result.setResult(map);
+            sysDictService.updateById(dict);
         }
+        map.put("dict", dict);
+
 
         return result;
     }

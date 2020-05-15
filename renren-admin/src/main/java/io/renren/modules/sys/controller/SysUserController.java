@@ -150,6 +150,20 @@ public class SysUserController extends AbstractController {
 		result.setResult(map);
 		return result;
 	}
+
+	/**
+	 * 修改用户
+	 */
+	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnResult updateUser(@RequestBody SysUserEntity user){
+		//ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+		Map<String, Object> map = new HashedMap();
+        sysUserService.updateUser(user);
+		result.setResult(map);
+		return result;
+	}
 	
 	/**
 	 * 删除用户

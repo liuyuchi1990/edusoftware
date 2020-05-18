@@ -101,7 +101,7 @@ VALUES
 		money,
 		create_time
 		)
-		VALUES
+		VALUES(
 		#{id,jdbcType=VARCHAR},
 		#{status,jdbcType=VARCHAR},
 		#{userId,jdbcType=VARCHAR},

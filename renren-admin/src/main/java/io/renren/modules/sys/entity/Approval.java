@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Approval {
     private String id;
+    private String userId;
     private String username;
     private String headimgurl;
     private String mobile;
@@ -108,5 +109,13 @@ public class Approval {
 
     public void setHeadimgurl(String headimgurl) {
         this.headimgurl = headimgurl;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

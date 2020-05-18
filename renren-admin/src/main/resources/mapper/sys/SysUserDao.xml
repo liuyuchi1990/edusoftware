@@ -93,6 +93,23 @@ VALUES
 		)
 	</insert>
 
+	<insert id="insertApproval" parameterType="io.renren.modules.sys.entity.Approval">
+		INSERT INTO sys_approval (
+		id,
+		status,
+		user_id,
+		money,
+		create_time
+		)
+		VALUES
+		#{id,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{userId,jdbcType=VARCHAR},
+		#{money,jdbcType=VARCHAR},
+		SYSDATE()
+		)
+	</insert>
+
 	<update id="updateUser" parameterType="io.renren.modules.sys.entity.SysUserEntity">
 		update sys_user
 		<set>
@@ -117,9 +134,25 @@ VALUES
 			<if test="username!= null">
 				username =  #{username,jdbcType=VARCHAR},
 			</if>
+			<if test="account!= null">
+				account =  #{account,jdbcType=VARCHAR},
+			</if>
 			update_time =  SYSDATE()
 		</set>
 		where user_id = #{userId,jdbcType=VARCHAR}
+
+	</update>
+
+
+	<update id="updateApproval" parameterType="io.renren.modules.sys.entity.Approval">
+		update sys_approval
+		<set>
+			<if test="status!= null">
+				status =  #{status,jdbcType=INTEGER},
+			</if>
+			update_time =  SYSDATE()
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
 
 	</update>
 
@@ -140,4 +173,12 @@ VALUES
         from sys_user
         limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
     </select>
+
+	<select id="queryAllApproval" resultType="io.renren.modules.sys.entity.Approval">
+		SELECT
+		ta.id,ta.status,ta.create_time,ta.update_time,ta.money,tu.username,tu.company_name,tu.company_city,tu.company_province,tu.mobile,tu.headimgurl
+		from sys_approval ta
+		left join sys_user tu on ta.user_id= tu.user_id
+		limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+	</select>
 </mapper>

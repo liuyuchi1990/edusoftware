@@ -108,4 +108,8 @@ public class Constants {
 
     public static final String SMSINTERVAL = "2";
 
+    public static final String ApprovalSubmitFlag = "1";
+
+    public static final String ApprovalSuccessFlag = "2";
+
 }

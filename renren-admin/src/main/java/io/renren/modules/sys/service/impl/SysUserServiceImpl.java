@@ -25,6 +25,7 @@ import io.renren.common.utils.Constant;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
 import io.renren.modules.sys.dao.SysUserDao;
+import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.SysDeptEntity;
 import io.renren.modules.sys.entity.SysUserEntity;
 import io.renren.modules.sys.service.SysDeptService;
@@ -111,6 +112,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		//sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
 	}
 
+
+	public void insertApproval(Approval approval) {
+		sysUserDao.insertApproval(approval);
+	}
+
+	public void updateApproval(Approval approval) {
+		sysUserDao.updateApproval(approval);
+	}
+
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(SysUserEntity user) {
@@ -165,4 +175,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		int pageSize = Integer.parseInt(params.get("pageSize").toString());
 		return sysUserDao.queryAllUsers(pageNum, pageSize);
 	}
+
+    public List<Approval>  queryAllApproval(Map<String, Object> params){
+        int pageNum = Integer.parseInt(params.get("pageNum").toString());
+        int pageSize = Integer.parseInt(params.get("pageSize").toString());
+        return sysUserDao.queryAllApproval(pageNum, pageSize);
+    }
 }

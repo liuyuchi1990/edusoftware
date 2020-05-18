@@ -18,6 +18,7 @@ package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import io.renren.common.utils.PageUtils;
+import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
@@ -63,6 +64,10 @@ public interface SysUserService extends IService<SysUserEntity> {
 
 	void updateUser(SysUserEntity user);
 
+	void insertApproval(Approval approval);
+
+	void updateApproval(Approval approval);
+
 	SysUserEntity queryById(String id);
 
 	SysUserEntity queryByOpenId(String id);
@@ -74,4 +79,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 	List<SysUserEntity>  queryForUsers(String[] ids);
 
 	List<SysUserEntity>  queryAllUsers(Map<String, Object> params);
+
+    List<Approval>  queryAllApproval(Map<String, Object> params);
 }

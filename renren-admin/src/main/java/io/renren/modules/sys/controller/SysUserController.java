@@ -18,12 +18,16 @@ package io.renren.modules.sys.controller;
 
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.config.Constants;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.R;
 import io.renren.common.validator.Assert;
 import io.renren.common.validator.ValidatorUtils;
 import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
+import io.renren.modules.activity.entity.ActivityEntity;
+import io.renren.modules.bargin.entity.BarginEntity;
+import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.ReturnCodeEnum;
 import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -34,11 +38,13 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 系统用户
@@ -183,5 +189,42 @@ public class SysUserController extends AbstractController {
 		sysUserService.deleteBatchIds(Arrays.asList(userIds));
 		
 		return R.ok();
+	}
+
+	/**
+	 * 保存提现记录
+	 */
+	@RequestMapping(value = "/saveApproval", method = RequestMethod.POST)
+	@Transactional
+	public ReturnResult saveApproval(@RequestBody Approval approval) throws Exception {
+		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+		Map<String, Object> map = new HashedMap();
+		if ("".equals(approval.getId()) || approval.getId() == null) {
+			approval.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+			approval.setStatus(Constants.ApprovalSubmitFlag);
+			sysUserService.insertApproval(approval);
+		} else {
+			approval.setStatus(Constants.ApprovalSuccessFlag);
+			sysUserService.updateApproval(approval);//全部更新
+		}
+		map.put("approval", approval);
+		result.setResult(map);
+		return result;
+	}
+
+
+	/**
+	 * 查询提现申请
+	 */
+	@RequestMapping("/queryAllApproval")
+	public ReturnResult queryAllApproval(@RequestParam Map<String, Object> params){
+		//ValidatorUtils.validateEntity(user, UpdateGroup.class);
+		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+		Map<String, Object> map = new HashedMap();
+
+		List<Approval> users = sysUserService.queryAllApproval(params);
+		map.put("approval",users);
+		result.setResult(map);
+		return result;
 	}
 }

@@ -17,6 +17,7 @@
 package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Param;
 
@@ -57,7 +58,13 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	void updateUser(SysUserEntity user);
 
+	void insertApproval(Approval approval);
+
+	void updateApproval(Approval approval);
+
 	List<SysUserEntity>  queryForUsers(String[] ids);
 
 	List<SysUserEntity>  queryAllUsers(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+
+    List<Approval>  queryAllApproval(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 }

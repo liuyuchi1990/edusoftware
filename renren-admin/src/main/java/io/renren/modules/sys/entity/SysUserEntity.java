@@ -119,6 +119,7 @@ public class SysUserEntity implements Serializable {
 	private String captcha;// 验证码
 	private String code;// 微信公众号网页授权code码
 	private String userFlag;// 微信公众号网页授权code码
+	private String account;// 微信公众号网页授权code码
 
 	/**
 	 * 部门ID
@@ -418,5 +419,13 @@ public class SysUserEntity implements Serializable {
 
 	public void setUserFlag(String userFlag) {
 		this.userFlag = userFlag;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 }

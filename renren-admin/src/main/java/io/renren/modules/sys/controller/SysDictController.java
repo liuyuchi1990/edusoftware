@@ -58,7 +58,6 @@ public class SysDictController {
      * 获取字典 根据type
      */
     @RequestMapping(value = "/queryByType", method = RequestMethod.POST)
-    @ResponseBody
     public ReturnResult queryByType(@RequestBody SysDictEntity sysDictEntity) {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();

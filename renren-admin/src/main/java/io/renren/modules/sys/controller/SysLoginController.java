@@ -98,9 +98,9 @@ public class SysLoginController {
             Subject subject = ShiroUtils.getSubject();
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
             SysUserEntity us = sysUserService.queryByMobile(user.getUsername());
-            if(us.getEndTime().compareTo(CommonUtil.today())>0) {
+            if (us.getEndTime().compareTo(CommonUtil.today()) > 0) {
                 subject.login(token);
-            }else{
+            } else {
                 result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
                 result.setMsg("用户账户已经到期，请及时续费");
             }
@@ -139,13 +139,11 @@ public class SysLoginController {
     @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @Transactional(rollbackFor = {Exception.class}, readOnly = false)
     public ReturnResult doLogin(@ApiParam @RequestBody SysUserEntity user) {
-        String passwordmd5 = new Md5Hash("xyj1234567", "2").toString();
-        user.setPassword(passwordmd5);
         user.setUsername(user.getUsername());
         Subject subject = SecurityUtils.getSubject();
         Map<String, Object> map = new HashMap<>();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), passwordmd5);
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         try {
             //map = WxUtil.getSessionKeyOropenid(user.getCode());
             user.setOpenId(map.get("openid").toString());
@@ -217,57 +215,47 @@ public class SysLoginController {
             //通过https方式请求获得web_access_token
             JSONObject jsonObject = WxUtil.httpRequest(token, "GET", null);
             System.out.println("jsonObject------" + jsonObject);
-            SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
-            if (userTemp == null && null != jsonObject) {
-                try {
-                    WebAccessToken = jsonObject.getString("access_token");
-                    openId = jsonObject.getString("openid");
-                    System.out.println("获取access_token成功-------------------------" + WebAccessToken + "----------------" + openId);
-                    //-----------------------拉取用户信息...替换字符串，获得请求URL
-                    String userMessage = UserInfoUtil.getUserMessage(WebAccessToken, openId);
-                    System.out.println(" userMessage===" + userMessage);
-                    //通过https方式请求获得用户信息响应
-                    JSONObject userMessageJsonObject = WxUtil.httpRequest(userMessage, "GET", null);
+            try {
+                WebAccessToken = jsonObject.getString("access_token");
+                openId = jsonObject.getString("openid");
+                System.out.println("获取access_token成功-------------------------" + WebAccessToken + "----------------" + openId);
+                //-----------------------拉取用户信息...替换字符串，获得请求URL
+                String userMessage = UserInfoUtil.getUserMessage(WebAccessToken, openId);
+                System.out.println(" userMessage===" + userMessage);
+                //通过https方式请求获得用户信息响应
+                JSONObject userMessageJsonObject = WxUtil.httpRequest(userMessage, "GET", null);
 
-                    System.out.println("userMessagejsonObject------" + userMessageJsonObject);
+                System.out.println("userMessagejsonObject------" + userMessageJsonObject);
 
-                    if (userMessageJsonObject != null) {
-                        try {
-                            //用户昵称
-                            SysUserEntity utmp = sysUserService.queryByOpenId(userMessageJsonObject.getString("openid"));
-                            //获取成果，存入数据库
-                            if (utmp == null) {
-                                //user.setUsername(userMessageJsonObject.getString("nickname"));
-                                user.setNickname(userMessageJsonObject.getString("nickname"));
-                                //user.setPassword(new Md5Hash(user.getPassword(), "2").toString());
-                                //用户性别
-                                user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
-                                user.setSex(Integer.parseInt(userMessageJsonObject.getString("sex")));
-                                user.setStatus(1);
-                                user.setProvince(userMessageJsonObject.getString("province"));
-                                user.setSubscribetime(userMessageJsonObject.getString("subscribetime"));
-                                user.setCity(userMessageJsonObject.getString("city"));
-                                user.setHeadimgurl(userMessageJsonObject.getString("headimgurl"));
-                                //用户唯一标识
-                                user.setOpenId(userMessageJsonObject.getString("openid"));
-                                user.setUnionid(userMessageJsonObject.getString("unionid"));
-                                user.setEndTime(DateUtils.nextDay());
-                                sysUserService.insertUser(user);
-                            } else {
-                                user = utmp;
-                            }
+                if (userMessageJsonObject != null) {
+                    try {
+                        //user.setUsername(userMessageJsonObject.getString("nickname"));
+                        user.setNickname(userMessageJsonObject.getString("nickname"));
+                        //user.setPassword(new Md5Hash(user.getPassword(), "2").toString());
+                        //用户性别
+                        user.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
+                        user.setSex(Integer.parseInt(userMessageJsonObject.getString("sex")));
+                        user.setStatus(1);
+                        user.setProvince(userMessageJsonObject.getString("province"));
+                        user.setSubscribetime(userMessageJsonObject.getString("subscribetime"));
+                        user.setCity(userMessageJsonObject.getString("city"));
+                        user.setHeadimgurl(userMessageJsonObject.getString("headimgurl"));
+                        //用户唯一标识
+                        user.setOpenId(userMessageJsonObject.getString("openid"));
+                        user.setUnionid(userMessageJsonObject.getString("unionid"));
+                        user.setEndTime(DateUtils.nextDay());
+                        sysUserService.insertUser(user);
 
-                        } catch (JSONException e) {
-                            System.out.println("获取user失败");
-                        }
+                    } catch (JSONException e) {
+                        System.out.println("获取user失败");
                     }
-                } catch (JSONException e) {
-                    System.out.println("获取WebAccessToken失败");
                 }
+            } catch (JSONException e) {
+                System.out.println("获取WebAccessToken失败");
             }
             //登陆
             Subject subject = SecurityUtils.getSubject();
-            UsernamePasswordToken loginToken = new UsernamePasswordToken(user.getMobile(),tempPass);
+            UsernamePasswordToken loginToken = new UsernamePasswordToken(user.getMobile(), tempPass);
             subject.login(loginToken);
         }
         ret.put("user", user);
@@ -318,7 +306,7 @@ public class SysLoginController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         Map<String, Object> map = new HashedMap();
         SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
-        if(userTemp==null||("pass".equals(user.getSalt()))){
+        if (userTemp == null || ("pass".equals(user.getSalt()))) {
             String text = producer.createText();
             ShiroUtils.setSessionAttribute(Constants.KAPTCHA_SESSION_KEY, text);
             String[] param = {text, "2"};
@@ -328,7 +316,7 @@ public class SysLoginController {
             map.put("msg", "send ok");
             result.setResult(map);
 
-        }else{
+        } else {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             result.setMsg("该手机号已被注册");
         }

@@ -181,10 +181,10 @@ public class BarginController {
         List<Map<String, Object>> mp = barginService.queryBarginLog(order.getOrderId());
         Map<String, Object> resMap = barginService.queryMaxTime(order);
         long minutes = 0;
-        Long restrictTime = Long.parseLong(ba.getRestrictTime().toString());
-        LocalDateTime create_time = resMap == null ? toDate : LocalDateTime.parse(resMap.get("create_time").toString().replace(".0", ""), df);
+        long restrictTime = Long.parseLong(ba.getRestrictTime().toString());
+        LocalDateTime create_time = resMap == null ? toDate : LocalDateTime.parse(resMap.get("max_time").toString().replace(".0", ""), df);
         minutes = ChronoUnit.MINUTES.between(create_time, toDate);
-        if (restrictTime < (minutes / 60) || mp.size() == 0 || resMap == null) {//是否超过投票间隔时间
+        if (restrictTime*60 < minutes || mp.size() == 0 || resMap == null) {//是否超过投票间隔时间
             Double reduct = Math.random() * (ba.getMaxReduction().subtract(ba.getMinReduction()).doubleValue()) + ba.getMinReduction().doubleValue();
             Double price_left = Double.valueOf(order.getTotal_price()) - reduct;
             if (Double.valueOf(order.getTotal_price()) == (ba.getFloorPrice().doubleValue())) {
@@ -208,7 +208,7 @@ public class BarginController {
             }
         } else {
             result.setCode(ReturnCodeEnum.INVOKE_VENDOR_DF_ERROR.getCode());
-            result.setMsg("请您休息" + (restrictTime - minutes / 60) + "小时" + (restrictTime * 60 - minutes) % 60 + "分钟后再次砍价");
+            result.setMsg("请您休息" + (restrictTime*60 - minutes) / 60 + "小时" + (restrictTime * 60 - minutes) % 60 + "分钟后再次砍价");
             result.setResult(map);
         }
         return result;

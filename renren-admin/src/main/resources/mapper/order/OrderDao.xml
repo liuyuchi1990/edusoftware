@@ -78,7 +78,8 @@
 		,t.send_flag send_Flag
 		from tb_order t
 		left join sys_dict sd on sd.code = t.order_status and sd.type='wxpay'
-		where t.user_id = #{user_id,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}
+		join tb_activity tb on tb.id = t.activity_id
+		where tb.create_user = #{user_id,jdbcType=VARCHAR} and t.activity_id=#{activityId,jdbcType=VARCHAR}
 		<if test="sendFlag != null">
 		 and send_flag = #{sendFlag}
 		</if>

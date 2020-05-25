@@ -342,6 +342,7 @@ public class OrderController {
             } catch (Exception e) {
 
             }
+            fileName = java.net.URLEncoder.encode(fileName, "UTF-8");
             map.put("fileName", fileName);
             result.setResult(map);
         } else {

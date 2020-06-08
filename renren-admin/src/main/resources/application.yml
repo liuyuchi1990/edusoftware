@@ -92,7 +92,7 @@ qr:
   gatherImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/gather/qr
   bargin: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=bargainPro&id=
   barginImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/bargin/qr
-  groupon: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=pintuanPro&id=
+  groupon: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=pingtuanPro&id=
   grouponImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/groupon/qr
   lottery: https://wxp.sharkmeida.cn/statics/dist/redirect.html?hash=egg&id=
   lotteryImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/lottery/qr

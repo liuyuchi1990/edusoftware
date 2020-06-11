@@ -195,9 +195,6 @@ SYSDATE())
             <if test="latitude!= null">
                 latitude=#{latitude,jdbcType=VARCHAR},
             </if>
-            <if test="prizeLeft!= null">
-                prize_left=#{prizeLeft,jdbcType=INTEGER},
-            </if>
             <if test="footImage!= null">
                 foot_image=#{footImage,jdbcType=VARCHAR},
             </if>

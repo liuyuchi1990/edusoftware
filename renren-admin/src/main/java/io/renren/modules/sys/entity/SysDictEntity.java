@@ -54,7 +54,6 @@ public class SysDictEntity implements Serializable {
 	/**
 	 * 字典值
 	 */
-	@NotBlank(message="字典值不能为空")
 	private String value;
 	/**
 	 * 排序

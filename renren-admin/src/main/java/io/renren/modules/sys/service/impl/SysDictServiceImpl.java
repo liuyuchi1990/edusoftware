@@ -56,4 +56,8 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictDao, SysDictEntity> i
         return sysDictDao.queryByDictName(sysDictEntity);
     }
 
+    public int updateDict(SysDictEntity sysDictEntity){
+        return sysDictDao.updateDict(sysDictEntity);
+    }
+
 }

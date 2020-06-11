@@ -33,6 +33,7 @@ public interface SysDictService extends IService<SysDictEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
 
+    int updateDict(SysDictEntity sysDictEntity);
 
     List<SysDictEntity> queryByType(SysDictEntity sysDictEntity);
 

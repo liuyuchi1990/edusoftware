@@ -95,7 +95,7 @@ public class SysDictController {
                 result.setResult(map);
             }
         } else {
-            sysDictService.updateById(dict);
+            sysDictService.updateDict(dict);
         }
         map.put("dict", dict);
 

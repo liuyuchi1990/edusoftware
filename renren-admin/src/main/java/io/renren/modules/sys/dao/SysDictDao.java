@@ -32,5 +32,7 @@ public interface SysDictDao extends BaseMapper<SysDictEntity> {
     List<SysDictEntity> queryByType(SysDictEntity sysDictEntity);
 
     List<SysDictEntity> queryByDictName(SysDictEntity sysDictEntity);
+
+    int updateDict(SysDictEntity sysDictEntity);
 	
 }

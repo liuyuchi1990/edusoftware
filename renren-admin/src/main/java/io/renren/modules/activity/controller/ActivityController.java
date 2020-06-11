@@ -33,6 +33,8 @@ public class ActivityController {
         List<String> lst = new ArrayList();
         if(params.get("activityId")!=null){
             lst = Arrays.asList(params.get("activityId").toString().split(","));
+        }else{
+            lst=null;
         }
         List<ActivityEntity> activityEntityList = activityService.queryAllTemplate(params,lst);
         map.put("data", activityEntityList);

@@ -164,7 +164,7 @@ public class ShiroConfig {
         kickoutSessionControlFilter.setSessionManager(sessionManager());
         kickoutSessionControlFilter.setKickoutAfter(false);
         kickoutSessionControlFilter.setMaxSession(1);
-        kickoutSessionControlFilter.setKickoutUrl("/statics/dist/index.html#/login");
+        kickoutSessionControlFilter.setKickoutUrl("/");
         return kickoutSessionControlFilter;
     }
 

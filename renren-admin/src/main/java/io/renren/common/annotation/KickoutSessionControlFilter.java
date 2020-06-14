@@ -121,7 +121,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 subject.logout();
             } catch (Exception e) { //ignore
             }
-            //saveRequest(request);
+            saveRequest(request);
 
             Map<String, String> resultMap = new HashMap<String, String>();
             //判断是不是Ajax请求

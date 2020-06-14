@@ -121,7 +121,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 subject.logout();
             } catch (Exception e) { //ignore
             }
-            saveRequest(request);
+            //saveRequest(request);
 
             Map<String, String> resultMap = new HashMap<String, String>();
             //判断是不是Ajax请求
@@ -129,7 +129,8 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 resultMap.put("user_status", "300");
                 resultMap.put("message", "您已经在其他地方登录，请重新登录！");
                 //输出json串
-                out(response, resultMap);
+                //out(response, resultMap);
+                WebUtils.issueRedirect(request, response, kickoutUrl);
             }else{
                 //重定向
                 WebUtils.issueRedirect(request, response, kickoutUrl);

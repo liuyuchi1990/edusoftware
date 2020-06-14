@@ -93,7 +93,7 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setLoginUrl("/login.html");
+        shiroFilter.setLoginUrl("/statics/dist/index.html#/login");
         shiroFilter.setUnauthorizedUrl("/");
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         //限制同一帐号同时在线的个数。
@@ -117,8 +117,8 @@ public class ShiroConfig {
         filterMap.put("/sys/sendMessage", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");
-        //filterMap.put("/**", "authc,kickout");
-        filterMap.put("/**", "anon");
+        filterMap.put("/**", "authc,kickout");
+        //filterMap.put("/**", "anon");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;
@@ -164,7 +164,7 @@ public class ShiroConfig {
         kickoutSessionControlFilter.setSessionManager(sessionManager());
         kickoutSessionControlFilter.setKickoutAfter(false);
         kickoutSessionControlFilter.setMaxSession(1);
-        kickoutSessionControlFilter.setKickoutUrl("/dist/index.html?hash=register#login");
+        kickoutSessionControlFilter.setKickoutUrl("/statics/dist/index.html#/login");
         return kickoutSessionControlFilter;
     }
 

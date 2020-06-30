@@ -93,8 +93,8 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
-        shiroFilter.setLoginUrl("/statics/dist/index.html#/login");
-        shiroFilter.setUnauthorizedUrl("/");
+        shiroFilter.setLoginUrl("/statics/dist/index.html?hash=login");
+        shiroFilter.setUnauthorizedUrl("/statics/dist/index.html?hash=login");
         Map<String, Filter> filtersMap = new LinkedHashMap<String, Filter>();
         //限制同一帐号同时在线的个数。
         filtersMap.put("kickout", kickoutSessionControlFilter());
@@ -109,6 +109,18 @@ public class ShiroConfig {
         filterMap.put("/swagger-resources/**", "anon");
 
         filterMap.put("/statics/**", "anon");
+        filterMap.put("/bargin/**", "anon");
+        filterMap.put("/bargin/save", "authc");
+        filterMap.put("/gather/**", "anon");
+        filterMap.put("/gather/save", "authc");
+        filterMap.put("/groupon/**", "anon");
+        filterMap.put("/groupon/save", "authc");
+        filterMap.put("/distribution/**", "anon");
+        filterMap.put("/distribution/save", "authc");
+        filterMap.put("/activitity/**", "anon");
+        filterMap.put("/statics/**", "anon");
+        filterMap.put("/statics/dist/index.html#/userManage", "authc");
+        filterMap.put("/statics/dist/index.html#/peopleHome", "authc");
         filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
         filterMap.put("/sys/signIn", "anon");
@@ -164,7 +176,7 @@ public class ShiroConfig {
         kickoutSessionControlFilter.setSessionManager(sessionManager());
         kickoutSessionControlFilter.setKickoutAfter(false);
         kickoutSessionControlFilter.setMaxSession(1);
-        kickoutSessionControlFilter.setKickoutUrl("/");
+        kickoutSessionControlFilter.setKickoutUrl("/statics/dist/login");
         return kickoutSessionControlFilter;
     }
 

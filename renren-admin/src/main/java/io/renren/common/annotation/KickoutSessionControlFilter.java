@@ -1,6 +1,8 @@
 package io.renren.common.annotation;
 
 import com.alibaba.fastjson.JSON;
+import io.renren.modules.sys.entity.ReturnCodeEnum;
+import io.renren.modules.sys.entity.ReturnResult;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
@@ -9,7 +11,6 @@ import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
-import org.apache.shiro.web.util.WebUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -129,11 +130,14 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
                 resultMap.put("user_status", "300");
                 resultMap.put("message", "您已经在其他地方登录，请重新登录！");
                 //输出json串
-                //out(response, resultMap);
-                WebUtils.issueRedirect(request, response, kickoutUrl);
+                out(response, resultMap);
+                //WebUtils.issueRedirect(request, response, kickoutUrl);
             }else{
                 //重定向
-                WebUtils.issueRedirect(request, response, kickoutUrl);
+                resultMap.put("user_status", "300");
+                resultMap.put("message", "您已经在其他地方登录，请重新登录！");
+                //输出json串
+                out(response, resultMap);
             }
             return false;
         }
@@ -142,9 +146,11 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
     private void out(ServletResponse hresponse, Map<String, String> resultMap)
             throws IOException {
         try {
+            ReturnResult result = new ReturnResult(ReturnCodeEnum.NO_AUTH.getCode());
+            result.setMsg("您已经在其他地方登录，请重新登录！");
             hresponse.setCharacterEncoding("UTF-8");
             PrintWriter out = hresponse.getWriter();
-            out.println(JSON.toJSONString(resultMap));
+            out.println(JSON.toJSONString(result));
             out.flush();
             out.close();
         } catch (Exception e) {

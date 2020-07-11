@@ -50,6 +50,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,7 +92,7 @@ public class SysLoginController {
      */
     @ResponseBody
     @RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-    public ReturnResult login(@ApiParam @RequestBody SysUserEntity user) {
+    public ReturnResult login(@ApiParam @RequestBody SysUserEntity user) throws ParseException {
         Map<String, Object> map = new HashMap<>();
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         try {
@@ -104,6 +105,7 @@ public class SysLoginController {
                 result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
                 result.setMsg("用户账户已经到期，请及时续费");
             }
+            us.setExpireTime(CommonUtil.addSecond(CommonUtil.today(),io.renren.common.config.Constants.LOGIN_EXPIRE));
             map.put("user", us);
             result.setResult(map);
             return result;
@@ -145,18 +147,9 @@ public class SysLoginController {
         ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         try {
-            //map = WxUtil.getSessionKeyOropenid(user.getCode());
             user.setOpenId(map.get("openid").toString());
             String id = UUID.randomUUID().toString().replaceAll("-", "");
             user.setUserId(id);
-            //SysUserEntity hasUser = sysUserService.queryByOpenId(map.get("openid").toString());
-//            if (hasUser == null) {
-//                sysUserService.insert(user);
-//                map.put("id", id);
-//            } else {
-//                map.put("id", hasUser.);
-//            }
-
             subject.login(token);
             result.setResult(map);
             return result;

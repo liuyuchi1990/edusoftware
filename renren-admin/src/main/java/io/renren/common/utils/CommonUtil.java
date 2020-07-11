@@ -19,6 +19,7 @@ import java.beans.PropertyDescriptor;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -45,6 +46,13 @@ public class CommonUtil {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         DateTime dateTime = new DateTime(date);
         return df.format(dateTime.toDate());
+    }
+
+    public static String addSecond(String time,int Second) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date =df.parse(time);
+        date.setTime(date.getTime() + Second*1000);
+        return df.format(date);
     }
 
     /**

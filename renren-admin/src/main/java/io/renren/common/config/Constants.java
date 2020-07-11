@@ -60,6 +60,8 @@ public class Constants {
 
     public static final int TIME_EXPIRE = 2;  //单位是day
 
+    public static final int LOGIN_EXPIRE = 1800;  //单位是秒
+
     public static final String QR_FILE_PATH = "C:/apache-tomcat-8.5.31/webapps/imgs/qr/";
 
     /**

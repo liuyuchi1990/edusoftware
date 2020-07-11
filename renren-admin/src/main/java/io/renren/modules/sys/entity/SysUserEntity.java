@@ -120,6 +120,7 @@ public class SysUserEntity implements Serializable {
 	private String code;// 微信公众号网页授权code码
 	private String userFlag;// 微信公众号网页授权code码
 	private String account;// 微信公众号网页授权code码
+	private String expireTime;// 微信公众号网页授权code码
 
 	/**
 	 * 部门ID
@@ -427,5 +428,13 @@ public class SysUserEntity implements Serializable {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getExpireTime() {
+		return expireTime;
+	}
+
+	public void setExpireTime(String expireTime) {
+		this.expireTime = expireTime;
 	}
 }

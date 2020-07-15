@@ -106,6 +106,7 @@ public class SysLoginController {
                 result.setMsg("用户账户已经到期，请及时续费");
             }
             us.setExpireTime(CommonUtil.addSecond(CommonUtil.today(),io.renren.common.config.Constants.LOGIN_EXPIRE));
+            us.setPassword(user.getPassword());
             map.put("user", us);
             result.setResult(map);
             return result;

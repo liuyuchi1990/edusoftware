@@ -147,6 +147,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
             throws IOException {
         try {
             ReturnResult result = new ReturnResult(ReturnCodeEnum.NO_AUTH.getCode());
+            result.setCode(ReturnCodeEnum.NO_AUTH.getCode());
             result.setMsg("您已经在其他地方登录，请重新登录！");
             hresponse.setCharacterEncoding("UTF-8");
             PrintWriter out = hresponse.getWriter();

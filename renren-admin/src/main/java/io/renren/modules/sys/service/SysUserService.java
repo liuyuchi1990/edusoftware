@@ -18,6 +18,7 @@ package io.renren.modules.sys.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import io.renren.common.utils.PageUtils;
+import io.renren.modules.order.model.Order;
 import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.SysUserEntity;
 
@@ -67,6 +68,8 @@ public interface SysUserService extends IService<SysUserEntity> {
 	void insertApproval(Approval approval);
 
 	void updateApproval(Approval approval);
+
+	void updateAccount(Order order);
 
 	SysUserEntity queryById(String id);
 

@@ -17,6 +17,7 @@
 package io.renren.modules.sys.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import io.renren.modules.order.model.Order;
 import io.renren.modules.sys.entity.Approval;
 import io.renren.modules.sys.entity.SysUserEntity;
 import org.apache.ibatis.annotations.Param;
@@ -59,6 +60,8 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 	void updateUser(SysUserEntity user);
 
 	void insertApproval(Approval approval);
+
+	void updateAccount(Order order);
 
 	void updateApproval(Approval approval);
 

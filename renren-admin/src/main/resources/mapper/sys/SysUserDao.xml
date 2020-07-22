@@ -183,4 +183,12 @@ VALUES
 		order by create_time desc
 		limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
 	</select>
+
+	<update id="updateAccount" parameterType="io.renren.modules.order.model.Order">
+         update sys_user s
+ inner join tb_activity tba on tba.create_user = s.user_id
+ inner join tb_order tb on tb.activity_id = tba.id
+ set s.account = cast(tb.total_price AS Decimal(10,2)) + CAST(s.account AS Decimal(10,2) )
+ where tb.order_id = #{orderId}
+	</update>
 </mapper>

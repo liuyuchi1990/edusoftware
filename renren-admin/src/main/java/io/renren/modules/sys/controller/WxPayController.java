@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.renren.common.config.Constants;
 import io.renren.common.utils.*;
+import io.renren.modules.activity.entity.ActivityEntity;
 import io.renren.modules.bargin.service.BarginService;
 import io.renren.modules.order.model.Order;
 import io.renren.modules.order.model.OrderEntity;
@@ -249,6 +250,7 @@ public class WxPayController {
                     if(Constants.BARGIN.equals(order.getOrderType())){
                         barginService.releaseBargin(order.getActivityId());
                     }
+                    sysUserService.updateAccount(order);
                 }
                 //判断 是否更新成功
                 if ((rs > 0)||("1".equals(order.getOrderStatus()))) {

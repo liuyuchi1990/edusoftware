@@ -278,7 +278,7 @@ public class SysLoginController {
 
         SysUserEntity userTemp = sysUserService.queryByMobile(user.getMobile());
         if (userTemp != null) {
-            userTemp.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
+            userTemp.setPassword(ShiroUtils.sha256(user.getPassword(), userTemp.getSalt()));
             //userTemp.setPassword(new Md5Hash(user.getPassword(), "2").toString());
             sysUserService.updateUser(userTemp);
         } else {

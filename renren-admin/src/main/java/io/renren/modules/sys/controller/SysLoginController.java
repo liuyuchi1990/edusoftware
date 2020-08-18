@@ -47,6 +47,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -314,6 +316,18 @@ public class SysLoginController {
             result.setCode(ReturnCodeEnum.SYSTEM_ERROR.getCode());
             result.setMsg("该手机号已被注册");
         }
+        return result;
+    }
+
+    @RequestMapping(value = "/sys/isAuthenticated", method = RequestMethod.GET)
+    @ResponseBody
+    public ReturnResult isAuthenticated(){
+        //生成文字验证码
+        ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+        Map<String, Object> map = new HashedMap();
+        Subject subject = ShiroUtils.getSubject();
+        map.put("isAuthenticated",subject.isAuthenticated());
+        result.setResult(map);
         return result;
     }
 }

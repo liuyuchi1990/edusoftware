@@ -123,6 +123,7 @@ public class ShiroConfig {
         filterMap.put("/statics/dist/index.html#/peopleHome", "authc");
         filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
+        filterMap.put("/sys/isAuthenticated", "anon");
         filterMap.put("/sys/signIn", "anon");
         filterMap.put("/logout", "anon");
         filterMap.put("/sys/changePassword", "anon");

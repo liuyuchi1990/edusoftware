@@ -19,6 +19,8 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
       enabled: true
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,/imgs/
   redis:
     database: 0
     host: 49.235.38.247
@@ -34,6 +36,8 @@ spring:
   freemarker:
     suffix: .html
     request-context-attribute: request
+  mvc:
+    static-path-pattern: /**
 
 
 renren:

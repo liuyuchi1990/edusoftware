@@ -83,19 +83,19 @@ root:
   img:
     url: /imgs
     path: https://wp.sharkmeida.cn/imgs/
-    cert: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/cert
+    cert: /cert
 
 qr:
   distribution: https://wp.sharkmeida.cn/statics/dist/redirect.html?hash=qianggouPro&id=
-  distributionImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/distribution/qr
+  distributionImgPath: /imgs/distribution/qr
   gather: https://wp.sharkmeida.cn/statics/dist/redirect.html?hash=jizanPro&id=
-  gatherImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/gather/qr
+  gatherImgPath: /imgs/gather/qr
   bargin: https://wp.sharkmeida.cn/statics/dist/redirect.html?hash=bargainPro&id=
-  barginImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/bargin/qr
+  barginImgPath: /imgs/bargin/qr
   groupon: https://wp.sharkmeida.cn/statics/dist/redirect.html?hash=pingtuanPro&id=
-  grouponImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/groupon/qr
+  grouponImgPath: /imgs/groupon/qr
   lottery: https://wp.sharkmeida.cn/statics/dist/redirect.html?hash=egg&id=
-  lotteryImgPath: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/lottery/qr
+  lotteryImgPath: /imgs/lottery/qr
   httpurl: https://wp.sharkmeida.cn/imgs/distribution/qr/
   httpgatherurl: https://wp.sharkmeida.cn/imgs/gather/qr/
   httpbarginurl: https://wp.sharkmeida.cn/imgs/bargin/qr/
@@ -103,7 +103,7 @@ qr:
   httplotteryurl: https://wp.sharkmeida.cn/imgs/lottery/qr/
 
 course:
-  path: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/imgs/course/
+  path: /imgs/course/
 
 export:
-  path: /usr/local/tomcat/apache-tomcat-8.0.53/webapps/excel/
+  path: /excel/

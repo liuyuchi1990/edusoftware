@@ -130,6 +130,7 @@ public class ShiroConfig {
         filterMap.put("/sys/sendMessage", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/imgs/**", "anon");
+        filterMap.put("/excel/**", "anon");
         filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/**", "authc,kickout");
         //filterMap.put("/**", "anon");

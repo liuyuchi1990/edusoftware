@@ -106,14 +106,13 @@ public class SysUserController extends AbstractController {
 	 * 用户信息
 	 */
 	@RequestMapping("/info/{userId}")
-	public R info(@PathVariable("userId") String userId){
-		SysUserEntity user = sysUserService.selectById(userId);
-		
-		//获取用户所属的角色列表
-		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-		user.setRoleIdList(roleIdList);
-		
-		return R.ok().put("user", user);
+	public ReturnResult info(@PathVariable("userId") String userId){
+		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
+		Map<String, Object> map = new HashedMap();
+		SysUserEntity user = sysUserService.queryById(userId);
+		map.put("user",user);
+		result.setResult(map);
+		return result;
 	}
 	
 	/**

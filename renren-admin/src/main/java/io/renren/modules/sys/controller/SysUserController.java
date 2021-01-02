@@ -27,10 +27,7 @@ import io.renren.common.validator.group.AddGroup;
 import io.renren.common.validator.group.UpdateGroup;
 import io.renren.modules.activity.entity.ActivityEntity;
 import io.renren.modules.bargin.entity.BarginEntity;
-import io.renren.modules.sys.entity.Approval;
-import io.renren.modules.sys.entity.ReturnCodeEnum;
-import io.renren.modules.sys.entity.ReturnResult;
-import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.entity.*;
 import io.renren.modules.sys.service.SysUserRoleService;
 import io.renren.modules.sys.service.SysUserService;
 import io.renren.modules.sys.shiro.ShiroUtils;
@@ -198,10 +195,14 @@ public class SysUserController extends AbstractController {
 	public ReturnResult saveApproval(@RequestBody Approval approval) throws Exception {
 		ReturnResult result = new ReturnResult(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getMessage());
 		Map<String, Object> map = new HashedMap();
+		SysUserEntity user = new SysUserEntity();
 		if ("".equals(approval.getId()) || approval.getId() == null) {
 			approval.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 			approval.setStatus(Constants.ApprovalSubmitFlag);
 			sysUserService.insertApproval(approval);
+			user.setUserId(approval.getUserId());
+			user.setAccount(approval.getOriginalMoney());
+			sysUserService.releaseAccount(user);
 		} else {
 			approval.setStatus(Constants.ApprovalSuccessFlag);
 			sysUserService.updateApproval(approval);//全部更新

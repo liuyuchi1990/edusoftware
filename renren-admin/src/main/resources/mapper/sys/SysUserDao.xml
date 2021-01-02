@@ -191,4 +191,10 @@ VALUES
  set s.account = cast(tb.total_price AS Decimal(10,2)) + CAST(s.account AS Decimal(10,2) )
  where tb.order_id = #{orderId}
 	</update>
+
+	<update id="releaseAccount" parameterType="io.renren.modules.sys.entity.SysUserEntity">
+         update sys_user s
+         set s.account = cast(s.account  AS Decimal(10,2)) - CAST(#{account} AS Decimal(10,2) )
+        where s.user_id = #{userId}
+	</update>
 </mapper>

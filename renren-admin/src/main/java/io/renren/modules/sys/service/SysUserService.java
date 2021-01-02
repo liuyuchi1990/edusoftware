@@ -65,6 +65,8 @@ public interface SysUserService extends IService<SysUserEntity> {
 
 	void updateUser(SysUserEntity user);
 
+	void releaseAccount(SysUserEntity user);
+
 	void insertApproval(Approval approval);
 
 	void updateApproval(Approval approval);

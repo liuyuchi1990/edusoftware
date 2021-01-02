@@ -186,4 +186,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         int pageSize = Integer.parseInt(params.get("pageSize").toString());
         return sysUserDao.queryAllApproval(pageNum, pageSize);
     }
+
+    public void releaseAccount(SysUserEntity user) {
+        sysUserDao.releaseAccount(user);
+    }
 }

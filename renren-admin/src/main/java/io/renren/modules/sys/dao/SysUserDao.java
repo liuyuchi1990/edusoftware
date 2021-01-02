@@ -59,6 +59,8 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	void updateUser(SysUserEntity user);
 
+	void releaseAccount(SysUserEntity user);
+
 	void insertApproval(Approval approval);
 
 	void updateAccount(Order order);

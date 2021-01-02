@@ -11,6 +11,7 @@ public class Approval {
     private String companyName;// 机构名称
     private String companyProvince;// 公司所在省份
     private String companyCity;// 公司所在城市
+    private String originalMoney;// 公司所在城市
     private String money;// 公司所在城市
     /**
      * 创建时间
@@ -117,5 +118,13 @@ public class Approval {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getOriginalMoney() {
+        return originalMoney;
+    }
+
+    public void setOriginalMoney(String originalMoney) {
+        this.originalMoney = originalMoney;
     }
 }

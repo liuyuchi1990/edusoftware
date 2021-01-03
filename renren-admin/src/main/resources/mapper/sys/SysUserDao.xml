@@ -180,6 +180,9 @@ VALUES
 		ta.id,ta.status,ta.create_time,ta.update_time,ta.money,tu.username,tu.company_name,tu.company_city,tu.company_province,tu.mobile,tu.headimgurl
 		from sys_approval ta
 		left join sys_user tu on ta.user_id= tu.user_id
+		<if test="userId!= null">
+		 where	ta.user_id =  #{userId,jdbcType=INTEGER}
+		</if>
 		order by create_time desc
 		limit #{pageNum,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
 	</select>

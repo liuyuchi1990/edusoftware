@@ -71,5 +71,5 @@ public interface SysUserDao extends BaseMapper<SysUserEntity> {
 
 	List<SysUserEntity>  queryAllUsers(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
 
-    List<Approval>  queryAllApproval(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize);
+    List<Approval>  queryAllApproval(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize,@Param("userId") String userId);
 }

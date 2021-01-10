@@ -182,7 +182,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     }
 
     public List<Approval> queryAllApproval(Map<String, Object> params) {
-        String userId = params.get("userId").toString();
+        String userId = params.get("userId")==null?null:params.get("userId").toString();
         int pageNum = Integer.parseInt(params.get("pageNum").toString());
         int pageSize = Integer.parseInt(params.get("pageSize").toString());
         return sysUserDao.queryAllApproval(pageNum, pageSize,userId);
